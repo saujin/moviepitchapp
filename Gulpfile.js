@@ -1,9 +1,8 @@
 var gulp        = require('gulp');
 var sync        = require('run-sequence');
-var util        = require('gulp-util');
 var concat      = require('gulp-concat');
-// var browserSync = require('browser-sync').create();
 var sass        = require('gulp-sass');
+var sourcemaps  = require('gulp-sourcemaps');
 
 var paths = {
   ejs: "views/**/*.ejs",
@@ -11,20 +10,12 @@ var paths = {
   stylesheets: "public/stylesheets/scss/**/*.scss"
 }
 
-// gulp.task('browser-sync', function(){
-//   browserSync.init({
-//     server: {
-//       basedir: "./"
-//     }
-//   })
-// });
-
 gulp.task('sass', function(){
   return gulp.src(paths.stylesheets)
-    .pipe(sass())
-    .pipe(concat('all.css'))
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./public/stylesheets'))
-    // .pipe(browserSync.stream());
 });
 
 gulp.task('watch', function(){
@@ -33,5 +24,5 @@ gulp.task('watch', function(){
 });
 
 gulp.task('default', function(done){
-  sync('watch', done);
+  sync('sass', 'watch', done);
 });
