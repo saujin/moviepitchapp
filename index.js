@@ -1,6 +1,5 @@
-var cool = require('cool-ascii-faces');
 var express = require('express');
-var mongodb = require('mongodb');
+var mongodb = require('mongodb').MongoClient;
 
 var app = express();
 
@@ -27,13 +26,15 @@ var seedData = [
 
 var uri = "mongodb://heroku_0hl4nrjc:ech2adf24haq23l0rm08m44rdq@ds039145.mongolab.com:39145/heroku_0hl4nrjc";
 
-mongodb.MongoClient.connect(uri, function(err, db){
+mongodb.connect(uri, function(err, db){
   if(err) throw err;
 
   var songs = db.collection('songs');
   songs.insert(seedData, function(err, result){
     if(err) throw err;
   });
+
+  console.log(seedData.length);
 });
 
 app.set('port', (process.env.PORT || 5000));
@@ -48,9 +49,6 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
-app.get('/cool', function(request, response){
-  response.send(cool());
-})
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

@@ -1,0 +1,88 @@
+// Bootstrap overrides
+
+.container-fluid {
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  background: #CCD4D5;
+  font-size: 16px;
+}
+
+h1, h2 {
+  font-family: 'gotham-bookregular';
+  font-weight: 300;
+}
+
+section {
+  padding: 1.875rem 0;
+}
+
+.hero {
+  background: green;
+  background-image: url('../img/bannerbg.jpg');
+  background-size: cover;
+  font-size: 10px;
+  height: 50vw;
+  width: 100vw;
+}
+
+.hero h1 {
+  color: white;
+  font-size: 4rem;
+  line-height: 1.1;
+  padding: 1rem 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.hero h1 span {
+  display: block;
+  font-family: 'gotham-lightregular';
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
+}
+
+.hero-boxes {
+  display: flex;
+  margin: 2rem auto;
+  width: 80%;
+
+  > div {
+    flex: 1 1 auto;
+    margin: 0 2rem;
+    padding: 0;
+  }
+}
+
+.hero-video {
+  height: 0;
+  padding-bottom: 50%;
+  position: relative;
+  width: 100%;
+
+  iframe {
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.how-it-works {
+
+  h2 {
+    color: #CD3D31;
+    font-size: 2.5rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
