@@ -1,6 +1,6 @@
 {
   "name": "Moviepitch",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "Pitch movie ideas to Hollywood producers",
   "main": "index.js",
   "scripts": {
