@@ -1,0 +1,31 @@
+footer {
+  align-items: center;
+  background: #f8f8f8;
+  bottom: 0;
+  color: $black;
+  display: flex;
+  height: 50px;
+  font-family: 'gotham_bookregular';
+  font-size: 1rem;
+  padding: 0px 20px;
+  position: fixed;
+  width: 100%;
+
+  p {
+    flex: 0 0 auto;
+    margin: 0;
+    width: 240px;
+  }
+}
+
+.footer-links {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+
+  a {
+    flex: 0 0 auto;
+    padding: 0 1rem;
+  }
+}

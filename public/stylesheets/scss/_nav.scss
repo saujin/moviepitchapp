@@ -1,6 +1,27 @@
 .header {
   background: $red;
+  display: flex;
   height: 65px;
   margin-bottom: 1rem;
   padding: 12px 20px;
+}
+
+.nav-logo {
+  flex: 0 0 auto;
+  width: 200px;
+}
+
+.main-nav {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+
+  a {
+    color: $white;
+    flex: 0 0 auto;
+    font-size: .875rem;
+    font-weight: 300;
+    padding: 0 1rem;
+  }
 }

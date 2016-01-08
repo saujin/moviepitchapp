@@ -1,5 +1,5 @@
 var express = require('express');
-// var mongodb = require('mongodb').MongoClient;
+var mongodb = require('mongodb').MongoClient;
 
 var app = express();
 
@@ -52,6 +52,24 @@ app.get('/', function(request, response) {
 app.get('/team', function(request, response) {
   response.render('pages/team');
 });
+
+app.get('/how-it-works', function(request, response) {
+  response.render('pages/how-it-works');
+});
+
+app.get('/success-stories', function(request, response) {
+  response.render('pages/success-stories');
+});
+
+app.get('/faq', function(request, response) {
+  response.render('pages/faq');
+});
+
+app.get('/submit-pitch', function(request, response) {
+  response.render('pages/submit-pitch');
+});
+
+
 
 
 app.listen(app.get('port'), function() {

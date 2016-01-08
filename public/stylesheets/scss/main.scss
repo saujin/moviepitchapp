@@ -1,3 +1,44 @@
 @import 'colors';
 @import 'hero';
 @import 'nav';
+@import 'team';
+@import 'footer';
+
+.container-fluid {
+  padding: 0;
+}
+
+.container-content {
+  padding: 2rem;
+
+  h1 {
+    margin-bottom: 2rem;
+  }
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  background: #e9eaeb;
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+}
+
+h1, h2 {
+  font-family: 'gotham-bookregular', helvetica, sans-serif;
+  font-weight: 300;
+}
+
+dd, dt, p {
+  max-width: 768px;
+}
+
+dt {
+  margin-bottom: 1rem;
+}
+
+dd {
+  margin-bottom: 2rem;
+}
