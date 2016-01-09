@@ -69,8 +69,9 @@ app.get('/submit-pitch', function(request, response) {
   response.render('pages/submit-pitch');
 });
 
-
-
+app.get('/login', function(request, response) {
+  response.render('pages/login');
+});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
