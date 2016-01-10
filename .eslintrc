@@ -1,0 +1,11 @@
+{
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "globals": {
+    "$": true,
+    "angular": true,
+    "moviePitchApp": true
+  }
+}
