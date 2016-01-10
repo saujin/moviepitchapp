@@ -1,3 +1,5 @@
+"use strict";
+
 moviePitchApp.factory('userFactory', function(){
   var factory = {
     signUp: function(username, email, pwd){
@@ -10,6 +12,7 @@ moviePitchApp.factory('userFactory', function(){
       user.signUp(null, {
         success: function(user){
           console.log(user);
+          return "success";
         },
         error: function(user, error){
           console.log(error);

@@ -17,6 +17,26 @@ var moviePitchApp = angular
           url: "/",
           templateUrl: "views/home.html"
         })
+        .state('our-team', {
+          url: "/our-team",
+          templateUrl: "views/our-team.html"
+        })
+        .state('how-it-works', {
+          url: "/how-it-works",
+          templateUrl: "views/how-it-works.html"
+        })
+        .state('success-stories', {
+          url: "/success-stories",
+          templateUrl: "views/success-stories.html"
+        })
+        .state('faq', {
+          url: "/faq",
+          templateUrl: "views/faq.html"
+        })
+        .state('submit-pitch', {
+          url: "/submit-pitch",
+          templateUrl: "views/submit-pitch.html"
+        })
         .state('login', {
           url: "/login",
           templateUrl: "views/login.html"
