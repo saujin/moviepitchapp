@@ -5,28 +5,6 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
     loginUser: function(username, pwd){
       var deferred = $q.defer();
 
-      // try {
-      //   Parse.User.logIn(username, pwd, {
-      //     success: function(user){
-      //       // Store the user in the $rootScope
-      //       $rootScope.curUser = user;
-      //
-      //       deferred.resolve({
-      //         status: "success",
-      //         data: user
-      //       });
-      //     },
-      //     error: function(user, error){
-      //       deferred.reject({
-      //         status: "error",
-      //         data: user,
-      //         error: error
-      //       });
-      //     }
-      //   });
-      // } catch (e) {
-      //   deferred.reject(e);
-      // }
       Parse.User.logIn(username, pwd).then(
         function(resp){
           deferred.resolve({

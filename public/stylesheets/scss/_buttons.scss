@@ -1,5 +1,5 @@
 .btn-action {
-  background: $red;
+  background: $color-primary-0;
   border-radius: 10px;
   color: $white;
   display: block;
@@ -12,7 +12,7 @@
   width: 240px;
 
   &:hover {
-    background: darken($red, 5%);
+    background: $color-primary-1;
     color: $white;
   }
 }

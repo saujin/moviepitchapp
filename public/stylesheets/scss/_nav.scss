@@ -1,5 +1,5 @@
 .header {
-  background: $red;
+  background: $color-primary-0;
   height: 65px;
 }
 
@@ -61,14 +61,14 @@
   }
 
   .main-nav {
-    border-bottom: solid 1px $red;
+    border-bottom: solid 1px $color-primary-0;
     position: absolute;
     width: 100%;
     z-index: 10;
 
     a {
       background: $background;
-      border-bottom: solid 1px $red;
+      border-bottom: solid 1px $color-primary-0;
       color: $red;
 
       &:hover {
