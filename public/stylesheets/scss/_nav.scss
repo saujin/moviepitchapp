@@ -46,6 +46,28 @@
   }
 }
 
+#nav-login {
+  &.show-login {
+    display: block;
+  }
+
+  &.show-logout {
+    display: none;
+  }
+}
+
+#nav-logout {
+  cursor: pointer;
+  
+  &.show-logout {
+    display: block;
+  }
+
+  &.show-login {
+    display: none;
+  }
+}
+
 @media all and (max-width: 768px){
   .header {
     display: block;

@@ -18,7 +18,8 @@ var paths = {
     "node_modules/bootstrap/dist/js/bootstrap.js"
   ],
   js: [
-    "public/js/app/*.js",
+    "public/js/index.js",
+    "public/controllers/**/*.js",
     "public/factories/**/*.js",
     "public/components/**/*.js"
   ],

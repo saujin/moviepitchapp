@@ -6,11 +6,13 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
       var deferred = $q.defer();
 
       Parse.User.logIn(username, pwd).then(
-        function(resp){
+        function(user){
+          $rootScope.curUser = user;
           deferred.resolve({
-              status: "success",
-              data: resp
-            });
+            status: "success",
+            data: user
+          });
+          $rootScope.$broadcast('login-update');
         },
         function(err){
           deferred.reject({
@@ -21,7 +23,6 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
       );
 
       return deferred.promise;
-
     },
 
     logoutUser: function(){
@@ -33,7 +34,7 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
       if(user === null){
         // Remove the user from the $rootScope
         $rootScope.curUser = null;
-
+        $rootScope.$broadcast('logout-update');
         deferred.resolve({
           status: "success",
           msg: "User is logged out"

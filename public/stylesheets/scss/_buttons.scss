@@ -2,6 +2,7 @@
   background: $color-accent-0;
   border-radius: 10px;
   color: $white;
+  cursor: pointer;
   display: block;
   font-weight: 300;
   margin: 1rem auto 3rem auto;
@@ -9,7 +10,7 @@
   text-align: center;
   text-transform: uppercase;
   transition: all 0.35s;
-  width: 240px;
+  width: 280px;
 
   &:hover {
     background: $color-accent-1;

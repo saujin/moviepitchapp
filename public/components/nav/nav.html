@@ -10,5 +10,6 @@
   <a ui-sref="success-stories" role="menuitem">Success Stories</a>
   <a ui-sref="faq" role="menuitem">FAQ</a>
   <a ui-sref="submit-pitch" role="menuitem">Start Pitching</a>
-  <a role="menuitem" data-toggle="modal" href="#login-modal">Login</a>
+  <a id="nav-login" class="{{currentLogAction}}" role="menuitem" data-toggle="modal" href="#login-modal">Log In</a>
+  <a id="nav-logout" class="{{currentLogAction}}" role="menuitem" ng-click="logoutUser()">Log Out</a>
 </nav>

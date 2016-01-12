@@ -37,9 +37,9 @@ var moviePitchApp = angular
           url: "/submit-pitch",
           templateUrl: "views/submit-pitch.html"
         })
-        .state('login', {
-          url: "/login",
-          templateUrl: "views/login.html"
+        .state('register', {
+          url: "/register",
+          templateUrl: "views/register.html"
         });
     }
   ])
