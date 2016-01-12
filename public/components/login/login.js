@@ -1,6 +1,28 @@
 moviePitchApp.directive('login', function(){
   return {
-    controller: function($scope){
+    controller: function($scope, userFactory){
+      $scope.loginUser = function(){
+        var user, pwd;
+
+        user = angular.element(document.getElementById('user-login-username')).val();
+        pwd = angular.element(document.getElementById('user-login-pwd')).val();
+
+        userFactory
+          .loginUser(user, pwd)
+          .then(function(resp){
+            if(resp.status === "success"){
+              console.log(resp);
+            }
+          });
+      };
+
+      $scope.logoutUser = function(){
+        userFactory
+          .logoutUser()
+          .then(function(resp){
+            console.log(resp);
+          });
+      }
     },
     restrict: "E",
     templateUrl: "components/login/login.html"

@@ -3,8 +3,6 @@
 moviePitchApp.directive('signup', function(){
   return {
     controller: function($scope, userFactory){
-      console.log(userFactory);
-
       $scope.signupUser = function(){
         var username, email, pwd, confirmPwd;
 

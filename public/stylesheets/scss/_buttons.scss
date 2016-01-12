@@ -1,0 +1,18 @@
+.btn-action {
+  background: $red;
+  border-radius: 10px;
+  color: $white;
+  display: block;
+  font-weight: 300;
+  margin: 1rem auto 3rem auto;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.35s;
+  width: 240px;
+
+  &:hover {
+    background: darken($red, 5%);
+    color: $white;
+  }
+}

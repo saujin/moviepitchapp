@@ -10,9 +10,11 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
   </head>
   <body>
-    <header class="header" ng-include src="'views/partials/nav.html'"></header>
+    <app-header></app-header>
 
     <div ui-view></div>
+
+    <login-modal id="login-modal" class="modal fade"></login-modal>
 
     <footer class="" ng-include src="'views/partials/footer.html'"></header>
 

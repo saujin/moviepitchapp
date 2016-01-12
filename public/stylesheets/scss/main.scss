@@ -1,4 +1,9 @@
+@import 'fonts';
+@import 'typography';
 @import 'colors';
+
+@import 'buttons';
+@import 'forms';
 @import 'hero';
 @import 'nav';
 @import 'team';
@@ -22,14 +27,7 @@ html {
 }
 
 body {
-  background: #e9eaeb;
-  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 16px;
-}
-
-h1, h2 {
-  font-family: 'gotham-bookregular', helvetica, sans-serif;
-  font-weight: 300;
+  background: $background;
 }
 
 dd, dt, p {
@@ -42,4 +40,10 @@ dt {
 
 dd {
   margin-bottom: 2rem;
+}
+
+// Utilities
+
+.clear-outline {
+  outline: none !important;
 }
