@@ -1,5 +1,30 @@
+textarea {
+  color: lighten($black, 5%);
+  font-family: 'Roboto';
+  font-weight: 300;
+
+  letter-spacing: 0.2px;
+  padding: 10px;
+}
+
 .input-group {
   margin-bottom: .75rem;
+  width: 100%;
+
+  input,
+  select,
+  textarea {
+    display: block;
+    width: 100%;
+  }
+}
+
+label {
+  
+  input {
+    display: inline-block;
+    margin: 0 10px 20px 0;
+  }
 }
 
 .input-group-addon {

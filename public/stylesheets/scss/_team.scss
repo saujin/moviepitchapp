@@ -1,26 +1,23 @@
+
+
+.media-object {
+  border-radius: 10%;
+  display: block;
+  height: auto;
+  margin-bottom: 20px;
+  max-width: 250px;
+  width: 100%;
+}
+
 .team-member {
-  display: flex;
   margin-bottom: 2rem;
 
-  h2 {
+  h4 {
     color: $color-primary-0;
-    font-size: 1.75rem;
+    font-weight: 300;
   }
 
-  h3 {
-    color: $black;
-    font-size: 1.25rem;
-  }
-
-  img {
-    display: block;
-    flex: 0 0 auto;
-    height: 100%;
-    width: 200px;
-  }
-
-  > div {
-    flex: 1 1 auto;
-    margin-left: 2rem;
+  h5 {
+    font-weight: normal;
   }
 }
