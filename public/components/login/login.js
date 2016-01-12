@@ -16,6 +16,7 @@ moviePitchApp.directive('login', function(){
           });
       };
 
+
       $scope.logoutUser = function(){
         userFactory
           .logoutUser()

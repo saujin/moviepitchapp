@@ -45,4 +45,6 @@ var moviePitchApp = angular
   ])
   .run(function($rootScope){
     Parse.initialize("PR9WBHEvjSuW9us8Q7SGh2KYRVQaHLbztZjshsb1", "nyz7N9sGLUIN1hjMY9NNQneExxP5W0MJhXH3u1Qh");
+
+    $rootScope.curUser = null;
   });

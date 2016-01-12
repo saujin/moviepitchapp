@@ -1,25 +1,46 @@
 "use strict";
 
-moviePitchApp.factory('userFactory', function($q){
+moviePitchApp.factory('userFactory', function($q, $rootScope){
   var factory = {
     loginUser: function(username, pwd){
       var deferred = $q.defer();
 
-      Parse.User.logIn(username, pwd, {
-        success: function(user){
+      // try {
+      //   Parse.User.logIn(username, pwd, {
+      //     success: function(user){
+      //       // Store the user in the $rootScope
+      //       $rootScope.curUser = user;
+      //
+      //       deferred.resolve({
+      //         status: "success",
+      //         data: user
+      //       });
+      //     },
+      //     error: function(user, error){
+      //       deferred.reject({
+      //         status: "error",
+      //         data: user,
+      //         error: error
+      //       });
+      //     }
+      //   });
+      // } catch (e) {
+      //   deferred.reject(e);
+      // }
+      Parse.User.logIn(username, pwd).then(
+        function(resp){
           deferred.resolve({
-            status: "success",
-            data: user
-          })
+              status: "success",
+              data: resp
+            });
         },
-        error: function(user, error){
+        function(err){
           deferred.reject({
             status: "error",
-            data: user,
-            error: error
-          });
+            error: err
+          })
         }
-      });
+      );
 
       return deferred.promise;
 
@@ -32,6 +53,9 @@ moviePitchApp.factory('userFactory', function($q){
       var user = Parse.User.current();
 
       if(user === null){
+        // Remove the user from the $rootScope
+        $rootScope.curUser = null;
+
         deferred.resolve({
           status: "success",
           msg: "User is logged out"

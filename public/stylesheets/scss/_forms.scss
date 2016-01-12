@@ -1,3 +1,17 @@
 .input-group {
   margin-bottom: .75rem;
 }
+
+.input-group-addon {
+  transition: all 0.35s;
+}
+
+.input-group-addon.is-error {
+  background: $red;
+  color: $white;
+}
+
+// Alerts
+.alert.alert-hidden {
+  display: none;
+}
