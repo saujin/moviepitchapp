@@ -40,11 +40,17 @@ var moviePitchApp = angular
         .state('register', {
           url: "/register",
           templateUrl: "views/register.html"
+        })
+        .state('my-account', {
+          url: "/account",
+          templateUrl: "views/my-account.html"
         });
     }
   ])
   .run(function($rootScope){
     Parse.initialize("PR9WBHEvjSuW9us8Q7SGh2KYRVQaHLbztZjshsb1", "nyz7N9sGLUIN1hjMY9NNQneExxP5W0MJhXH3u1Qh");
 
+    // Make sure a user is logged out
+    Parse.User.logOut();
     $rootScope.curUser = null;
   });

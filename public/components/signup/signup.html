@@ -1,10 +1,34 @@
 <h2>Sign Up</h2>
 
 <form>
-  <input id="username" type="text" placeholder="Username" value="test"/>
-  <input id="email" type="email" placeholder="Email" value="test@test.com"/>
-  <input id="pwd" type="password" placeholder="Enter Password" value="1111"/>
-  <input id="confirm-pwd" type="password" placeholder="Confirm Password" value="1111"/>
-  <button type="submit" class="btn btn-primary" ng-click="signupUser()">Sign Up</button>
-  
+  <div class="row registration-alerts">
+    <div class="col-xs-12 col-sm-9 col-med-6">
+
+      <div class="alert alert-success {{signupSuccess}}" role="alert">Success! Logging in...</div>
+      <div class="alert alert-danger {{generalError}}" role="alert">Please enter a username, email address, and proper password.</div>
+      <div class="alert alert-danger {{usernameError}}" role="alert">{{usernameErrorText}}</div>
+      <div class="alert alert-danger {{emailError}}" role="alert">{{emailErrorText}}</div>
+
+      <div class="alert alert-danger {{passwordError}}" role="alert">The passwords do not match.</div>
+
+      <div class="input-group">
+        <span class="input-group-addon {{usernameError}} {{generalError}}" id="basic-addon1">@</span>
+        <input id="register-username" type="text" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon {{emailError}} {{generalError}}" id="basic-addon2"><i class="icon-mail"></i></span>
+        <input id="register-email" type="email" class="form-control" placeholder="email address" aria-describedby="basic-addon2" ng-blur="validateEmail()">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon {{passwordError}} {{generalError}}" id="basic-addon3"><i class="icon-lock"></i></span>
+        <input id="register-password" type="password" class="form-control" placeholder="choose password" aria-describedby="basic-addon3" >
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon {{passwordError}} {{generalError}}" id="basic-addon4"><i class="icon-lock"></i></span>
+        <input id="register-confirm-password" type="password" class="form-control" placeholder="confirm password" aria-describedby="basic-addon4">
+      </div>
+
+      <button type="submit" class="btn btn-primary" ng-click="signupUser()">Sign Up</button>
+    </div>
+  </div>
 </form>

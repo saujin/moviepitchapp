@@ -20,7 +20,7 @@ textarea {
 }
 
 label {
-  
+
   input {
     display: inline-block;
     margin: 0 10px 20px 0;
@@ -32,11 +32,32 @@ label {
 }
 
 .input-group-addon.is-error {
-  background: $color-primary-0;
+  background: $color-primary-2;
   color: $white;
 }
 
 // Alerts
 .alert.alert-hidden {
   display: none;
+}
+
+.alert-danger {
+  background: $color-primary-3;
+  border-color: $color-primary-4;
+  color: $white;
+}
+
+.registration-alerts {
+  .alert {
+    display: none;
+  }
+
+  .alert.show-alert {
+    display: block;
+  }
+
+  .input-group-addon.show-alert {
+    background: $color-primary-3;
+    color: $white;
+  }
 }

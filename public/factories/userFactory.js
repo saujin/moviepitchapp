@@ -50,6 +50,8 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
     },
 
     signUp: function(username, email, pwd){
+      var deferred = $q.defer();
+
       var user = new Parse.User();
       user.set("username", username);
       user.set("email", email);
@@ -57,15 +59,23 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
 
       user.signUp(null, {
         success: function(user){
-          console.log(user);
-          return "success";
+          deferred.resolve({
+            status: "success",
+            data: user
+          });
+          console.log(Parse.User.current());
         },
-        error: function(user, error){
-          console.log(error);
-          console.log(error.code);
-          console.log(error.message);
+        error: function(user, err){
+          console.log(err);
+          deferred.reject({
+            status: "error",
+            user: user,
+            error: err
+          });
         }
-      })
+      });
+
+      return deferred.promise;
     }
   };
 
