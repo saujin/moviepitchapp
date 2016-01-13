@@ -9,7 +9,7 @@ moviePitchApp.directive('submitPitch', function(){
 
         console.log(genre, pitch);
         if(pitch !== ""){
-          parseFactory.submitPitch(genre, pitch);
+          // parseFactory.submitPitch(genre, pitch);
         }
       }
     },
