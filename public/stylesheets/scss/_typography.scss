@@ -13,10 +13,16 @@ h3 {
   font-size: 2rem;
 }
 
+a, button {
+  @extend .clear-outline;
+}
+
 a {
+  color: $color-accent-0;
   transition: color 0.35s;
 
   &:hover {
+    color: $color-accent-1;
     text-decoration: none;
   }
 }

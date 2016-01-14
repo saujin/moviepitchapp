@@ -1,9 +1,26 @@
 moviePitchApp.factory('emailFactory', function($q){
-  var factory = {
-    validateEmail: function(email) {
-      var deferred = $q.defer();
+  let factory = {
 
-      var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    // Mock up sending a contact email
+    // https://nodemailer.com/
+    sendContactUsMessage: function(name, email, subject, msg){
+      let deferred = $q.defer();
+
+      deferred.resolve({
+        status: "success",
+        name: name,
+        email: email,
+        subject: subject,
+        message: msg
+      });
+
+      return deferred.promise;
+    },
+
+    validateEmail: function(email) {
+      let deferred = $q.defer();
+
+      let reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
       if(reg.test(email)){
         deferred.resolve(true);

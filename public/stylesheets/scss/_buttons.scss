@@ -17,3 +17,20 @@
     color: $white;
   }
 }
+
+.btn-primary {
+  @extend .clear-outlines;
+  background-color: $color-accent-0;
+  border-color: $color-accent-0;
+
+  &:hover {
+    background-color: $color-accent-1;
+    border-color: $color-accent-1;
+  }
+
+  &:focus,
+  &:active {
+    background-color: $color-accent-2;
+    border-color: $color-accent-2;
+  }
+}

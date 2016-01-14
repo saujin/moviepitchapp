@@ -1,14 +1,21 @@
-'use strict';
+"use strict";
 
-var gulp        = require('gulp');
-var babel       = require('gulp-babel');
-var sync        = require('run-sequence');
-var concat      = require('gulp-concat');
-var sass        = require('gulp-sass');
-var sourcemaps  = require('gulp-sourcemaps');
-var uglify      = require('gulp-uglify');
+let gulp        = require('gulp');
+let sync        = require('run-sequence');
+let concat      = require('gulp-concat');
+let sass        = require('gulp-sass');
+let sourcemaps  = require('gulp-sourcemaps');
+let uglify      = require('gulp-uglify');
+let babel       = require('gulp-babel');
 
-var paths = {
+// import gulp from "gulp";
+// import sass from "gulp-sass";
+// import sync from "run-sequence";
+// import concat from "gulp-concat";
+// import sourcemaps from "gulp-sourcemaps";
+// import uglify from "gulp-uglify";
+
+const paths = {
   ejs: "views/**/*.ejs",
   vendor: [
     "node_modules/jquery/dist/jquery.js",
@@ -47,6 +54,9 @@ gulp.task('vendor', function(){
 gulp.task('scripts', function(){
   return gulp.src(paths.js)
     .pipe(sourcemaps.init())
+    .pipe(babel({
+      presets: ['es2015']
+    }))
     .pipe(concat('scripts.js'))
     .pipe(sourcemaps.write())
     // .pipe(uglify())

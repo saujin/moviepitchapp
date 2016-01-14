@@ -1,0 +1,14 @@
+.modal-footer-flex {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-footer-flex-item {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.modal-footer-flex-item.button-group {
+  text-align: right;
+}

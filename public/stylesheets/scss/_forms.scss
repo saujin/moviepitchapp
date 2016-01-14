@@ -39,6 +39,7 @@ label {
 // Alerts
 .alert.alert-hidden {
   display: none;
+
 }
 
 .alert-danger {
@@ -47,7 +48,13 @@ label {
   color: $white;
 }
 
-.registration-alerts {
+.alert-success {
+  background: $color-accent-3;
+  border-color: $color-accent-4;
+  color: $white;
+}
+
+.form-alerts {
   .alert {
     display: none;
   }

@@ -1,17 +1,18 @@
 "use strict";
 
-var controllerArray = [
+const controllerArray = [
   "ui.router"
 ];
 
 
-var moviePitchApp = angular
+let moviePitchApp = angular
   .module("moviePitchApp", controllerArray)
   .config(["$stateProvider", "$urlRouterProvider",
     function($stateProvider, $urlRouterProvider){
 
       $urlRouterProvider.otherwise('/');
 
+      // Main Nav
       $stateProvider
         .state('index', {
           url: "/",
@@ -21,22 +22,17 @@ var moviePitchApp = angular
           url: "/our-team",
           templateUrl: "views/our-team.html"
         })
-        .state('how-it-works', {
-          url: "/how-it-works",
-          templateUrl: "views/how-it-works.html"
-        })
         .state('success-stories', {
           url: "/success-stories",
           templateUrl: "views/success-stories.html"
         })
-        .state('faq', {
-          url: "/faq",
-          templateUrl: "views/faq.html"
-        })
         .state('submit-pitch', {
           url: "/submit-pitch",
           templateUrl: "views/submit-pitch.html"
-        })
+        });
+
+      // Account
+      $stateProvider
         .state('register', {
           url: "/register",
           templateUrl: "views/register.html"
@@ -45,6 +41,27 @@ var moviePitchApp = angular
           url: "/account",
           templateUrl: "views/my-account.html"
         });
+
+
+      // Footer Nav
+      $stateProvider
+        .state('faq', {
+          url: "/faq",
+          templateUrl: "views/faq.html"
+        })
+        .state('press', {
+          url: "/press",
+          templateUrl: "views/press.html"
+        })
+        .state('contact-us', {
+          url: "/contact-us",
+          templateUrl: "views/contact-us.html"
+        })
+        .state('legal', {
+          url: "/legal",
+          templateUrl: "views/legal.html"
+        });
+
     }
   ])
   .run(function($rootScope){

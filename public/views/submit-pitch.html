@@ -4,30 +4,12 @@
     <div class="col-xs-12 col-md-6">
       <div class="input-group">
         <select id="genre">
-          <option id="" value="Action">Action</option>
-          <option id="" value="Adventure">Adventure</option>
-          <option id="" value="Animated">Animated</option>
-          <option id="" value="Comedy">Comedy</option>
-          <option id="" value="Crime">Crime</option>
-          <option id="" value="Drama">Drama</option>
-          <option id="" value="Fantasy">Fantasy</option>
-          <option id="" value="Historical">Historical</option>
-          <option id="" value="Historical Fiction">Historical Fiction</option>
-          <option id="" value="Horror">Horror</option>
-          <option id="" value="Kids">Kids</option>
-          <option id="" value="Mystery">Mystery</option>
-          <option id="" value="Political">Political</option>
-          <option id="" value="Religious">Religious</option>
-          <option id="" value="Romance">Romance</option>
-          <option id="" value="Romantic Comedy">Romantic Comedy</option>
-          <option id="" value="Satire">Satire</option>
-          <option id="" value="Science Fiction">Science Fiction</option>
-          <option id="" value="Thriller">Thriller</option>
-          <option id="" value="Western">Western</option>
+          <option ng-repeat="genre in genres" value="{{genre}}">{{genre}}</option>
         </select>
       </div>
     </div>
   </div>
+  
   <div class="row">
     <div class="col-xs-12 col-lg-9">
       <div class="input-group">
@@ -39,7 +21,7 @@
   <hr>
 
   <h3>Terms and Conditions</h3>
-  
+
   <blockquote>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
@@ -47,7 +29,7 @@
   </blockquote>
 
   <label type="text">
-    <input type="checkbox" aria-label="Checkbox for following text input">I've read and agree to the terms and conditions
+    <input id="agree-terms" checked="false" type="checkbox" aria-label="Checkbox for following text input">I've read and agree to the terms and conditions
   </label>
 
   <hr>
