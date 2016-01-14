@@ -10,6 +10,7 @@ let babel       = require('gulp-babel');
 
 let browserify  = require('browserify');
 let source      = require('vinyl-source-stream');
+let buffer      = require('vinyl-buffer');
 
 // import gulp from "gulp";
 // import sass from "gulp-sass";
@@ -41,6 +42,10 @@ gulp.task('browserify', function(){
   return browserify('./public/js/scripts.js')
     .bundle()
     .pipe(source('main.js'))
+    .pipe(buffer())
+    .pipe(uglify({
+      mangle: false
+    }))
     .pipe(gulp.dest('./public/js/'))
 });
 
@@ -58,7 +63,7 @@ gulp.task('vendor', function(){
     .pipe(sourcemaps.init())
     .pipe(concat('vendor.js'))
     .pipe(sourcemaps.write())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('./public/js'))
 });
 

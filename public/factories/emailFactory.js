@@ -1,6 +1,5 @@
 moviePitchApp.factory('emailFactory', function($q){
   let sendgrid = require('sendgrid')('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');
-  console.log(sendgrid);
 
   let factory = {
 
@@ -36,4 +35,4 @@ moviePitchApp.factory('emailFactory', function($q){
   };
 
   return factory;
-})
+});
