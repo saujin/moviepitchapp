@@ -1,4 +1,4 @@
-moviePitchApp.directive('appHeader', function(){
+moviePitchApp.directive('appHeader', function($state){
   return {
     controller: function($scope, userFactory){
       $scope.menuToggleStatus = "menu-closed";
@@ -21,11 +21,16 @@ moviePitchApp.directive('appHeader', function(){
         userFactory.logoutUser().then(
           function(resp){
             console.log(resp);
+            $state.go('index');
           },
           function(err){
             console.log(err);
           }
         );
+      }
+
+      $scope.openLoginModal = function(){
+        $('#login-modal').modal('show');
       }
     },
     link: function(scope, el, attrs){

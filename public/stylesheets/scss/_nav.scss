@@ -47,6 +47,8 @@
 }
 
 #nav-login {
+  cursor: pointer;
+
   &.show-login {
     display: block;
   }
@@ -56,9 +58,10 @@
   }
 }
 
+#my-account,
 #nav-logout {
   cursor: pointer;
-  
+
   &.show-logout {
     display: block;
   }

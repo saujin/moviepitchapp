@@ -1,4 +1,4 @@
-moviePitchApp.directive('loginModal', function(){
+moviePitchApp.directive('loginModal', function($rootScope, $state){
   return {
     controller: function($scope, userFactory){
       $scope.inputsError = "";
@@ -39,12 +39,17 @@ moviePitchApp.directive('loginModal', function(){
             $scope.clearForms();
             $scope.hideAlert();
 
+            // if the $rootScope is in the process of navigating to a state,
+            // as in an event where login interrupts navigation to a restricted page
+            // continue to that state, otherwise clear the $rootScope.targetState
+            if($rootScope.targetState !== null){
+              $state.go($rootScope.targetState);
+              $rootScope.targetState = null;
+            }
           },
           function(err){
-            console.log(err);
             $scope.flagInputErrors();
             $scope.showAlert();
-            console.log($scope.inputsError);
           }
         );
       }

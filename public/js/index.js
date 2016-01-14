@@ -9,9 +9,7 @@ const controllerArray = [
   "ui.router"
 ];
 
-
-let moviePitchApp = angular
-  .module("moviePitchApp", controllerArray)
+let moviePitchApp = angular.module("moviePitchApp", controllerArray)
   .config(["$stateProvider", "$urlRouterProvider",
     function($stateProvider, $urlRouterProvider){
 
@@ -21,30 +19,48 @@ let moviePitchApp = angular
       $stateProvider
         .state('index', {
           url: "/",
-          templateUrl: "views/home.html"
+          templateUrl: "views/home.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('our-team', {
           url: "/our-team",
-          templateUrl: "views/our-team.html"
+          templateUrl: "views/our-team.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('success-stories', {
           url: "/success-stories",
-          templateUrl: "views/success-stories.html"
+          templateUrl: "views/success-stories.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('submit-pitch', {
           url: "/submit-pitch",
-          templateUrl: "views/submit-pitch.html"
+          templateUrl: "views/submit-pitch.html",
+          data: {
+            requireLogin: true
+          }
         });
 
       // Account
       $stateProvider
         .state('register', {
           url: "/register",
-          templateUrl: "views/register.html"
+          templateUrl: "views/register.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('my-account', {
-          url: "/account",
-          templateUrl: "views/my-account.html"
+          url: "/my-account",
+          templateUrl: "views/my-account.html",
+          data: {
+            requireLogin: true
+          }
         });
 
 
@@ -52,19 +68,31 @@ let moviePitchApp = angular
       $stateProvider
         .state('faq', {
           url: "/faq",
-          templateUrl: "views/faq.html"
+          templateUrl: "views/faq.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('press', {
           url: "/press",
-          templateUrl: "views/press.html"
+          templateUrl: "views/press.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('contact-us', {
           url: "/contact-us",
-          templateUrl: "views/contact-us.html"
+          templateUrl: "views/contact-us.html",
+          data: {
+            requireLogin: false
+          }
         })
         .state('legal', {
           url: "/legal",
-          templateUrl: "views/legal.html"
+          templateUrl: "views/legal.html",
+          data: {
+            requireLogin: false
+          }
         });
 
     }
@@ -74,5 +102,18 @@ let moviePitchApp = angular
 
     // Make sure a user is logged out
     Parse.User.logOut();
+
+    $rootScope.$on('$stateChangeStart', function(event, toState){
+      let requireLogin = toState.data.requireLogin;
+      console.log(event);
+      console.log(toState);
+
+      if(requireLogin === true && $rootScope.curUser === null){
+        event.preventDefault();
+        $('#login-modal').modal('show');
+        $rootScope.targetState = toState.name;
+      }
+    });
+
     $rootScope.curUser = null;
   });

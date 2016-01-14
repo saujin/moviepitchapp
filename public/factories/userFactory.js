@@ -1,7 +1,21 @@
 "use strict";
 
-moviePitchApp.factory('userFactory', function($q, $rootScope){
+moviePitchApp.factory('userFactory', function($q, $rootScope, $location){
   var factory = {
+    checkLoggedIn: function(){
+      let deferred = $q.defer();
+
+      if($rootScope.curUser === null){
+        console.log('1');
+        deferred.reject();
+        $location.url('/login')
+      } else {
+        console.log('2');
+        deferred.resolve();
+      }
+
+      return deferred.promise;
+    },
     loginUser: function(username, pwd){
       var deferred = $q.defer();
 
@@ -80,4 +94,4 @@ moviePitchApp.factory('userFactory', function($q, $rootScope){
   };
 
   return factory;
-})
+});

@@ -85,7 +85,7 @@ gulp.task('watcher', function(done){
 })
 
 gulp.task('default', function(done){
-  sync('vendor', 'sass', 'vendor', 'watch', done);
+  sync('sass', 'modularize', 'watch', done);
 });
 
 gulp.task('modularize', function(done){

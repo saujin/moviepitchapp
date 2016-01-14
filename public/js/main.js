@@ -115763,46 +115763,89 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
   // Main Nav
   $stateProvider.state('index', {
     url: "/",
-    templateUrl: "views/home.html"
+    templateUrl: "views/home.html",
+    data: {
+      requireLogin: false
+    }
   }).state('our-team', {
     url: "/our-team",
-    templateUrl: "views/our-team.html"
+    templateUrl: "views/our-team.html",
+    data: {
+      requireLogin: false
+    }
   }).state('success-stories', {
     url: "/success-stories",
-    templateUrl: "views/success-stories.html"
+    templateUrl: "views/success-stories.html",
+    data: {
+      requireLogin: false
+    }
   }).state('submit-pitch', {
     url: "/submit-pitch",
-    templateUrl: "views/submit-pitch.html"
+    templateUrl: "views/submit-pitch.html",
+    data: {
+      requireLogin: true
+    }
   });
 
   // Account
   $stateProvider.state('register', {
     url: "/register",
-    templateUrl: "views/register.html"
+    templateUrl: "views/register.html",
+    data: {
+      requireLogin: false
+    }
   }).state('my-account', {
-    url: "/account",
-    templateUrl: "views/my-account.html"
+    url: "/my-account",
+    templateUrl: "views/my-account.html",
+    data: {
+      requireLogin: true
+    }
   });
 
   // Footer Nav
   $stateProvider.state('faq', {
     url: "/faq",
-    templateUrl: "views/faq.html"
+    templateUrl: "views/faq.html",
+    data: {
+      requireLogin: false
+    }
   }).state('press', {
     url: "/press",
-    templateUrl: "views/press.html"
+    templateUrl: "views/press.html",
+    data: {
+      requireLogin: false
+    }
   }).state('contact-us', {
     url: "/contact-us",
-    templateUrl: "views/contact-us.html"
+    templateUrl: "views/contact-us.html",
+    data: {
+      requireLogin: false
+    }
   }).state('legal', {
     url: "/legal",
-    templateUrl: "views/legal.html"
+    templateUrl: "views/legal.html",
+    data: {
+      requireLogin: false
+    }
   });
 }]).run(function ($rootScope) {
   Parse.initialize("PR9WBHEvjSuW9us8Q7SGh2KYRVQaHLbztZjshsb1", "nyz7N9sGLUIN1hjMY9NNQneExxP5W0MJhXH3u1Qh");
 
   // Make sure a user is logged out
   Parse.User.logOut();
+
+  $rootScope.$on('$stateChangeStart', function (event, toState) {
+    var requireLogin = toState.data.requireLogin;
+    console.log(event);
+    console.log(toState);
+
+    if (requireLogin === true && $rootScope.curUser === null) {
+      event.preventDefault();
+      $('#login-modal').modal('show');
+      $rootScope.targetState = toState.name;
+    }
+  });
+
   $rootScope.curUser = null;
 });
 'use strict';
@@ -115909,8 +115952,22 @@ moviePitchApp.factory('paymentFactory', function () {
 });
 "use strict";
 
-moviePitchApp.factory('userFactory', function ($q, $rootScope) {
+moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
   var factory = {
+    checkLoggedIn: function checkLoggedIn() {
+      var deferred = $q.defer();
+
+      if ($rootScope.curUser === null) {
+        console.log('1');
+        deferred.reject();
+        $location.url('/login');
+      } else {
+        console.log('2');
+        deferred.resolve();
+      }
+
+      return deferred.promise;
+    },
     loginUser: function loginUser(username, pwd) {
       var deferred = $q.defer();
 
@@ -116110,7 +116167,7 @@ moviePitchApp.directive('login', function () {
 });
 "use strict";
 
-moviePitchApp.directive('loginModal', function () {
+moviePitchApp.directive('loginModal', function ($rootScope, $state) {
   return {
     controller: function controller($scope, userFactory) {
       $scope.inputsError = "";
@@ -116153,11 +116210,17 @@ moviePitchApp.directive('loginModal', function () {
           $scope.clearInputErrors();
           $scope.clearForms();
           $scope.hideAlert();
+
+          // if the $rootScope is in the process of navigating to a state,
+          // as in an event where login interrupts navigation to a restricted page
+          // continue to that state, otherwise clear the $rootScope.targetState
+          if ($rootScope.targetState !== null) {
+            $state.go($rootScope.targetState);
+            $rootScope.targetState = null;
+          }
         }, function (err) {
-          console.log(err);
           $scope.flagInputErrors();
           $scope.showAlert();
-          console.log($scope.inputsError);
         });
       };
     },
@@ -116167,7 +116230,7 @@ moviePitchApp.directive('loginModal', function () {
 });
 "use strict";
 
-moviePitchApp.directive('appHeader', function () {
+moviePitchApp.directive('appHeader', function ($state) {
   return {
     controller: function controller($scope, userFactory) {
       $scope.menuToggleStatus = "menu-closed";
@@ -116188,9 +116251,14 @@ moviePitchApp.directive('appHeader', function () {
       $scope.logoutUser = function () {
         userFactory.logoutUser().then(function (resp) {
           console.log(resp);
+          $state.go('index');
         }, function (err) {
           console.log(err);
         });
+      };
+
+      $scope.openLoginModal = function () {
+        $('#login-modal').modal('show');
       };
     },
     link: function link(scope, el, attrs) {
@@ -116251,9 +116319,15 @@ moviePitchApp.directive('signup', function () {
           userFactory.signUp(username, email, pwd).then(function (resp) {
             $rootScope.$broadcast('login-update');
             $scope.signupSuccess = "show-alert";
-            $timeout(function () {
-              $state.go('my-account');
-            }, 750);
+
+            // login the user after a successful signup and navigate to submit-pitch
+            userFactory.loginUser(username, pwd).then(function (resp) {
+              $timeout(function () {
+                $state.go('submit-pitch');
+              }, 550);
+            }, function (err) {
+              console.log(err);
+            });
           }, function (err) {
             switch (err.error.code) {
               case -1:
@@ -116319,6 +116393,33 @@ moviePitchApp.directive('submitPitch', function () {
       }
     },
     restrict: "A"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('userPitches', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "E",
+    templateUrl: "components/user-pitches/user-pitches.html"
   };
 });
 

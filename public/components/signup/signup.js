@@ -53,9 +53,19 @@ moviePitchApp.directive('signup', function(){
               function(resp){
                 $rootScope.$broadcast('login-update');
                 $scope.signupSuccess = "show-alert";
-                $timeout(function(){
-                  $state.go('my-account');
-                }, 750);
+
+                // login the user after a successful signup and navigate to submit-pitch
+                userFactory.loginUser(username, pwd)
+                  .then(
+                    function(resp){
+                      $timeout(function(){
+                        $state.go('submit-pitch');
+                      }, 550);
+                    },
+                    function(err){
+                      console.log(err);
+                    }
+                  );
               },
               function(err){
                 switch(err.error.code){

@@ -9,6 +9,7 @@
   <!-- <a ui-sref="how-it-works" role="menuitem">How It Works</a> -->
   <a ui-sref="success-stories" role="menuitem">Success Stories</a>
   <a ui-sref="submit-pitch" role="menuitem">Submit a Pitch</a>
-  <a id="nav-login" class="{{currentLogAction}}" role="menuitem" data-toggle="modal" href="#login-modal">Log In</a>
+  <a id="nav-login" class="{{currentLogAction}}" role="menuitem" ng-click="openLoginModal()">Log In</a>
+  <a ui-sref="my-account" id="my-account" class="{{currentLogAction}}" role="menuitem">My Account</a>
   <a id="nav-logout" class="{{currentLogAction}}" role="menuitem" ng-click="logoutUser()">Log Out</a>
 </nav>
