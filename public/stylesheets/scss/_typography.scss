@@ -27,6 +27,20 @@ a {
   }
 }
 
+dt {
+  margin-bottom: 1rem;
+}
+
+dd {
+  margin-bottom: 2rem;
+}
+
+@media all and (min-width: 769px){
+  .centered-text {
+    margin: 0 auto 1rem auto;
+  }
+}
+
 @media all and (max-width: 768px){
   body {
     font-size: 14px;
