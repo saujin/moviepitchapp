@@ -1,52 +1,130 @@
 <div class="container-fluid">
   <section class="hero row">
+
     <div class="col-xs-12">
-      <h1><span>The Fresh. The Clever.</span>The High Concept.</h1>
+      <h1>Pitch your idea to Hollywood</h1>
+    </div>
 
-      <div class="hero-boxes">
-        <div class="hero-box">
-          <div class="hero-video">
-            <iframe src="https://player.vimeo.com/video/41812750"/></iframe>
-          </div>
+    <div class="col-xs-12 col-lg-6">
+      <div class="hero-video">
+        <iframe src="https://player.vimeo.com/video/41812750"/></iframe>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-lg-6">
+      <div class="pitch-box">
+        <fieldset class="form-group">
+          <select class="form-control" select-genre id="select-genre">
+            <option ng-repeat="genre in genres" value="{{genre}}">{{genre}}</option>
+          </select>
+        </fieldset>
+
+        <fieldset class="form-group">
+          <textarea class="form-control" id="pitch-text" rows="8" placeholder="Submit your pitch idea here. Individual pitches should be no more than one or two paragraphs. "></textarea>
+        </fieldset>
+
+
+        <button checkout-button class="btn btn-primary" id="submit-payment">Submit Pitch</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pitch-ideas row">
+
+    <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-12 col-md-5">
+          <h2>What makes a great pitch?</h2>
         </div>
-
-        <div class="hero-box">
-          <div class="hero-signup">
-            signup
-          </div>
+        <div class="col-xs-12 col-md-7">
+          <p>A great pitch doesn't have to be long, sometimes a sentence or two is all it takes. Aim for an intriguing idea that can be easily stated in a few words and is easily understood by all.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="how-it-works">
-    <action-button class="btn-action" ng-click="navigate()">{{actionText}}</action-button>
+  <section class="pitch-ideas row">
+    <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-12 col-md-5">
+          <h2>Examples of Great Pitches</h2>
+        </div>
+        <div class="col-xs-12 col-md-7">
+          <ul class="unstyled">
+            <li><em>A woman and her sled-dogs race 1,000 miles through the wilderness to deliver medicine to a rural Alaskan town.</em></li>
+            <li><em>A talented golden retriever makes the middle-school basketball team.</em></li>
+            <li><em>A man discovers his whole life is a set for a reality TV show.</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <h2>How it works</h2>
 
-    <div class="hiw-steps row">
-      <div class="hiw-step col-xs-12 col-md-4">
+  <section class="how-it-works row">
+    <!-- <action-button class="btn-action" ng-click="navigate()">{{actionText}}</action-button> -->
+
+    <div class="col-xs-12">
+      <h2>How it works</h2>
+    </div>
+
+    <div class="hiw-steps">
+      <!-- <div class="hiw-step col-xs-12 col-md-6">
         <div class="hiw-icon hiw-step-1">
         </div>
 
         <h3>Sign Up</h3>
         <p>Sign up today and sell your idea to Hollywood.</p>
-      </div>
+      </div> -->
 
-      <div class="hiw-step col-xs-12 col-md-4">
+      <div class="hiw-step col-xs-12 col-md-6">
         <div class="hiw-icon hiw-step-2">
         </div>
 
         <h3>Pitch Your Idea</h3>
-        <p>Tell the story of what you hope might be a movie.</p>
+        <p>Tell the story of what you hope might be a movie. Pitches are just $2.00.</p>
       </div>
 
-      <div class="hiw-step col-xs-12 col-md-4">
+      <div class="hiw-step col-xs-12 col-md-6">
         <div class="hiw-icon hiw-step-3">
         </div>
 
         <h3>Get Reviewed By The Pros</h3>
-        <p>One pitch can earn anywhere between $5,000 and $50k.</p>
+        <p>Hollywood experts review your ideas. One successful pitch can earn anywhere between $5,000 and $50k.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="" -->
+
+  <section class="team-members">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>Meet Our Producers</h2>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-4 col-lg-3">
+        <img class="media-object" src="img/kosberg.jpg" alt="Bob Kosberg">
+      </div>
+
+      <div class="col-xs-12 col-md-8 col-lg-9">
+        <h4>Bob Krosberg</h4>
+        <h5>Chairman and Founder of Moviepitch.com</h5>
+        <p>Bob is responsible for creative affairs. Bob has broad experience as a film and TV writer and producer. He has sold over 90 film and TV projects during his career with a very active current slate. He has worked as a creative executive and producer at Warner Brothers/Guber-Peters, Paramount, Sony Pictures, Tri-Star, Merv Griffin Entertainment, Constantin Film and Nash Entertainment. He continues to do speaking events all over the world on screenwriting and pitching/selling ideas to Hollywood.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-4 col-lg-3">
+        <img class="media-object" src="img/goodman.jpg" alt="Jonas Goodman"/>
+      </div>
+
+      <div class="col-xs-12 col-md-8 col-lg-9">
+        <h4>Jonas Goodman</h4>
+        <h5>CEO</h5>
+        <p>Jonas is responsible for managing all business and creative affairs. Jonas has broad experience as a film, television and new media executive and producer; working for directors (including Alan Pakula, Michael Radford) and production companies inside the studio system and independently (including Front Street Pictures, Miramax, Atlas Entertainment) and building effective collaborations between the film and tech communities.</p>
       </div>
     </div>
   </section>

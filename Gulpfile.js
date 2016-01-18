@@ -7,25 +7,15 @@ let sass        = require('gulp-sass');
 let sourcemaps  = require('gulp-sourcemaps');
 let uglify      = require('gulp-uglify');
 let babel       = require('gulp-babel');
-
 let browserify  = require('browserify');
 let source      = require('vinyl-source-stream');
 let buffer      = require('vinyl-buffer');
 
-// import gulp from "gulp";
-// import sass from "gulp-sass";
-// import sync from "run-sequence";
-// import concat from "gulp-concat";
-// import sourcemaps from "gulp-sourcemaps";
-// import uglify from "gulp-uglify";
 
 const paths = {
   ejs: "views/**/*.ejs",
   vendor: [
     "node_modules/jquery/dist/jquery.js",
-    // "node_modules/parse/dist/parse-latest.js",
-    // "node_modules/angular/angular.js",
-    // "node_modules/angular-ui-router/release/angular-ui-router.js",
     "node_modules/bootstrap/dist/js/bootstrap.js",
     // "node_modules/sendgrid/lib/sendgrid.js"
   ],
@@ -43,9 +33,9 @@ gulp.task('browserify', function(){
     .bundle()
     .pipe(source('main.js'))
     .pipe(buffer())
-    .pipe(uglify({
-      mangle: false
-    }))
+    // .pipe(uglify({
+    //   mangle: false
+    // }))
     .pipe(gulp.dest('./public/js/'))
 });
 

@@ -2,8 +2,7 @@
 
 require('angular');
 require('angular-ui-router');
-let Parse = require('parse');
-
+const Parse = require('parse');
 
 const controllerArray = [
   "ui.router"

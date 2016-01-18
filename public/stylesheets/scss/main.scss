@@ -7,6 +7,7 @@
 @import 'hero';
 @import 'modal';
 @import 'nav';
+@import 'pitch-box';
 @import 'team';
 @import 'footer';
 
@@ -44,6 +45,15 @@ dd {
 }
 
 // Utilities
+
+.unstyled {
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    margin-bottom: 1rem;
+  }
+}
 
 .clear-outline {
   outline: none !important;

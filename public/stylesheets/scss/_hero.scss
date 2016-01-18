@@ -1,22 +1,33 @@
 
 section {
+  border-bottom: solid 1px darken($background, 10%);
   padding: 1.875rem 0;
+
+  h2 {
+    color: #color-primary-3;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
 }
 
+
+
 .hero {
-  background: green;
   background-image: url('../img/bannerbg.jpg');
   background-position: center center;
   background-size: cover;
   font-size: 10px;
-  // height: 50vw;
   min-height: 400px;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
   width: 100vw;
 }
 
 .hero h1 {
   color: white;
-  font-size: 4rem;
+  font-size: 3rem;
   line-height: 1.1;
   padding: 1rem 0;
   text-align: center;
@@ -31,13 +42,18 @@ section {
 }
 
 .hero-boxes {
+  display: flex;
   margin: 2rem auto;
   width: 80%;
 
-  > div {
-    margin: 0 2rem;
-    padding: 0;
-  }
+  // > div {
+  //   margin: 0 2rem;
+  //   padding: 0;
+  // }
+}
+
+.hero-box {
+  flex: 1 1 auto;
 }
 
 .hero-video {
@@ -60,12 +76,7 @@ section {
 
 .how-it-works {
 
-  h2 {
-    color: #color-primary-3;
-    font-size: 2.5rem;
-    text-align: center;
-    text-transform: uppercase;
-  }
+
 }
 
 .hiw-steps {
@@ -104,19 +115,16 @@ section {
 }
 
 @media all and (max-width: 768px){
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
   .hero h1 span {
     font-size: 2rem;
   }
 
-  .hero-boxes {
-    width: 90%;
+
+  h1 {
+    font-size: 2.5rem;
   }
 
-  .how-it-works h2 {
+  h2 {
     font-size: 1.75rem;
   }
 }
