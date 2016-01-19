@@ -1,0 +1,21 @@
+<div class="container-fluid container-content admin-section">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>Admin</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div admin-pitch-review class="card-columns">
+      <div ng-repeat="pitch in pitches" class="card card-block">
+        <blockquote class="card-blockquote">
+          <p>{{pitch.pitchText}}</p>
+          <footer>
+            <small class="text-muted">{{pitch.genre}}</small>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+
+</div>

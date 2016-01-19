@@ -8,8 +8,8 @@ moviePitchApp.directive('checkoutButton', function(){
         token: function(token) {
         // Use the token to create the charge with a server-side script.
         // You can access the token ID with `token.id`
-          // console.log(token);
-          $scope.$emit('payment-success', token);
+          console.log(token);
+          // $scope.$emit('payment-success', token);
         }
       });
     },

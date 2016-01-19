@@ -2,7 +2,6 @@ textarea {
   color: lighten($black, 5%);
   font-family: 'Roboto';
   font-weight: 300;
-
   letter-spacing: 0.2px;
   padding: 10px;
 }
@@ -19,8 +18,17 @@ textarea {
   }
 }
 
-label {
+.form-group {
+  &.form-group--tight {
+    margin-bottom: .5rem;
 
+    input {
+      margin-bottom: 0;
+    }
+  }
+}
+
+label {
   input {
     display: inline-block;
     margin: 0 10px 20px 0;

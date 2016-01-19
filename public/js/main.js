@@ -115563,40 +115563,51 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
     data: {
       requireLogin: false
     }
-  }).state('our-team', {
-    url: "/our-team",
-    templateUrl: "views/our-team.html",
-    data: {
-      requireLogin: false
-    }
-  }).state('success-stories', {
-    url: "/success-stories",
-    templateUrl: "views/success-stories.html",
-    data: {
-      requireLogin: false
-    }
-  }).state('submit-pitch', {
-    url: "/submit-pitch",
-    templateUrl: "views/submit-pitch.html",
+  }).state('admin', {
+    url: "/admin",
+    templateUrl: "views/admin.html",
     data: {
       requireLogin: true
     }
   });
+  // .state('our-team', {
+  //   url: "/our-team",
+  //   templateUrl: "views/our-team.html",
+  //   data: {
+  //     requireLogin: false
+  //   }
+  // })
+  // .state('success-stories', {
+  //   url: "/success-stories",
+  //   templateUrl: "views/success-stories.html",
+  //   data: {
+  //     requireLogin: false
+  //   }
+  // })
+  // .state('submit-pitch', {
+  //   url: "/submit-pitch",
+  //   templateUrl: "views/submit-pitch.html",
+  //   data: {
+  //     requireLogin: true
+  //   }
+  // });
 
   // Account
-  $stateProvider.state('register', {
-    url: "/register",
-    templateUrl: "views/register.html",
-    data: {
-      requireLogin: false
-    }
-  }).state('my-account', {
-    url: "/my-account",
-    templateUrl: "views/my-account.html",
-    data: {
-      requireLogin: true
-    }
-  });
+  // $stateProvider
+  //   .state('register', {
+  //     url: "/register",
+  //     templateUrl: "views/register.html",
+  //     data: {
+  //       requireLogin: false
+  //     }
+  //   })
+  //   .state('my-account', {
+  //     url: "/my-account",
+  //     templateUrl: "views/my-account.html",
+  //     data: {
+  //       requireLogin: true
+  //     }
+  //   });
 
   // Footer Nav
   $stateProvider.state('faq', {
@@ -115841,6 +115852,31 @@ moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
 });
 "use strict";
 
+moviePitchApp.directive('adminPitchReview', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "A"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('actionButton', function () {
   return {
     controller: function controller($scope, $rootScope, $state) {
@@ -115872,53 +115908,6 @@ moviePitchApp.directive('actionButton', function () {
       scope.update();
     },
     restrict: "E"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('checkoutButton', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.handler = StripeCheckout.configure({
-        key: 'pk_test_XHkht0GMLQPrn2sYCXSFy4Fs',
-        // image: '/img/documentation/checkout/marketplace.png',
-        locale: 'auto',
-        token: function token(_token) {
-          // Use the token to create the charge with a server-side script.
-          // You can access the token ID with `token.id`
-          // console.log(token);
-          $scope.$emit('payment-success', _token);
-        }
-      });
-    },
-    link: function link(scope, el, attrs) {
-      el.on('click', function (e) {
-        scope.handler.open({
-          name: "MoviePitch.com",
-          description: "Pitch Submission",
-          amount: 200
-        });
-        e.preventDefault();
-      });
-    },
-    restrict: "A"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('pitchBox', function () {
-  return {
-    scope: function scope($scope) {
-      $scope.$on('payment-success', function (token) {
-        debugger;
-        console.log(token);
-        console.log('yo');
-      });
-    },
-    link: function link(scope, el, attrs) {
-      console.log(scope);
-    },
-    restrict: "A"
   };
 });
 "use strict";
@@ -115977,67 +115966,51 @@ moviePitchApp.directive('contactUsForm', function (emailFactory) {
     templateUrl: "components/contact-us-form/contact-us-form.html"
   };
 });
-"use strict";
+'use strict';
 
-moviePitchApp.directive('loginModal', function ($rootScope, $state) {
+moviePitchApp.directive('checkoutButton', function () {
   return {
-    controller: function controller($scope, userFactory) {
-      $scope.inputsError = "";
-
-      $scope.clearInputErrors = function () {
-        $scope.inputsError = "";
-      };
-
-      $scope.flagInputErrors = function () {
-        $scope.inputsError = "is-error";
-      };
-
-      $scope.isAlertShown = "alert-hidden";
-      $scope.hideAlert = function () {
-        $scope.isAlertShown = "alert-hidden";
-      };
-      $scope.showAlert = function () {
-        $scope.isAlertShown = "alert-shown";
-      };
-
-      $scope.clearForms = function () {
-        var modal = $('#login-modal');
-
-        // Clear Existing Inputs
-        modal.find('input').val('');
-
-        // Reset Error Notifications
-        $scope.clearInputErrors();
-      };
-
-      $scope.userLogin = function () {
-        var user, pwd;
-        var modal = $('#login-modal');
-
-        user = angular.element(document.getElementById('login-username')).val();
-        pwd = angular.element(document.getElementById('login-password')).val();
-
-        userFactory.loginUser(user, pwd).then(function (resp) {
-          $('#login-modal').modal('hide');
-          $scope.clearInputErrors();
-          $scope.clearForms();
-          $scope.hideAlert();
-
-          // if the $rootScope is in the process of navigating to a state,
-          // as in an event where login interrupts navigation to a restricted page
-          // continue to that state, otherwise clear the $rootScope.targetState
-          if ($rootScope.targetState !== null) {
-            $state.go($rootScope.targetState);
-            $rootScope.targetState = null;
-          }
-        }, function (err) {
-          $scope.flagInputErrors();
-          $scope.showAlert();
-        });
-      };
+    controller: function controller($scope) {
+      $scope.handler = StripeCheckout.configure({
+        key: 'pk_test_XHkht0GMLQPrn2sYCXSFy4Fs',
+        // image: '/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function token(_token) {
+          // Use the token to create the charge with a server-side script.
+          // You can access the token ID with `token.id`
+          console.log(_token);
+          // $scope.$emit('payment-success', token);
+        }
+      });
     },
-    restrict: "E",
-    templateUrl: 'components/login-modal/login-modal.html'
+    link: function link(scope, el, attrs) {
+      el.on('click', function (e) {
+        scope.handler.open({
+          name: "MoviePitch.com",
+          description: "Pitch Submission",
+          amount: 200
+        });
+        e.preventDefault();
+      });
+    },
+    restrict: "A"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('pitchBox', function () {
+  return {
+    scope: function scope($scope) {
+      $scope.$on('payment-success', function (token) {
+        debugger;
+        console.log(token);
+        console.log('yo');
+      });
+    },
+    link: function link(scope, el, attrs) {
+      console.log(scope);
+    },
+    restrict: "A"
   };
 });
 'use strict';
@@ -116114,10 +116087,79 @@ moviePitchApp.directive('appHeader', function ($state) {
 });
 "use strict";
 
+moviePitchApp.directive('loginModal', function ($rootScope, $state) {
+  return {
+    controller: function controller($scope, userFactory) {
+      $scope.inputsError = "";
+
+      $scope.clearInputErrors = function () {
+        $scope.inputsError = "";
+      };
+
+      $scope.flagInputErrors = function () {
+        $scope.inputsError = "is-error";
+      };
+
+      $scope.isAlertShown = "alert-hidden";
+      $scope.hideAlert = function () {
+        $scope.isAlertShown = "alert-hidden";
+      };
+      $scope.showAlert = function () {
+        $scope.isAlertShown = "alert-shown";
+      };
+
+      $scope.clearForms = function () {
+        var modal = $('#login-modal');
+
+        // Clear Existing Inputs
+        modal.find('input').val('');
+
+        // Reset Error Notifications
+        $scope.clearInputErrors();
+      };
+
+      $scope.userLogin = function () {
+        var user, pwd;
+        var modal = $('#login-modal');
+
+        user = angular.element(document.getElementById('login-username')).val();
+        pwd = angular.element(document.getElementById('login-password')).val();
+
+        userFactory.loginUser(user, pwd).then(function (resp) {
+          $('#login-modal').modal('hide');
+          $scope.clearInputErrors();
+          $scope.clearForms();
+          $scope.hideAlert();
+
+          // if the $rootScope is in the process of navigating to a state,
+          // as in an event where login interrupts navigation to a restricted page
+          // continue to that state, otherwise clear the $rootScope.targetState
+          if ($rootScope.targetState !== null) {
+            $state.go($rootScope.targetState);
+            $rootScope.targetState = null;
+          }
+        }, function (err) {
+          $scope.flagInputErrors();
+          $scope.showAlert();
+        });
+      };
+    },
+    restrict: "E",
+    templateUrl: 'components/login-modal/login-modal.html'
+  };
+});
+"use strict";
+
 moviePitchApp.directive('selectGenre', function () {
   return {
     controller: function controller($scope) {
-      $scope.genres = ["Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"];
+      $scope.genres = ["Select Genre", "Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"];
+    },
+    link: function link(scope, el, attrs) {
+      el.on('focus', function () {
+        var selectGenre = el.find('option')[0];
+        angular.element(selectGenre).remove();
+      });
     },
     restrict: "A"
   };

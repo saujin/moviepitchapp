@@ -23,44 +23,51 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
             requireLogin: false
           }
         })
-        .state('our-team', {
-          url: "/our-team",
-          templateUrl: "views/our-team.html",
-          data: {
-            requireLogin: false
-          }
-        })
-        .state('success-stories', {
-          url: "/success-stories",
-          templateUrl: "views/success-stories.html",
-          data: {
-            requireLogin: false
-          }
-        })
-        .state('submit-pitch', {
-          url: "/submit-pitch",
-          templateUrl: "views/submit-pitch.html",
+        .state('admin', {
+          url: "/admin",
+          templateUrl: "views/admin.html",
           data: {
             requireLogin: true
           }
         });
+        // .state('our-team', {
+        //   url: "/our-team",
+        //   templateUrl: "views/our-team.html",
+        //   data: {
+        //     requireLogin: false
+        //   }
+        // })
+        // .state('success-stories', {
+        //   url: "/success-stories",
+        //   templateUrl: "views/success-stories.html",
+        //   data: {
+        //     requireLogin: false
+        //   }
+        // })
+        // .state('submit-pitch', {
+        //   url: "/submit-pitch",
+        //   templateUrl: "views/submit-pitch.html",
+        //   data: {
+        //     requireLogin: true
+        //   }
+        // });
 
       // Account
-      $stateProvider
-        .state('register', {
-          url: "/register",
-          templateUrl: "views/register.html",
-          data: {
-            requireLogin: false
-          }
-        })
-        .state('my-account', {
-          url: "/my-account",
-          templateUrl: "views/my-account.html",
-          data: {
-            requireLogin: true
-          }
-        });
+      // $stateProvider
+      //   .state('register', {
+      //     url: "/register",
+      //     templateUrl: "views/register.html",
+      //     data: {
+      //       requireLogin: false
+      //     }
+      //   })
+      //   .state('my-account', {
+      //     url: "/my-account",
+      //     templateUrl: "views/my-account.html",
+      //     data: {
+      //       requireLogin: true
+      //     }
+      //   });
 
 
       // Footer Nav

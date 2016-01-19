@@ -2,6 +2,7 @@ moviePitchApp.directive('selectGenre', function(){
   return {
     controller: function($scope){
       $scope.genres = [
+        "Select Genre",
         "Action",
         "Adventure",
         "Animated",
@@ -23,6 +24,12 @@ moviePitchApp.directive('selectGenre', function(){
         "Thriller",
         "Western"
       ]
+    },
+    link: function(scope, el, attrs){
+      el.on('focus', function(){
+        const selectGenre = el.find('option')[0];
+        angular.element(selectGenre).remove();
+      });
     },
     restrict: "A"
   }
