@@ -8,13 +8,13 @@ moviePitchApp.directive('checkoutButton', function(){
         token: function(token) {
         // Use the token to create the charge with a server-side script.
         // You can access the token ID with `token.id`
-          console.log(token);
+          // console.log(token);
+          $scope.$emit('payment-success', token);
         }
       });
     },
     link: function(scope, el, attrs){
       el.on('click', function(e){
-        // console.log('clicked');
         scope.handler.open({
           name: "MoviePitch.com",
           description: "Pitch Submission",

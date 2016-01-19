@@ -72,7 +72,6 @@ gulp.task('scripts', function(){
 gulp.task('watch', function(){
   gulp.watch(paths.stylesheets, ['sass']);
   gulp.watch(paths.js, ['watcher']);
-  console.log('watching');
 });
 
 gulp.task('watcher', function(done){

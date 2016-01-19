@@ -104,8 +104,8 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
 
     $rootScope.$on('$stateChangeStart', function(event, toState){
       let requireLogin = toState.data.requireLogin;
-      console.log(event);
-      console.log(toState);
+      // console.log(event);
+      // console.log(toState);
 
       if(requireLogin === true && $rootScope.curUser === null){
         event.preventDefault();

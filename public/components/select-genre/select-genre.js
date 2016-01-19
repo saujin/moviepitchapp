@@ -24,9 +24,6 @@ moviePitchApp.directive('selectGenre', function(){
         "Western"
       ]
     },
-    link: function(scope, el, attrs){
-      console.log('yo');
-    },
     restrict: "A"
   }
 });
