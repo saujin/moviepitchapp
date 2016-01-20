@@ -12,10 +12,12 @@ This application supports the [Getting Started with Node on Heroku](https://devc
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
+```
 $ git clone https://github.com/saujin/moviepitch.git
 $ cd moviepitchapp
 $ npm install (installs required node modules)
 $ heroku local (starts a local server running the app)
+```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
 
