@@ -35,6 +35,13 @@ dd {
   margin-bottom: 2rem;
 }
 
+.legal-section {
+  h4 {
+    font-weight: 300;
+    margin: 2rem 0;
+  }
+}
+
 @media all and (min-width: 769px){
   .centered-text {
     margin: 0 auto 1rem auto;

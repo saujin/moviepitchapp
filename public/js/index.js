@@ -30,27 +30,6 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
             requireLogin: true
           }
         });
-        // .state('our-team', {
-        //   url: "/our-team",
-        //   templateUrl: "views/our-team.html",
-        //   data: {
-        //     requireLogin: false
-        //   }
-        // })
-        // .state('success-stories', {
-        //   url: "/success-stories",
-        //   templateUrl: "views/success-stories.html",
-        //   data: {
-        //     requireLogin: false
-        //   }
-        // })
-        // .state('submit-pitch', {
-        //   url: "/submit-pitch",
-        //   templateUrl: "views/submit-pitch.html",
-        //   data: {
-        //     requireLogin: true
-        //   }
-        // });
 
       // Account
       // $stateProvider
