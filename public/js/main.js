@@ -116060,37 +116060,27 @@ moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
 });
 "use strict";
 
-moviePitchApp.directive('actionButton', function () {
+moviePitchApp.directive('adminPitchReview', function () {
   return {
-    controller: function controller($scope, $rootScope, $state) {
-
-      $scope.update = function () {
-
-        if ($rootScope.curUser === null) {
-          $scope.target = "register";
-          $scope.actionText = "Register To Start Pitching!";
-        } else {
-          $scope.actionText = "Submit a Pitch!";
-          $scope.target = "submit-pitch";
-        }
-      };
-
-      $scope.navigate = function () {
-        $state.go($scope.target);
-      };
-
-      $scope.$on('login-update', function () {
-        $scope.update();
-      });
-
-      $scope.$on('logout-update', function () {
-        $scope.update();
-      });
+    controller: function controller($scope) {
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
     },
-    link: function link(scope, el, attrs) {
-      scope.update();
-    },
-    restrict: "E"
+    restrict: "A"
   };
 });
 "use strict";
@@ -116134,7 +116124,12 @@ moviePitchApp.directive('pitchBox', function () {
 
         // If the form doesn't validate, display errors for what kind of error
         else {
-            if ($scope.data.termsAgree === false) {
+            if ($scope.data.pitchText === "" || $scope.data.pitchText === null && $scope.data.pitchGenre === "" || $scope.data.pitchGenre === "Select Genre") {
+              deferred.reject({
+                status: "Please fill out the pitch form before submitting.",
+                data: null
+              });
+            } else if ($scope.data.termsAgree === false) {
               deferred.reject({
                 status: "Please accept the terms in order to continue.",
                 data: null
@@ -116378,31 +116373,6 @@ moviePitchApp.directive('loginModal', function ($rootScope, $state) {
 });
 "use strict";
 
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "A"
-  };
-});
-"use strict";
-
 moviePitchApp.directive('appHeader', function ($state) {
   return {
     controller: function controller($scope, userFactory) {
@@ -116443,20 +116413,6 @@ moviePitchApp.directive('appHeader', function ($state) {
     templateUrl: "components/nav/nav.html"
   };
 });
-// moviePitchApp.directive('selectGenre', function(){
-//   return {
-//     controller: function($scope){
-//
-//     },
-//     link: function(scope, el, attrs){
-//      
-//
-//     },
-//     scope: true,
-//     restrict: "A"
-//   }
-// });
-"use strict";
 "use strict";
 
 moviePitchApp.directive('signup', function () {
@@ -116540,46 +116496,6 @@ moviePitchApp.directive('signup', function () {
     },
     restrict: "E",
     templateUrl: "components/signup/signup.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('submitPitch', function () {
-  return {
-    controller: function controller($scope, parseFactory) {
-      $scope.genres = ["Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"];
-
-      $scope.submitPitch = function () {
-        var genre, pitch, terms, dateAgreed;
-
-        genre = angular.element(document.getElementById('genre')).val();
-        pitch = angular.element(document.getElementById('pitch')).val();
-        terms = $('#agree-terms').is(":checked");
-        dateAgreed = new Date();
-
-        console.log(genre, pitch, terms, dateAgreed);
-
-        // Check the form for basic errors
-        validateInput();
-
-        // if(pitch !== ""){
-        //   // parseFactory.submitPitch(genre, pitch);
-        // }
-      };
-
-      function validateInput() {
-        // Make sure terms are agreed to
-        if (terms !== true) {
-          $scope.termsError = "show-alert";
-          return;
-        } else if (pitch === "") {
-          $scope.termsError = "";
-          $scope.pitchError = "show-alert";
-          return;
-        } else if (genre) {}
-      }
-    },
-    restrict: "A"
   };
 });
 "use strict";

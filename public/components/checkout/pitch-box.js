@@ -65,7 +65,12 @@ moviePitchApp.directive('pitchBox', function(){
 
         // If the form doesn't validate, display errors for what kind of error
         else {
-          if($scope.data.termsAgree === false){
+          if($scope.data.pitchText === "" || $scope.data.pitchText === null && $scope.data.pitchGenre === "" || $scope.data.pitchGenre === "Select Genre") {
+            deferred.reject({
+              status: "Please fill out the pitch form before submitting.",
+              data: null
+            });
+          } else if($scope.data.termsAgree === false){
             deferred.reject({
               status: "Please accept the terms in order to continue.",
               data: null
@@ -144,7 +149,7 @@ moviePitchApp.directive('pitchBox', function(){
           // ********************* TO DO **********************
 
           // Complete the transaction through the back-end data services
-          // Return a promise 
+          // Return a promise
 
           // **************************************************
           // **************************************************
