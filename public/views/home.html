@@ -14,22 +14,22 @@
     <div class="col-xs-12 col-lg-6">
       <div pitch-box class="pitch-box">
         <fieldset class="form-group">
-          <select class="form-control" select-genre id="select-genre">
-            <option ng-repeat="genre in genres" value="{{genre}}">{{genre}}</option>
+          <select class="form-control" id="select-genre" ng-model="data.pitchGenre">
+            <option ng-repeat="genre in data.genres" value="{{genre}}">{{genre}}</option>
           </select>
         </fieldset>
 
         <fieldset class="form-group form-group--tight">
-          <textarea class="form-control" id="pitch-text" rows="8" placeholder="Submit your pitch idea here. Individual pitches should be no more than one or two paragraphs. "></textarea>
+          <textarea ng-model="data.pitchText" class="form-control" id="pitch-text" rows="8" placeholder="Submit your pitch idea here. Individual pitches should be no more than one or two paragraphs. "></textarea>
         </fieldset>
 
         <fieldset class="form-group form-group--tight">
           <label>
-            <input class="" type="checkbox" value="">I have read and agree to the <a ui-sref="legal" target="_blank">terms</a> of this site
+            <input ng-model="data.termsAgree" type="checkbox" value="">I have read and agree to the <a ui-sref="legal" target="_blank">terms</a> of this site
           </label>
         </fieldset>
-
-        <button checkout-button type="submit" class="btn btn-primary" id="submit-payment">Submit Pitch</button>
+        <span class="validation-notice">{{validationText}}</span>
+        <button type="submit" class="btn btn-primary" id="submit-pitch" ng-click="submitPitch($event)">Submit Pitch</button>
       </div>
     </div>
   </section>
@@ -67,7 +67,6 @@
 
 
   <section class="how-it-works row row-centered" id="how-it-works">
-    <!-- <action-button class="btn-action" ng-click="navigate()">{{actionText}}</action-button> -->
 
     <div class="col-xs-12">
       <h2>How it works</h2>
