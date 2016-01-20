@@ -50,11 +50,13 @@ Most of the site's content is served up from .html pages contained in the /publi
 
 Certain content (such as the list of available movie genres) is not created or stored in the HTML pages. Modifying this content requires a basic familiarity with javascript array notation. A properly formatted javascript array of strings looks like the following:
 
+```
 var array = [
   "string 1",
   "string 2",
   "string 3"
 ];
+```
 
 Please note that each item in the array is followed by a comma (except the last item), the array of strings is contained within brackets - [] - and the closing bracket is followed by a semi-colon. Also, the display order of the strings in the front-end will match the order in which they appear in the .js files.
 
