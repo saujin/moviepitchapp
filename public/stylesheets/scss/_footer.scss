@@ -1,10 +1,14 @@
 footer {
   background: #f8f8f8;
+  bottom: 0;
   color: $black;
   height: 50px;
   font-size: .825rem;
   font-weight: 300;
+  left: 0;
   line-height: 50px;
   padding: 0 20px;
+  position: fixed;
   text-align: right;
+  width: 100%;
 }

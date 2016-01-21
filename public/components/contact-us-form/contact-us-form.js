@@ -1,13 +1,19 @@
 moviePitchApp.directive('contactUsForm', function(emailFactory){
   return {
     controller: function($scope){
-      $scope.subjects = [
-        "General",
-        "Billing",
-        "Sales",
-        "Support"
-      ];
+      $scope.data = {
+        name: null,
+        email: null,
+        msgSubject: "General",
+        message: null,
+        subjects: [
+          "General",
+          "Billing",
+          "Sales",
+          "Support"
+        ],
 
+      }
 
       let clearErrors = function(){
         $scope.messageError = "";
@@ -15,35 +21,47 @@ moviePitchApp.directive('contactUsForm', function(emailFactory){
       };
 
       let clearFields = function(){
-        $('[contact-us-form]').find('.form-control').val('');
+        $scope.data.name = null;
+        $scope.data.email = null;
+        $scope.data.message = null;
+        $scope.data.msgSubject = "General";
       };
 
       $scope.submitContactForm = function(){
         clearErrors();
 
-        let name, email, subject, message;
-
-        name = angular.element(document.getElementById('contact-name')).val();
-        email = angular.element(document.getElementById('contact-email')).val();
-        subject = angular.element(document.getElementById('contact-subject')).val();
-        message = angular.element(document.getElementById('contact-message')).val();
-
-        emailFactory.validateEmail(email)
+        emailFactory.validateEmail($scope.data.email)
           .then(
             function(resp){
-              if(name === "" || email === "" || subject === "" || message===""){
+              debugger;
+              if(
+                $scope.data.name === "" ||
+                $scope.data.name === null ||
+                $scope.data.email === "" ||
+                $scope.data.email === null ||
+                $scope.data.msgSubject === "" ||
+                $scope.data.msgSubject === null ||
+                $scope.data.message === "" ||
+                $scope.data.message === null
+              ){
                 $scope.messageError = "show-alert";
                 $scope.errorText = "Please fill out each field before submitting.";
-              } else {
-
-                emailFactory.sendContactUsMessage(name, email, subject, message)
+              }
+              else {
+                emailFactory
+                  .sendContactUsMessage(
+                    $scope.data.name,
+                    $scope.data.email,
+                    $scope.data.msgSubject,
+                    $scope.data.message
+                  )
                   .then(
                     function(resp){
                       clearErrors();
                       clearFields();
                       $scope.submitSuccess = "show-alert";
                       $scope.successText = "Success! Your message has been submitted.";
-                      console.log(resp);
+                      // console.log(resp);
                     },
                     function(err){
                       $scope.errorText = "An error has occurred. Your message was not sent.";
