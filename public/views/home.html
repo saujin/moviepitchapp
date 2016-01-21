@@ -1,17 +1,11 @@
 <div class="container-fluid">
-  <section class="hero row">
+  <section class="hero row" id="submit-a-pitch">
 
     <div class="col-xs-12">
       <h1>Pitch your idea to Hollywood</h1>
     </div>
 
-    <div class="col-xs-12 col-lg-6">
-      <div class="hero-video">
-        <iframe src="https://player.vimeo.com/video/41812750"/></iframe>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-lg-6">
+    <div class="col-xs-12 col-lg-8 col-lg-offset-2">
       <div pitch-box class="pitch-box">
         <fieldset class="form-group">
           <select class="form-control" id="select-genre" ng-model="data.pitchGenre">
@@ -32,6 +26,11 @@
         <button type="submit" class="btn btn-primary" id="submit-pitch" ng-click="submitPitch($event)">Submit Pitch</button>
       </div>
     </div>
+
+    <div class="col-xs-12">
+      <h1><span>Accepted Pitches can earn up to $50,000!</span></h1>
+      <p class="scroll-prompt"><i class="icon-arrow-down"></i></p>
+    </div>
   </section>
 
   <section class="how-it-works" id="how-it-works">
@@ -41,28 +40,72 @@
       </div>
 
       <div class="hiw-steps">
-        <!-- <div class="hiw-step col-xs-12 col-md-6">
+
+        <div class="hiw-step col-xs-12 col-md-4">
           <div class="hiw-icon hiw-step-1">
           </div>
 
-          <h3>Sign Up</h3>
-          <p>Sign up today and sell your idea to Hollywood.</p>
-        </div> -->
+          <h3>Pitch Your Idea</h3>
+          <p>A great pitch doesn't have to be long. A sentence or two is all it takes. Aim for an intriguing idea that can be stated in a few words and is easily understood by all.</p>
+        </div>
 
-        <div class="hiw-step col-xs-12 col-md-6">
+        <div class="hiw-step col-xs-12 col-md-4">
           <div class="hiw-icon hiw-step-2">
           </div>
 
-          <h3>Pitch Your Idea</h3>
-          <p>Tell the story of what you hope might be a movie. Pitches are just $2.00.</p>
+          <h3>Get Reviewed By The Pros</h3>
+          <p>Real Hollywood producers review your pitch. Accepted ideas will get pitched to studio executives.</p>
         </div>
 
-        <div class="hiw-step col-xs-12 col-md-6">
+        <div class="hiw-step col-xs-12 col-md-4">
           <div class="hiw-icon hiw-step-3">
           </div>
 
-          <h3>Get Reviewed By The Pros</h3>
-          <p>Hollywood experts review your ideas. One successful pitch can earn anywhere between $5,000 and $50k.</p>
+          <h3>Earn up to $50,000</h3>
+          <p>Producers will package and sell your idea to real studio executives and if sold, we pay you the option fees.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="success-stories" id="success-stories">
+    <div class="row row-centered">
+      <div class="col-xs-12">
+        <h2>Success Stories</h2>
+
+        <p><strong>Emily Lloyd,</strong> a grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
+
+        <p><strong>David Simon,</strong> “I brought my original idea ‘The High School Security Tapes’ to Bob. He not only sold it to DreamWorks, he also made sure I got to write the screenplay. Since then, he sold another idea with Katherine Heigl to Fox 2000 and another with director Todd Phillips (THE HANGOVER) to Warner Brothers.”</p>
+
+        <p><strong>Tom Newman,</strong> “I was living in London when I heard about Bob Kosberg. I sent him a one page outline called ‘The Beauty Contest.’ Within one week, Bob had attached Meg Ryan to star and sold the project to New Line.”</p>
+
+        <p><strong>Steve List,</strong> “I attended one of Bob’s pitch events. I literally pitched Bob a thirty second story while we walked through the lobby. Bob had Paramount and Fox interested in buying my pitch and soon we had Drew Barrymore attached and I began writing the script at Fox Studios. I now have a writing career in Hollywood and it all started with Bob; he believed in my project and set it up at a studio.”</p>
+
+        <a href="#submit-a-pitch" target="_self" class="btn btn-primary btn-action">Start Pitching</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mr-pitch">
+    <div class="row row-centered">
+      <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="hero-video">
+          <iframe src="https://player.vimeo.com/video/41812750"/></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="what-is-a-pitch">
+    <div class="row row-centered">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12 col-md-5">
+            <h2>What is a pitch?</h2>
+          </div>
+          <div class="col-xs-12 col-md-7">
+            <p>A pitch is a verbal explanation of a movie you hope to sell to a studio.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -130,22 +173,6 @@
         <h4>Jonas Goodman</h4>
         <h5>CEO</h5>
         <p>Jonas is responsible for managing all business and creative affairs. Jonas has broad experience as a film, television and new media executive and producer; working for directors (including Alan Pakula, Michael Radford) and production companies inside the studio system and independently (including Front Street Pictures, Miramax, Atlas Entertainment) and building effective collaborations between the film and tech communities.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="success-stories" id="success-stories">
-    <div class="row row-centered">
-      <div class="col-xs-12">
-        <h2>Success Stories</h2>
-
-        <p><strong>Emily Lloyd,</strong> a grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-
-        <p><strong>David Simon,</strong> “I brought my original idea ‘The High School Security Tapes’ to Bob. He not only sold it to DreamWorks, he also made sure I got to write the screenplay. Since then, he sold another idea with Katherine Heigl to Fox 2000 and another with director Todd Phillips (THE HANGOVER) to Warner Brothers.”</p>
-
-        <p><strong>Tom Newman,</strong> “I was living in London when I heard about Bob Kosberg. I sent him a one page outline called ‘The Beauty Contest.’ Within one week, Bob had attached Meg Ryan to star and sold the project to New Line.”</p>
-
-        <p><strong>Steve List,</strong> “I attended one of Bob’s pitch events. I literally pitched Bob a thirty second story while we walked through the lobby. Bob had Paramount and Fox interested in buying my pitch and soon we had Drew Barrymore attached and I began writing the script at Fox Studios. I now have a writing career in Hollywood and it all started with Bob; he believed in my project and set it up at a studio.”</p>
       </div>
     </div>
   </section>
