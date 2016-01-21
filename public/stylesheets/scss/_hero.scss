@@ -141,15 +141,15 @@ section + section {
 }
 
 @media all and (max-width: 768px){
-  h1 {
-    font-size: 2.5rem;
+  .hero h1 {
+    font-size: 2.25rem;
 
     span {
       font-size: 1.5rem;
     }
   }
 
-  h2 {
+  section h2 {
     font-size: 1.75rem;
   }
 }
