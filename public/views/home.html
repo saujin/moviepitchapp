@@ -6,25 +6,7 @@
     </div>
 
     <div class="col-xs-12 col-lg-8 col-lg-offset-2">
-      <div pitch-box class="pitch-box">
-        <fieldset class="form-group">
-          <select class="form-control" id="select-genre" ng-model="data.pitchGenre">
-            <option ng-repeat="genre in data.genres" value="{{genre}}">{{genre}}</option>
-          </select>
-        </fieldset>
-
-        <fieldset class="form-group form-group--tight">
-          <textarea ng-model="data.pitchText" class="form-control" id="pitch-text" rows="8" placeholder="Submit your pitch idea here. Individual pitches should be no more than one or two paragraphs. "></textarea>
-        </fieldset>
-
-        <fieldset class="form-group form-group--tight">
-          <label>
-            <input ng-model="data.termsAgree" type="checkbox" value="">I have read and agree to the <a ui-sref="legal" target="_blank">terms</a> of this site
-          </label>
-        </fieldset>
-        <span class="validation-notice">{{validationText}}</span>
-        <button type="submit" class="btn btn-primary" id="submit-pitch" ng-click="submitPitch($event)">Submit Pitch</button>
-      </div>
+      <div pitch-box class="pitch-box"></div>
     </div>
 
     <div class="col-xs-12">

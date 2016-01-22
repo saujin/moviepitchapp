@@ -1,6 +1,6 @@
 moviePitchApp.directive('pitchBox', function(){
   return {
-    controller: function($scope, $q){
+    controller: function($scope, $q, $http, paymentFactory, pitchFactory){
 
       // Populate an array of genres, and create some variables
       // for the ng-models to bind to
@@ -40,90 +40,55 @@ moviePitchApp.directive('pitchBox', function(){
       // on validation failures
       $scope.validationText = null;
 
-      // Validate the form before launching the payment window
-      function validatePitch(){
-        let deferred = $q.defer();
-
-        if(
-          $scope.data.termsAgree === true &&
-          $scope.data.pitchText !== "" &&
-          $scope.data.pitchText !== null &&
-          $scope.data.pitchGenre !== "Select Genre" &&
-          $scope.data.pitchGenre !== ""
-        ) {
-          deferred.resolve({
-            status: "success",
-            pitch : {
-              genre: $scope.data.pitchGenre,
-              pitch: $scope.data.pitchText,
-              areTermsAgreed: $scope.data.termsAgree,
-              dateAgreed: new Date(),
-              token : null
-            }
-          });
+      // The Handler has some basic Stripe config and then calls the payment
+      // success function
+      $scope.handler = StripeCheckout.configure({
+        key: 'pk_test_XHkht0GMLQPrn2sYCXSFy4Fs',
+        // image: '/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function(token) {
+          $scope.paymentSuccess(token);
         }
-
-        // If the form doesn't validate, display errors for what kind of error
-        else {
-          if($scope.data.pitchText === "" || $scope.data.pitchText === null && $scope.data.pitchGenre === "" || $scope.data.pitchGenre === "Select Genre") {
-            deferred.reject({
-              status: "Please fill out the pitch form before submitting.",
-              data: null
-            });
-          } else if($scope.data.termsAgree === false){
-            deferred.reject({
-              status: "Please accept the terms in order to continue.",
-              data: null
-            });
-          } else if ($scope.data.pitchText === "" || $scope.data.pitchText === null){
-            deferred.reject({
-              status: "Robert is good, but not good enough to sell a blank pitch!",
-              data: null
-            });
-          } else if ($scope.data.pitchGenre === "" || $scope.data.pitchGenre === "Select Genre"){
-            deferred.reject({
-              status: "What kind of movie is it? Please select a genre.",
-              data: null
-            });
-          } else {
-            deferred.reject({
-              status: "An unknown error has occurred.",
-              data: null
-            });
-          }
-        }
-
-        return deferred.promise;
-      };
+      });
 
       // Run the handler when someone clicks 'submit'
       $scope.submitPitch = function(ev){
 
-        // Run the fields through the validator before any action
-        validatePitch().then(
-          function(resp){
-            // Clear the error messages
-            $scope.validationText = "";
+        // Create a pitch object for validation
+        $scope.pitch = {
+          genre: $scope.data.pitchGenre,
+          pitchText: $scope.data.pitchText,
+          userHasAcceptedTerms: $scope.data.termsAgree
+        };
 
-            // Store the Pitch Data for future use
-            $scope.pitch = resp.pitch;
+        pitchFactory
+          .validatePitch($scope.pitch)
+          .then(
+            function(resp) {
+              $scope.validationText = "";
 
-            $scope.handler.open({
-              name: "MoviePitch.com",
-              description: "Pitch Submission",
-              amount: 200
-            });
-          },
-          function(err){
-            $scope.validationText = err.status;
-            console.log(err);
-          }
-        )
+              // Update the pitch object with the returned pitch
+              $scope.pitch = resp.pitch;
+              // console.log($scope.pitch);
+
+              // Now that pitch is validated, trigger Stripe
+              $scope.handler.open({
+                name: "MoviePitch.com",
+                description: "Pitch Submission",
+                amount: 200
+              });
+            },
+            function(err) {
+              $scope.validationText = err.msg;
+              console.log(err);
+            }
+          );
 
         ev.preventDefault();
       };
 
       $scope.paymentSuccess = function(token){
+        // Update the pitch object with the payment token
         $scope.pitch.token = token;
         console.log($scope.pitch);
 
@@ -133,30 +98,11 @@ moviePitchApp.directive('pitchBox', function(){
 
         // Write the pitch to the back-end here!!!
 
+
         // **************************************************
         // **************************************************
       };
 
-      $scope.handler = StripeCheckout.configure({
-        key: 'pk_test_XHkht0GMLQPrn2sYCXSFy4Fs',
-        // image: '/img/documentation/checkout/marketplace.png',
-        locale: 'auto',
-        token: function(token) {
-          // Use the token to create the charge with a server-side script.
-          // You can access the token ID with `token.id`
-
-          // **************************************************
-          // ********************* TO DO **********************
-
-          // Complete the transaction through the back-end data services
-          // Return a promise
-
-          // **************************************************
-          // **************************************************
-
-          $scope.paymentSuccess(token);
-        }
-      });
     },
     link: function(scope, el, attrs){
       el.find('select').on('focus', function(){
@@ -164,6 +110,7 @@ moviePitchApp.directive('pitchBox', function(){
         angular.element(selectGenre).remove();
       });
     },
-    restrict: "A"
+    restrict: "A",
+    templateUrl: "components/checkout/pitch-box.html"
   }
 });
