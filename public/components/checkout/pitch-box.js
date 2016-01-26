@@ -96,7 +96,7 @@ moviePitchApp.directive('pitchBox', function(){
         // **************************************************
         // ********************* TO DO **********************
 
-        // Write the pitch to the back-end here!!!
+        pitchFactory.submitPitch($scope.pitch);
 
 
         // **************************************************
