@@ -10,6 +10,7 @@ let babel       = require('gulp-babel');
 let browserify  = require('browserify');
 let source      = require('vinyl-source-stream');
 let buffer      = require('vinyl-buffer');
+let watchify    = require('watchify');
 
 
 const paths = {
@@ -28,15 +29,42 @@ const paths = {
   stylesheets: "public/stylesheets/scss/**/*.scss"
 }
 
+function browserifyShare(){
+  let b = browserify({
+    cache: {},
+    packageCache: {},
+    fullPaths: true
+  });
+
+  b = watchify(b);
+
+  b.on('update', function(){
+    bundleShare(b);
+  });
+
+  b.add('./public/js/scripts/js');
+}
+
+function bundleShare(b){
+  b.bundle()
+    .pipe(source('scripts.js'))
+    .pipe(uglify({
+      mangle: false
+    }))
+    .pipe(gulp.dest('./public/js/'));
+}
+
+
 gulp.task('browserify', function(){
-  return browserify('./public/js/scripts.js')
-    .bundle()
-    .pipe(source('main.js'))
-    .pipe(buffer())
-    // .pipe(uglify({
-    //   mangle: false
-    // }))
-    .pipe(gulp.dest('./public/js/'))
+  browserifyShare();
+  // return browserify('./public/js/scripts.js')
+  //   .bundle()
+  //   .pipe(source('main.js'))
+  //   .pipe(buffer())
+  //   // .pipe(uglify({
+  //   //   mangle: false
+  //   // }))
+  //   .pipe(gulp.dest('./public/js/'))
 });
 
 gulp.task('sass', function(){
@@ -65,7 +93,7 @@ gulp.task('scripts', function(){
     }))
     .pipe(concat('scripts.js'))
     .pipe(sourcemaps.write())
-    // .pipe(uglify())
+    // .pipe(uglify({}))
     .pipe(gulp.dest('./public/js'))
 })
 

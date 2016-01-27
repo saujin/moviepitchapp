@@ -10,7 +10,7 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
       })
     },
     validatePitch: function(pitch){
-      console.log(pitch);
+      // console.log(pitch);
       var deferred = $q.defer();
 
       if(

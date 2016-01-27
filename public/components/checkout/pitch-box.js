@@ -62,47 +62,75 @@ moviePitchApp.directive('pitchBox', function(){
         };
 
         pitchFactory
+          // Validate the pitch object
           .validatePitch($scope.pitch)
+
+          // Build a Pitch Object within the $scope
           .then(
             function(resp) {
-              $scope.validationText = "";
-
-              // Update the pitch object with the returned pitch
-              $scope.pitch = resp.pitch;
-              // console.log($scope.pitch);
-
-              // Now that pitch is validated, trigger Stripe
-              $scope.handler.open({
-                name: "MoviePitch.com",
-                description: "Pitch Submission",
-                amount: 200
-              });
+              buildScopePitch(resp);
             },
             function(err) {
-              $scope.validationText = err.msg;
-              console.log(err);
+              logError(err);
             }
-          );
+          )
+
+          //
+          .then(
+            function(){
+              // triggerScopeHandler();
+              console.log('step 1');
+            }
+          )
+
+
+          .then(
+            function(resp){
+              console.log('step 2');
+            },
+            function(err){
+
+            }
+          )
+
+
+          .finally(function(){
+            console.log('finished');
+          });
 
         ev.preventDefault();
       };
 
-      $scope.paymentSuccess = function(token){
+      function buildScopePitch(resp){
+        $scope.validationText = "";
+        $scope.pitch = resp.pitch;
+        // console.log($scope.pitch);
+      }
+
+      function logError(err){
+        $scope.validationText = err.msg;
+        console.log(err);
+      }
+
+      function triggerScopeHandler(){
+        $scope.handler.open({
+          name: "MoviePitch.com",
+          description: "Pitch Submission",
+          amount: 200
+        });
+      }
+
+      function paymentSuccess(token){
+        let deferred = $q.defer();
+
         // Update the pitch object with the payment token
         $scope.pitch.token = token;
-        console.log($scope.pitch);
-
-
-        // **************************************************
-        // ********************* TO DO **********************
+        $scope.pitch.submitterEmail = token.
 
         pitchFactory.submitPitch($scope.pitch);
 
-
-        // **************************************************
-        // **************************************************
+        return deferred.promise;
       };
-
     },
     link: function(scope, el, attrs){
       el.find('select').on('focus', function(){
