@@ -14,11 +14,9 @@ let watchify    = require('watchify');
 
 
 const paths = {
-  ejs: "views/**/*.ejs",
   vendor: [
     "node_modules/jquery/dist/jquery.js",
-    "node_modules/bootstrap/dist/js/bootstrap.js",
-    // "node_modules/sendgrid/lib/sendgrid.js"
+    "node_modules/bootstrap/dist/js/bootstrap.js"
   ],
   js: [
     "public/js/index.js",
@@ -42,12 +40,12 @@ function browserifyShare(){
     bundleShare(b);
   });
 
-  b.add('./public/js/scripts/js');
+  b.add(paths.js);
 }
 
 function bundleShare(b){
   b.bundle()
-    .pipe(source('scripts.js'))
+    .pipe(source('main.js'))
     .pipe(uglify({
       mangle: false
     }))
@@ -56,15 +54,15 @@ function bundleShare(b){
 
 
 gulp.task('browserify', function(){
-  browserifyShare();
-  // return browserify('./public/js/scripts.js')
-  //   .bundle()
-  //   .pipe(source('main.js'))
-  //   .pipe(buffer())
-  //   // .pipe(uglify({
-  //   //   mangle: false
-  //   // }))
-  //   .pipe(gulp.dest('./public/js/'))
+  // browserifyShare();
+  return browserify('./public/js/scripts.js')
+    .bundle()
+    .pipe(source('main.js'))
+    .pipe(buffer())
+    // .pipe(uglify({
+    //   mangle: false
+    // }))
+    .pipe(gulp.dest('./public/js/'))
 });
 
 gulp.task('sass', function(){

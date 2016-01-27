@@ -47,9 +47,45 @@ moviePitchApp.directive('pitchBox', function(){
         // image: '/img/documentation/checkout/marketplace.png',
         locale: 'auto',
         token: function(token) {
-          $scope.paymentSuccess(token);
+          // Update the pitch object with the payment token
+          $scope.pitch.token = token;
+          $scope.pitch.submitterEmail = token.email;
+
+          console.log($scope.pitch);
+          paymentFactory
+            .createCharge(200, "Pitch submission", token.id)
+            .then(function(resp){
+              console.log(resp);
+              pitchFactory.submitPitch($scope.pitch)
+                .then(function(resp){
+                  console.log(resp);
+                })
+                .catch(function(err){
+                  console.log(err);
+                })
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+
+          // Create an array of promises to run when the Stripe
+          // handler creates and returns a charge token
+          // $q
+          //   .all([
+          //     pitchFactory.submitPitch($scope.pitch),
+          //     chargeCard()
+          //   ])
+          //   .then(function(resp){
+          //     debugger;
+          //     console.log(resp);
+          //   })
+          //   .catch(function(err){
+          //     debugger;
+          //     console.log(err);
+          //   });
         }
       });
+
 
       // Run the handler when someone clicks 'submit'
       $scope.submitPitch = function(ev){
@@ -64,73 +100,28 @@ moviePitchApp.directive('pitchBox', function(){
         pitchFactory
           // Validate the pitch object
           .validatePitch($scope.pitch)
-
-          // Build a Pitch Object within the $scope
           .then(
             function(resp) {
-              buildScopePitch(resp);
+              // If Pitch validates, build a pitch in $scope
+              $scope.validationText = "";
+              $scope.pitch = resp.pitch;
+
+              // Open the Stripe Checkout Handler
+              $scope.handler.open({
+                name: "MoviePitch.com",
+                description: "Pitch Submission",
+                amount: 200
+              });
             },
             function(err) {
-              logError(err);
+              $scope.validationText = err.msg;
+              console.log(err);
             }
           )
-
-          //
-          .then(
-            function(){
-              // triggerScopeHandler();
-              console.log('step 1');
-            }
-          )
-
-
-          .then(
-            function(resp){
-              console.log('step 2');
-            },
-            function(err){
-
-            }
-          )
-
-
-          .finally(function(){
-            console.log('finished');
-          });
 
         ev.preventDefault();
       };
 
-      function buildScopePitch(resp){
-        $scope.validationText = "";
-        $scope.pitch = resp.pitch;
-        // console.log($scope.pitch);
-      }
-
-      function logError(err){
-        $scope.validationText = err.msg;
-        console.log(err);
-      }
-
-      function triggerScopeHandler(){
-        $scope.handler.open({
-          name: "MoviePitch.com",
-          description: "Pitch Submission",
-          amount: 200
-        });
-      }
-
-      function paymentSuccess(token){
-        let deferred = $q.defer();
-
-        // Update the pitch object with the payment token
-        $scope.pitch.token = token;
-        $scope.pitch.submitterEmail = token.
-
-        pitchFactory.submitPitch($scope.pitch);
-
-        return deferred.promise;
-      };
     },
     link: function(scope, el, attrs){
       el.find('select').on('focus', function(){

@@ -3,7 +3,7 @@
 moviePitchApp.factory('pitchFactory', function($q, $http) {
   var factory = {
     submitPitch: function(pitch) {
-      $http({
+      return $http({
         method: "POST",
         url: "https://moviepitchapi.herokuapp.com/pitch",
         data: pitch
