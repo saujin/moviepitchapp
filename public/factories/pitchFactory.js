@@ -1,14 +1,61 @@
 "use strict";
 
 moviePitchApp.factory('pitchFactory', function($q, $http) {
-  var factory = {
+  const urlBase = "https://moviepitchapi.herokuapp.com";
+
+  let factory = {
+
+    acceptPitch: function(id){
+      return $http({
+        type: "GET",
+        url: urlBase + "/pitch/accept/" + id
+      });
+    },
+
+    getAllPitches: function(){
+      // return $http.get(urlBase + "/get_all_pitches");
+      return $http({
+        method: "GET",
+        url: urlBase + "/pitch"
+      });
+    },
+
+    getPitchByFilter: function(filterString){
+      return $http({
+        method: "GET",
+        url: urlBase + "/pitch?" + filterString
+      });
+    },
+
+    getPitchByID: function(id){
+      return $http({
+        method: "GET",
+        url: urlBase + '/pitch/' + id
+      });
+    },
+
+    lockPitch: function(id){
+      return $http({
+        method: "GET",
+        url: urlBase + "/pitch/lock/" + id
+      });
+    },
+
+    rejectPitch: function(id){
+      return $http({
+        type: "GET",
+        url: urlBase + "/pitch/reject/" + id
+      });
+    },
+
     submitPitch: function(pitch) {
       return $http({
         method: "POST",
-        url: "https://moviepitchapi.herokuapp.com/pitch",
+        url: urlBase + "/pitch",
         data: pitch
       })
     },
+
     validatePitch: function(pitch){
       // console.log(pitch);
       var deferred = $q.defer();

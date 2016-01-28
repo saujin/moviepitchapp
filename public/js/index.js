@@ -2,7 +2,6 @@
 
 require('angular');
 require('angular-ui-router');
-const Parse = require('parse');
 
 const controllerArray = [
   "ui.router"
@@ -83,15 +82,9 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
     }
   ])
   .run(function($rootScope){
-    Parse.initialize("PR9WBHEvjSuW9us8Q7SGh2KYRVQaHLbztZjshsb1", "nyz7N9sGLUIN1hjMY9NNQneExxP5W0MJhXH3u1Qh");
-
-    // Make sure a user is logged out
-    Parse.User.logOut();
 
     $rootScope.$on('$stateChangeStart', function(event, toState){
       let requireLogin = toState.data.requireLogin;
-      // console.log(event);
-      // console.log(toState);
 
       if(requireLogin === true && $rootScope.curUser === null){
         event.preventDefault();

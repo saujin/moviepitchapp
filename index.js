@@ -1,13 +1,5 @@
-var express = require('express');
-//
-// var Parse = require('parse-cloud-express').Parse;
-//
-// require('./cloud/main.js');
-// console.log(process.env['PARSE_WEBHOOK_KEY']);
-// Mount the cloud code webhooks
-// app.use('/webhooks', ParseCloud.app);
-
-var app = express();
+const express = require('express');
+const app = express();
 
 app.set('port', (process.env.PORT || 5000));
 

@@ -1,6 +1,6 @@
 moviePitchApp.directive('pitchBox', function(){
   return {
-    controller: function($scope, $q, $http, paymentFactory, pitchFactory){
+    controller: function($scope, $q, $http, adminFactory, paymentFactory, pitchFactory){
 
       // Populate an array of genres, and create some variables
       // for the ng-models to bind to
@@ -55,6 +55,7 @@ moviePitchApp.directive('pitchBox', function(){
           paymentFactory
             .createCharge(200, "Pitch submission", token.id)
             .then(function(resp){
+              debugger;
               console.log(resp);
               pitchFactory.submitPitch($scope.pitch)
                 .then(function(resp){
@@ -67,22 +68,6 @@ moviePitchApp.directive('pitchBox', function(){
             .catch(function(err){
               console.log(err);
             });
-
-          // Create an array of promises to run when the Stripe
-          // handler creates and returns a charge token
-          // $q
-          //   .all([
-          //     pitchFactory.submitPitch($scope.pitch),
-          //     chargeCard()
-          //   ])
-          //   .then(function(resp){
-          //     debugger;
-          //     console.log(resp);
-          //   })
-          //   .catch(function(err){
-          //     debugger;
-          //     console.log(err);
-          //   });
         }
       });
 
@@ -100,24 +85,33 @@ moviePitchApp.directive('pitchBox', function(){
         pitchFactory
           // Validate the pitch object
           .validatePitch($scope.pitch)
-          .then(
-            function(resp) {
-              // If Pitch validates, build a pitch in $scope
-              $scope.validationText = "";
-              $scope.pitch = resp.pitch;
+          // .then(function(resp){
+          //   pitchFactory.lockPitch('56a92ab8bc55811100089d1a')
+          //     .then(function(resp){
+          //       console.log(resp);
+          //     })
+          //     .catch(function(err){
+          //       console.log(err.status);
+          //       console.log(err.statusText)
+          //       console.log(err.data);
+          //     });
+          // })
+          .then(function(resp) {
+            // If Pitch validates, build a pitch in $scope
+            $scope.validationText = "";
+            $scope.pitch = resp.pitch;
 
-              // Open the Stripe Checkout Handler
-              $scope.handler.open({
-                name: "MoviePitch.com",
-                description: "Pitch Submission",
-                amount: 200
-              });
-            },
-            function(err) {
-              $scope.validationText = err.msg;
-              console.log(err);
-            }
-          )
+            // Open the Stripe Checkout Handler
+            $scope.handler.open({
+              name: "MoviePitch.com",
+              description: "Pitch Submission",
+              amount: 200
+            });
+          })
+          .catch(function(err){
+            $scope.validationText = err.msg;
+            console.log(err);
+          })
 
         ev.preventDefault();
       };
