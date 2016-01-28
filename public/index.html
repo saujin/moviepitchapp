@@ -7,7 +7,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/dist/css/main.css"/>
   </head>
   <body>
     <app-header></app-header>
@@ -19,8 +20,9 @@
     <footer class="" ng-include src="'views/partials/footer.html'"></footer>
 
     <!-- Jquery and Bootstrap run without modules, everything else browserified -->
-    <script src="js/vendor.js"></script>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script src="js/main.js"></script>
+    <script src="dist/js/vendor.js"></script>
+    <script src="dist/js/bundled-main.js"></script>
+    <script defer src="https://checkout.stripe.com/checkout.js"></script>
+    
   </body>
 </html>
