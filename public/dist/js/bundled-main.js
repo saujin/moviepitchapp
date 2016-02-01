@@ -34908,15 +34908,16 @@ moviePitchApp.directive('appHeader', function ($state) {
       };
 
       $scope.openLoginModal = function () {
-        $('#login-modal').modal('show');
+        // $('#login-modal').modal('show');
       };
     },
+
     link: function link(scope, el, attrs) {
-      $(el).find('.main-nav a').on('click', function () {
-        scope.toggleMenu();
-      });
+      // $(el).find('.main-nav a').on('click', function(){
+      //   scope.toggleMenu();
+      // });
     },
-    restrict: "E",
+    restrict: "A",
     templateUrl: "src/components/nav/nav.html"
   };
 });

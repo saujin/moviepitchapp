@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
-    <meta name="description" content="">
+    <title>Moviepitch.com</title>
+    <meta name="description" content="Pitch your idea to Hollywood and earn up to $50,000!">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" /> -->
     <link rel="stylesheet" type="text/css" href="/dist/css/main.css"/>
   </head>
   <body>
-    <app-header></app-header>
+    <header class="header" app-header>
+
+    </header>
 
     <div ui-view></div>
 
-    <login-modal id="login-modal" class="modal fade"></login-modal>
+    <!-- <login-modal id="login-modal" class="modal fade"></login-modal> -->
 
-    <footer class="" ng-include src="'views/partials/footer.html'"></footer>
+    <footer>Copyright © 2016 MoviePitch.com</footer>
 
     <!-- Jquery and Bootstrap run without modules, everything else browserified -->
-    <script src="dist/js/vendor.js"></script>
+    <!-- <script src="dist/js/vendor.js"></script> -->
     <script src="dist/js/bundled-main.js"></script>
     <script defer src="https://checkout.stripe.com/checkout.js"></script>
-    
+
   </body>
 </html>

@@ -1,0 +1,134 @@
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+@function carousel-offset($offset){
+  @return (-100% / 7 * $offset);
+}
+
+@mixin offset($num){
+  transform: translateX(carousel-offset($num));
+}
+
+.carousel {
+  position: relative;
+  transition: all 0.5s;
+  width: 700%;
+}
+
+.carousel-btn {
+  background: $purplish-grey;
+  box-shadow: 0 0 20px $black-20;
+  color: $white;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 10px 15px;
+  position: absolute;
+  text-transform: uppercase;
+  transition: all 0.35s;
+  top: 50px;
+  z-index: 10;
+
+  &:before,
+  &:after {
+    background-image: url('../img/ico-arrow.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: $white;
+    display: inline-block;
+    height: 20px;
+    position: relative;
+    top: 4px;
+    width: 25px;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: $purplish-black;
+  }
+}
+
+.carousel-btn--next {
+  right: -15px;
+
+  &:after {
+    content: "";
+    margin-left: 8px;
+  }
+}
+
+.carousel-btn--prev {
+  left: -15px;
+
+  &:before {
+    background-image: url('../img/ico-arrow.svg');
+    content: "";
+    margin-right: 8px;
+    transform: scaleX(-1);
+  }
+}
+
+.carousel-one {
+  @include offset(1);
+}
+
+.carousel-item {
+  display: flex;
+  float: left;
+  justify-content: center;
+  width: calc(100%/7);
+}
+
+.success-story {
+  background: $white;
+  border-radius: 20px;
+  box-shadow: 0 2px 50px $black-20;
+  flex: 1 1 300px;
+  max-width: 740px;
+  margin: 50px 0 100px 0;
+  padding: 70px 70px 30px 70px;
+  position: relative;
+  width: 90%;
+
+  &:after {
+    background: $white;
+    border-bottom-left-radius: 100%;
+    bottom: -50px;
+    box-shadow: 0px 20px 50px -3px rgba(0,0,0,.1);
+    content: "";
+    display: block;
+    height: 50px;
+    position: absolute;
+    right: 10%;
+    width: 70px;
+    z-index: 1;
+  }
+}
+
+.success-img {
+  background-image: url('../img/avatar.png');
+  border-radius: 100%;
+  height: 132px;
+  left: 50%;
+  margin-left: -66px;
+  position: absolute;
+  top: -50px;
+  width: 132px;
+}
+
+.success-title {
+  color: $dark-grey;
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.success-text {
+  font-size: 1.25rem;
+  line-height: 1.7;
+}

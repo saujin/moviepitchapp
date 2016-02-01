@@ -1,40 +1,80 @@
-.btn-action {
-  background: $color-accent-0;
-  border-radius: 10px;
+.btn-container {
+  align-items: center;
+  display: flex;
+}
+
+.btn {
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+.btn--action {
+  background-color: $tomato;
+  box-shadow: 0px 0px 20px $black-20;
   color: $white;
-  cursor: pointer;
-  display: block;
-  font-weight: 300;
-  margin: 3rem auto 0rem auto;
-  padding: 1rem 1.5rem;
-  text-align: center;
+  display: inline-block;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin: 1rem auto;
+  padding: 20px 50px;
   text-transform: uppercase;
   transition: all 0.35s;
-  width: 280px;
 
-  &:hover {
-    background: $color-accent-1;
-    color: $white;
-  }
-}
-
-.btn-primary {
-  @extend .clear-outlines;
-  background-color: $color-accent-0;
-  border-color: $color-accent-0;
-
-  &:hover {
-    background-color: $color-accent-1;
-    border-color: $color-accent-1;
-  }
-
+  &:hover,
   &:focus,
   &:active {
-    background-color: $color-accent-2;
-    border-color: $color-accent-2;
+    background: $dark-tomato;
   }
 }
 
-[type="submit"]{
-  float: right;
+.btn--inactive {
+  background: $silver;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $silver; 
+  }
 }
+
+// .btn-action {
+//   background: $color-accent-0;
+//   border-radius: 10px;
+//   color: $white;
+//   cursor: pointer;
+//   display: block;
+//   font-weight: 300;
+//   margin: 3rem auto 0rem auto;
+//   padding: 1rem 1.5rem;
+//   text-align: center;
+//   text-transform: uppercase;
+//   transition: all 0.35s;
+//   width: 280px;
+//
+//   &:hover {
+//     background: $color-accent-1;
+//     color: $white;
+//   }
+// }
+//
+// .btn-primary {
+//   @extend .clear-outlines;
+//   background-color: $color-accent-0;
+//   border-color: $color-accent-0;
+//
+//   &:hover {
+//     background-color: $color-accent-1;
+//     border-color: $color-accent-1;
+//   }
+//
+//   &:focus,
+//   &:active {
+//     background-color: $color-accent-2;
+//     border-color: $color-accent-2;
+//   }
+// }
+//
+// [type="submit"]{
+//   float: right;
+// }

@@ -1,14 +1,10 @@
 footer {
-  background: #f8f8f8;
-  bottom: 0;
-  color: $black;
-  height: 50px;
-  font-size: .825rem;
-  font-weight: 300;
-  left: 0;
-  line-height: 50px;
-  padding: 0 20px;
-  position: fixed;
-  text-align: right;
-  width: 100%;
+  background: $white;
+  border-top: solid 1px $pale-grey;
+  color: $purplish-grey;
+  font-size: 1rem;
+  line-height: 2.375;
+  padding: 30px 0 15px 0;
+  text-align: center;
+  vertical-align: baseline;
 }

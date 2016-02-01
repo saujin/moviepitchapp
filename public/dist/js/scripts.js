@@ -539,36 +539,6 @@ moviePitchApp.directive('pitchBox', function () {
     templateUrl: "src/components/checkout/pitch-box.html"
   };
 });
-'use strict';
-
-moviePitchApp.directive('login', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-      $scope.loginUser = function () {
-        var user, pwd;
-
-        user = angular.element(document.getElementById('user-login-username')).val();
-        pwd = angular.element(document.getElementById('user-login-pwd')).val();
-
-        userFactory.loginUser(user, pwd).then(function (resp) {
-          console.log(resp);
-        }, function (err) {
-          console.log(err);
-        });
-      };
-
-      $scope.logoutUser = function () {
-        userFactory.logoutUser().then(function (resp) {
-          console.log(resp);
-        }, function (err) {
-          console.log(err);
-        });
-      };
-    },
-    restrict: "E",
-    templateUrl: "src/components/login/login.html"
-  };
-});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory) {
@@ -622,6 +592,36 @@ moviePitchApp.directive('contactUsForm', function (emailFactory) {
     },
     restrict: "A",
     templateUrl: "src/components/contact-us-form/contact-us-form.html"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('login', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+      $scope.loginUser = function () {
+        var user, pwd;
+
+        user = angular.element(document.getElementById('user-login-username')).val();
+        pwd = angular.element(document.getElementById('user-login-pwd')).val();
+
+        userFactory.loginUser(user, pwd).then(function (resp) {
+          console.log(resp);
+        }, function (err) {
+          console.log(err);
+        });
+      };
+
+      $scope.logoutUser = function () {
+        userFactory.logoutUser().then(function (resp) {
+          console.log(resp);
+        }, function (err) {
+          console.log(err);
+        });
+      };
+    },
+    restrict: "E",
+    templateUrl: "src/components/login/login.html"
   };
 });
 "use strict";
@@ -717,15 +717,16 @@ moviePitchApp.directive('appHeader', function ($state) {
       };
 
       $scope.openLoginModal = function () {
-        $('#login-modal').modal('show');
+        // $('#login-modal').modal('show');
       };
     },
+
     link: function link(scope, el, attrs) {
-      $(el).find('.main-nav a').on('click', function () {
-        scope.toggleMenu();
-      });
+      // $(el).find('.main-nav a').on('click', function(){
+      //   scope.toggleMenu();
+      // });
     },
-    restrict: "E",
+    restrict: "A",
     templateUrl: "src/components/nav/nav.html"
   };
 });

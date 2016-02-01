@@ -13,20 +13,28 @@ const buffer      = require('vinyl-buffer');
 
 const paths = {
   vendor: [
-    "node_modules/jquery/dist/jquery.js",
-    "node_modules/bootstrap/dist/js/bootstrap.js"
+    // "node_modules/jquery/dist/jquery.js",
+    // "node_modules/bootstrap/dist/js/bootstrap.js"
+  ],
+  images: [
+    "public/src/img/**/*.png",
+    "public/src/img/**/*.jpg",
+    "public/src/img/**/*.jpeg"
   ],
   js: [
     "public/src/js/index.js",
     "public/src/factories/**/*.js",
     "public/src/components/**/*.js"
   ],
-  stylesheets: "public/src/stylesheets/scss/**/*.scss"
+  stylesheets: [
+    "public/src/stylesheets/scss/**/*.scss"
+  ]
 }
 
 gulp.task('watch', function(){
   gulp.watch(paths.stylesheets, ['sass']);
   gulp.watch(paths.js, ['scripts', 'browserify']);
+  gulp.watch(paths.images, ['images']);
 });
 
 gulp.task('images', function(){
@@ -39,7 +47,7 @@ gulp.task('browserify', function(){
     .bundle()
     .pipe(source('bundled-main.js'))
     .pipe(buffer())
-    .pipe(gulp.dest('./public/dist/js'))  
+    .pipe(gulp.dest('./public/dist/js'))
 });
 
 gulp.task('sass', function(){
