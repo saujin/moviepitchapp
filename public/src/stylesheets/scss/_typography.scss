@@ -9,8 +9,25 @@ strong {
   font-weight: 700;
 }
 
-p {
+dd,
+p,
+li {
   color: $purplish-grey;
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+.inline-link {
+  color: $tomato;
+
+  &:hover,
+  &:active {
+    color: $dark-tomato;
+  }
+}
+
+dd {
+  margin: 0 0 50px 0;
 }
 
 @media all and (min-width: $browserMin){

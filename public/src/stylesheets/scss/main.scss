@@ -3,15 +3,18 @@
 @import 'variables';
 @import 'colors';
 @import 'typography';
-//
+
+@import 'alerts';
 @import 'buttons';
 @import 'carousel';
+@import 'contact-us';
+@import 'fancy-select';
 @import 'footer';
-// @import 'forms';
+@import 'forms';
 @import 'headings';
 @import 'hero';
 @import 'icons';
-// @import 'modal';
+@import 'modal';
 @import 'nav';
 @import 'sections';
 // @import 'pitch-box';
@@ -25,6 +28,11 @@
 body {
   font-size: 16px;
   margin: 0;
+}
+
+.top-radiused {
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 // .container-fluid {
 //   margin-bottom: 50px;

@@ -12,13 +12,22 @@
 
 @media all and (min-width: $browserMin){
   .header {
+    background: #0C0D0E;
     display: flex;
     left: 0;
     justify-content: space-between;
+    padding: 30px 20px 20px 20px;
+    // position: absolute;
+    // top: 0;
+    width: 100%;
+    // z-index: 100;
+  }
+
+  .header--home {
+    background: none;
+    left: 0;
     padding: 50px 20px 0 20px;
     position: absolute;
-    top: 0;
-    width: 100%;
     z-index: 100;
   }
 
@@ -42,9 +51,24 @@
     color: $white;
     flex: 1 1 auto;
     font-size: .875rem;
-    text-align: right;
+    position: relative;
+    text-align: center;
     text-decoration: none;
     text-transform: uppercase;
+  }
+
+  .main-nav-link--active {
+    &:before {
+      border-top: solid 2px $tomato;
+      content: "";
+      display: block;
+      height: 0;
+      margin-top: -1px;
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      z-index: 1;
+    }
   }
 
   .main-nav-link:hover {
@@ -54,6 +78,10 @@
 
 @media all and (min-width: $contentMax){
   .header {
+
+  }
+
+  .header--home {
     left: 50%;
     margin-left: -550px;
     width: 1100px;

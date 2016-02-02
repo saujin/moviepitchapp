@@ -71,8 +71,44 @@
   }
 }
 
-.carousel-one {
+.carousel-1 {
+  @include offset(0);
+}
+
+.carousel-2 {
   @include offset(1);
+}
+
+.carousel-3 {
+  @include offset(2);
+}
+
+.carousel-4 {
+  @include offset(3);
+}
+
+.carousel-5 {
+  @include offset(4);
+}
+
+.carousel-6 {
+  @include offset(5);
+}
+
+.carousel-7 {
+  @include offset(6);
+}
+
+.carousel-8 {
+  @include offset(7);
+}
+
+.carousel-9 {
+  @include offset(8);
+}
+
+.carousel-10 {
+  @include offset(9);
 }
 
 .carousel-item {

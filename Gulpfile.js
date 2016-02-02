@@ -13,7 +13,7 @@ const buffer      = require('vinyl-buffer');
 
 const paths = {
   vendor: [
-    // "node_modules/jquery/dist/jquery.js",
+    "node_modules/jquery/dist/jquery.js",
     // "node_modules/bootstrap/dist/js/bootstrap.js"
   ],
   images: [
@@ -22,7 +22,9 @@ const paths = {
     "public/src/img/**/*.jpeg"
   ],
   js: [
+    "public/src/js/fancySelect.js",
     "public/src/js/index.js",
+    "public/src/controllers/**/*.js",
     "public/src/factories/**/*.js",
     "public/src/components/**/*.js"
   ],

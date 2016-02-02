@@ -1,32 +1,33 @@
-<div class="alert alert-danger {{messageError}}">{{errorText}}</div>
-<div class="alert alert-success {{submitSuccess}}">{{successText}}</div>
+<div class="column">
+  <div class="label-wrapper" label-wrapper>
+    <input type="text" ng-model="data.name" ng-change="validateName(); btnStateChange()" class="label-wrapper-input" id="contact-name">
+    <label class="label-wrapper-label {{labelState}}" for="contact-name">Name</label>
+  </div>
 
-<fieldset class="form-group">
-  <label for="name">Name</label>
-  <input type="text" ng-model="data.name" class="form-control" id="contact-name" placeholder="Name">
-  <small class="text-muted">Required</small>
-</fieldset>
+  <div class="label-wrapper" label-wrapper>
+    <input type="email" ng-model="data.email" class="label-wrapper-input" ng-change="validateEmail(); btnStateChange()" id="contact-email">
+    <label class="label-wrapper-label {{labelState}}" for="contact-email">Email</label>
+  </div>
 
-<fieldset class="form-group">
-  <label for="email">Email</label>
-  <input type="email" ng-model="data.email" class="form-control" id="contact-email" placeholder="Enter email">
-  <small class="text-muted">Required</small>
-</fieldset>
+  <div class="label-wrapper" label-wrapper>
+    <select id="contact-subject" ng-model="data.msgSubject">
+      <!-- <option></option> -->
+      <option ng-repeat="subject in data.subjects" value="{{subject}}">{{subject}}</option>
+    </select>
+    <label class="label-wrapper-label label-wrapper-label--out {{labelState}}" for="contact-subject">Choose Subject</label>
+  </div>
+</div>
 
-<fieldset class="form-group">
-  <label for="subject">Subject</label>
-  <select class="form-control" id="contact-subject" ng-model="data.msgSubject">
-    <option ng-repeat="subject in data.subjects" value="{{subject}}">{{subject}}</option>
-  </select>
-  <small class="text-muted">Required</small>
-</fieldset>
+<div class="column">
+  <div class="message-bubble label-wrapper" label-wrapper>
+    <textarea ng-model="data.message" class="label-wrapper-input" id="contact-message" ng-change="validateMsg(); btnStateChange()"rows="8"></textarea>
+    <label class="label-wrapper-label {{labelState}}" for="contact-message">Your Message</label>
+  </div>
+</div>
 
-<fieldset class="form-group">
-  <label for="message">Message</label>
-  <textarea ng-model="data.message" class="form-control" id="contact-message" rows="5"></textarea>
-  <small class="text-muted">Required</small>
-</fieldset>
-
-<div class="button-group">
-  <button class="btn btn-primary" type="submit" ng-click="submitContactForm()">Submit</button>
+<div class="column clear-columns">
+  <div class="btn-container">
+    <button class="btn btn--primary {{btnState}}" type="submit" ng-click="submitContactForm()">Submit</button>
+  </div>
+  <div class="alert alert-success {{submitSuccess}}">{{successText}}</div>
 </div>

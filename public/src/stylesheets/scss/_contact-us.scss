@@ -1,0 +1,33 @@
+
+
+
+
+@media all and (min-width: $browserMin){
+  .contact-us-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 200px;
+  }
+
+  .column:nth-child(odd) {
+    flex: 4 4 auto;
+    margin-right: 20px;
+  }
+
+  .column:nth-child(even) {
+    flex: 6 6 auto;
+    margin-left: 50px;
+  }
+
+  .column.clear-columns {
+    flex: 10 10 100%;
+  }
+}
+
+@media all and (max-width: $tabletMax){
+  .column {
+    flex: none;
+    margin: 0;
+    width: 100%;
+  }
+}

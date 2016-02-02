@@ -1,18 +1,65 @@
-moviePitchApp.directive('contactUsForm', function(emailFactory){
+moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
   return {
     controller: function($scope){
       $scope.data = {
-        name: null,
-        email: null,
+        name: "",
+        email: "",
         msgSubject: "General",
-        message: null,
+        message: "",
         subjects: [
           "General",
           "Billing",
           "Sales",
           "Support"
         ],
+        errors : {
+          email: true,
+          username: true,
+          message: true
+        }
+      }
 
+      $scope.btnState = "btn--inactive";
+
+      $scope.btnStateChange = function(){
+        console.log($scope.data.errors);
+        if(
+          $scope.data.errors.email === true ||
+          $scope.data.errors.username === true ||
+          $scope.data.errors.message === true
+        ) {
+          $scope.btnState = "btn--inactive";
+        } else {
+          $scope.btnState = "";
+        }
+      }
+
+      $scope.validateName = function(){
+        console.log('validating name');
+        if($scope.data.name === ""){
+          $scope.data.errors.username = true;
+        } else {
+          $scope.data.errors.username = false;
+        }
+      }
+
+      $scope.validateEmail = function(){
+        console.log('validating email');
+        emailFactory.validateEmail($scope.data.email)
+          .then(function(resp){
+            $scope.data.errors.email = false;
+          }, function(err){
+            $scope.data.errors.email = true;
+          });
+      }
+
+      $scope.validateMsg = function(){
+        console.log('validating message');
+        if($scope.data.name === ""){
+          $scope.data.errors.message = true;
+        } else {
+          $scope.data.errors.message = false;
+        }
       }
 
       let clearErrors = function(){
@@ -25,56 +72,105 @@ moviePitchApp.directive('contactUsForm', function(emailFactory){
         $scope.data.email = null;
         $scope.data.message = null;
         $scope.data.msgSubject = "General";
+        $scope.btnState = "btn--inactive";
       };
 
       $scope.submitContactForm = function(){
-        clearErrors();
-
-        emailFactory.validateEmail($scope.data.email)
-          .then(
-            function(resp){
-              if(
-                $scope.data.name === "" ||
-                $scope.data.name === null ||
-                $scope.data.email === "" ||
-                $scope.data.email === null ||
-                $scope.data.msgSubject === "" ||
-                $scope.data.msgSubject === null ||
-                $scope.data.message === "" ||
-                $scope.data.message === null
-              ){
+        if($scope.btnState === "btn--inactive"){
+          console.log('inactive');
+        } else {
+          clearErrors();
+          emailFactory
+            .sendContactUsMessage(
+              $scope.data.name,
+              $scope.data.email,
+              $scope.data.msgSubject,
+              $scope.data.message
+            )
+            .then(
+              function(resp){
+                clearErrors();
+                clearFields();
+                $scope.submitSuccess = "show-alert";
+                $scope.successText = "Success! Your message has been submitted.";
+                $timeout(function(){
+                  $scope.submitSuccess = "";
+                  $scope.successText = "";
+                }, 4000)
+                // console.log(resp);
+              },
+              function(err){
+                $scope.errorText = "An error has occurred. Your message was not sent.";
                 $scope.messageError = "show-alert";
-                $scope.errorText = "Please fill out each field before submitting.";
               }
-              else {
-                emailFactory
-                  .sendContactUsMessage(
-                    $scope.data.name,
-                    $scope.data.email,
-                    $scope.data.msgSubject,
-                    $scope.data.message
-                  )
-                  .then(
-                    function(resp){
-                      clearErrors();
-                      clearFields();
-                      $scope.submitSuccess = "show-alert";
-                      $scope.successText = "Success! Your message has been submitted.";
-                      // console.log(resp);
-                    },
-                    function(err){
-                      $scope.errorText = "An error has occurred. Your message was not sent.";
-                      $scope.messageError = "show-alert";
-                    }
-                  )
-              }
-            },
-            function(err){
-              $scope.messageError = "show-alert";
-              $scope.errorText = "Please enter a valid email address.";
-            }
-          );
+            )
+          console.log($scope.data);
+        }
+
+
+        // emailFactory.validateEmail($scope.data.email)
+        //   .then(
+        //     function(resp){
+        //       if(
+        //         $scope.data.name === "" ||
+        //         $scope.data.name === null ||
+        //         $scope.data.email === "" ||
+        //         $scope.data.email === null ||
+        //         $scope.data.msgSubject === "" ||
+        //         $scope.data.msgSubject === null ||
+        //         $scope.data.message === "" ||
+        //         $scope.data.message === null
+        //       ){
+        //         $scope.messageError = "show-alert";
+        //         $scope.errorText = "Please fill out each field before submitting.";
+        //       }
+        //       else {
+        //         emailFactory
+        //           .sendContactUsMessage(
+        //             $scope.data.name,
+        //             $scope.data.email,
+        //             $scope.data.msgSubject,
+        //             $scope.data.message
+        //           )
+        //           .then(
+        //             function(resp){
+        //               clearErrors();
+        //               clearFields();
+        //               $scope.submitSuccess = "show-alert";
+        //               $scope.successText = "Success! Your message has been submitted.";
+        //               // console.log(resp);
+        //             },
+        //             function(err){
+        //               $scope.errorText = "An error has occurred. Your message was not sent.";
+        //               $scope.messageError = "show-alert";
+        //             }
+        //           )
+        //       }
+        //     },
+        //     function(err){
+        //       $scope.messageError = "show-alert";
+        //       $scope.errorText = "Please enter a valid email address.";
+        //     }
+        //   );
       };
+    },
+    link: function(scope, el, attrs){
+      let $select = $('#contact-subject');
+
+      function selectReady(){
+        let numOptions = $select.find('option').length;
+
+        if(numOptions > 1){
+          $select.fancySelect();
+        } else {
+          $timeout(selectReady, 75);
+        }
+      }
+
+      // The fancySelect function runs before the page
+      // is fully loaded, hence the timeout function
+      selectReady();
+
     },
     restrict: "A",
     templateUrl: "src/components/contact-us-form/contact-us-form.html"

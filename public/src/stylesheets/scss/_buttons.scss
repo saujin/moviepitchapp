@@ -7,19 +7,20 @@
   border: none;
   border-radius: 4px;
   outline: none;
+  text-align: center;
 }
 
-.btn--action {
-  background-color: $tomato;
+.btn--primary {
+  background: $tomato;
   box-shadow: 0px 0px 20px $black-20;
   color: $white;
-  display: inline-block;
   font-size: 1rem;
   letter-spacing: 2px;
-  margin: 1rem auto;
-  padding: 20px 50px;
+  padding: 20px;
+  text-align: center;
   text-transform: uppercase;
   transition: all 0.35s;
+  width: 230px;
 
   &:hover,
   &:focus,
@@ -28,13 +29,26 @@
   }
 }
 
+.btn--action {
+  display: inline-block;
+  margin: 1rem auto;
+  padding: 20px 50px;
+}
+
 .btn--inactive {
   background: $silver;
+  cursor: default;
 
   &:hover,
   &:focus,
   &:active {
-    background: $silver; 
+    background: $silver;
+  }
+}
+
+@media all and (max-width: $tabletMax){
+  .btn-container {
+    justify-content: center;
   }
 }
 

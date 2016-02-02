@@ -1,0 +1,101 @@
+div.fancy-select {
+	font-size: 1.25rem;
+	position: relative;
+}
+
+div.fancy-select.disabled {
+	opacity: 0.5;
+}
+
+.trigger {
+	color: $purplish-grey;
+	cursor: pointer;
+	overflow: hidden;
+	padding: 10px 24px 9px 9px;
+	position: relative;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	transition: all 240ms ease-out;
+}
+
+.trigger.selected {
+	// color: inherit;
+}
+
+.trigger:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-top-color: $purplish-grey;
+	top: 20px;
+	right: 9px;
+}
+
+
+.trigger.open:after {
+	border-top-color: transparent;
+	border-bottom-color: $purplish-grey;
+}
+
+.options {
+	list-style: none;
+	left: 0;
+	margin: 0;
+	max-height: 200px;
+	min-width: 200px;
+	opacity: 0;
+	overflow: auto;
+	padding: 0;
+	position: absolute;
+	top: 50px;
+	visibility: hidden;
+	width: 100%;
+	z-index: 50;
+
+	transition: opacity 300ms ease-out, top 300ms ease-out, visibility 300ms ease-out;
+}
+
+.options.open {
+	opacity: 1;
+	visibility: visible;
+	top: 56px;
+
+	/* have to use a non-visibility transition to prevent this iOS issue (bug?): */
+	/*http://stackoverflow.com/questions/10736478/css-animation-visibility-visible-works-on-chrome-and-safari-but-not-on-ios*/
+	transition: opacity 300ms ease-out, top 300ms ease-out;
+}
+
+.options.overflowing {
+	bottom: 40px;
+	top: auto;
+
+	transition: opacity 300ms ease-out, bottom 300ms ease-out, visibility 300ms ease-out;
+}
+
+.options.overflowing.open {
+	bottom: 50px;
+	top: auto;
+	transition: opacity 300ms ease-out, bottom 300ms ease-out;
+}
+
+.options li {
+	background: $white;
+	color: $purplish-grey;
+	cursor: pointer;
+	padding: 8px 12px 8px 20px;
+	white-space: nowrap;
+
+	transition: all 150ms ease-out;
+}
+
+.options li + li {
+	border-top: solid 1px $pale-grey;
+}
+
+.options li.selected {
+	background: $off-white;
+}

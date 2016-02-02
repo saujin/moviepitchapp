@@ -123,7 +123,7 @@ moviePitchApp.directive('pitchBox', function(){
         angular.element(selectGenre).remove();
       });
     },
-    restrict: "A",
-    templateUrl: "src/components/checkout/pitch-box.html"
+    restrict: "A"
+    // templateUrl: "src/components/checkout/pitch-box.html"
   }
 });

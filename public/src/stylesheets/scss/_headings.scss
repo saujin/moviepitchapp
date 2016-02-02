@@ -19,6 +19,20 @@
   text-transform: uppercase;
 }
 
+.heading-title {
+  color: $dark-grey;
+  font-size: 3.75rem;
+  margin-top: 100px;
+  text-transform: uppercase;
+}
+
+.heading-subtitle {
+  color: $dark-grey;
+  font-size: 1.625rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
 .heading-meta {
   color: $dark-grey;
   display: block;
@@ -28,4 +42,19 @@
   letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
+}
+
+@media all and (max-width: $tabletMax){
+  .heading-title {
+     font-size: 2.25rem;
+     margin-top: 60px;
+     text-align: center;
+  }
+}
+
+@media all and (max-width: $mobileMax){
+  .heading-title {
+    font-size: 1.78rem;
+    margin-top: 40px;
+  }
 }

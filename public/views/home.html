@@ -1,8 +1,10 @@
+<header class="header header--home" app-header></header>
+
 <section class="section section-center section-vertical section--hero">
   <div class="section-content">
     <h1 class="heading heading--primary">Pitch your idea to Hollywood<br>and earn up to $50,000!</h1>
     <div class="btn-container">
-      <button launch-modal class="btn btn--action">Submit Your Pitch</button>
+      <button launch-modal class="btn btn--action btn--primary" ng-click="showPitchModal()">Submit Your Pitch</button>
     </div>
   </div>
 </section>
@@ -35,73 +37,7 @@
 </section>
 
 <section class="section section-center section--stories">
-  <div class="section-content">
-    <h2 class="heading heading--section">Success Stories</h2>
-    <span class="heading-meta">1 of 7</span>
-
-    <div class="carousel-container">
-      <div class="carousel">
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <button class="btn carousel-btn carousel-btn--prev">Previous</button>
-            <button class="btn carousel-btn carousel-btn--next">Next</button>
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-
-        <div class="carousel-item">
-          <article class="success-story">
-            <div class="success-img"></div>
-            <h4 class="success-title">Emily Lloyd</h4>
-            <p class="success-text">A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div success-carousel class="section-content"></div>
 </section>
 
 <section class="section section-center section--team">

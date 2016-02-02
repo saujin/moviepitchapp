@@ -1,4 +1,150 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+//  angularModalService.js
+//
+//  Service for showing modal dialogs.
+
+/***** JSLint Config *****/
+/*global angular  */
+(function() {
+
+  'use strict';
+
+  var module = angular.module('angularModalService', []);
+
+  module.factory('ModalService', ['$document', '$compile', '$controller', '$http', '$rootScope', '$q', '$templateCache',
+    function($document, $compile, $controller, $http, $rootScope, $q, $templateCache) {
+
+    //  Get the body of the document, we'll add the modal to this.
+    var body = $document.find('body');
+
+    function ModalService() {
+
+      var self = this;
+
+      //  Returns a promise which gets the template, either
+      //  from the template parameter or via a request to the
+      //  template url parameter.
+      var getTemplate = function(template, templateUrl) {
+        var deferred = $q.defer();
+        if(template) {
+          deferred.resolve(template);
+        } else if(templateUrl) {
+          //  Get the template, using the $templateCache.
+          $http.get(templateUrl, {cache: $templateCache})
+            .then(function(result) {
+              deferred.resolve(result.data);
+            }, function(error) {
+              deferred.reject(error);
+            });
+        } else {
+          deferred.reject("No template or templateUrl has been specified.");
+        }
+        return deferred.promise;
+      };
+
+      self.showModal = function(options) {
+
+        //  Create a deferred we'll resolve when the modal is ready.
+        var deferred = $q.defer();
+
+        //  Validate the input parameters.
+        var controllerName = options.controller;
+        if(!controllerName) {
+          deferred.reject("No controller has been specified.");
+          return deferred.promise;
+        }
+
+        //  Get the actual html of the template.
+        getTemplate(options.template, options.templateUrl)
+          .then(function(template) {
+
+            //  Create a new scope for the modal.
+            var modalScope = $rootScope.$new();
+
+            //  Create the inputs object to the controller - this will include
+            //  the scope, as well as all inputs provided.
+            //  We will also create a deferred that is resolved with a provided
+            //  close function. The controller can then call 'close(result)'.
+            //  The controller can also provide a delay for closing - this is
+            //  helpful if there are closing animations which must finish first.
+            var closeDeferred = $q.defer();
+            var inputs = {
+              $scope: modalScope,
+              close: function(result, delay) {
+                if(delay === undefined || delay === null) delay = 0;
+                window.setTimeout(function() {
+                  //  Resolve the 'close' promise.
+                  closeDeferred.resolve(result);
+
+                  //  We can now clean up the scope and remove the element from the DOM.
+                  modalScope.$destroy();
+                  modalElement.remove();
+
+                  //  Unless we null out all of these objects we seem to suffer
+                  //  from memory leaks, if anyone can explain why then I'd
+                  //  be very interested to know.
+                  inputs.close = null;
+                  deferred = null;
+                  closeDeferred = null;
+                  modal = null;
+                  inputs = null;
+                  modalElement = null;
+                  modalScope = null;
+                }, delay);
+              }
+            };
+
+            //  If we have provided any inputs, pass them to the controller.
+            if(options.inputs) angular.extend(inputs, options.inputs);
+
+            //  Compile then link the template element, building the actual element.
+            //  Set the $element on the inputs so that it can be injected if required.
+            var linkFn = $compile(template);
+            var modalElement = linkFn(modalScope);
+            inputs.$element = modalElement;
+
+            //  Create the controller, explicitly specifying the scope to use.
+            var modalController = $controller(options.controller, inputs);
+
+            if(options.controllerAs){
+              modalScope[options.controllerAs] = modalController ;
+            }
+            //  Finally, append the modal to the dom.
+            if (options.appendElement) {
+              // append to custom append element
+              options.appendElement.append(modalElement);
+            } else {
+              // append to body when no custom append element is specified
+              body.append(modalElement);
+            }
+
+            //  We now have a modal object...
+            var modal = {
+              controller: modalController,
+              scope: modalScope,
+              element: modalElement,
+              close: closeDeferred.promise
+            };
+
+            //  ...which is passed to the caller via the promise.
+            deferred.resolve(modal);
+
+          })
+          .then(null, function(error) { // 'catch' doesn't work in IE8.
+            deferred.reject(error);
+          });
+
+        return deferred.promise;
+      };
+
+    }
+
+    return new ModalService();
+  }]);
+
+}());
+
+},{}],2:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.17
@@ -4526,7 +4672,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.9
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -34184,17 +34330,225 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":2}],4:[function(require,module,exports){
+},{"./angular":3}],5:[function(require,module,exports){
+'use strict';
+
+// Generated by CoffeeScript 1.4.0
+(function () {
+  var $;
+
+  $ = window.jQuery || window.Zepto || window.$;
+
+  $.fn.fancySelect = function (opts) {
+    var isiOS, settings;
+    if (opts == null) {
+      opts = {};
+    }
+    settings = $.extend({
+      forceiOS: false,
+      includeBlank: false,
+      optionTemplate: function optionTemplate(optionEl) {
+        return optionEl.text();
+      },
+      triggerTemplate: function triggerTemplate(optionEl) {
+        return optionEl.text();
+      }
+    }, opts);
+    isiOS = !!navigator.userAgent.match(/iP(hone|od|ad)/i);
+    return this.each(function () {
+      var copyOptionsToList, disabled, options, sel, trigger, updateTriggerText, wrapper;
+      sel = $(this);
+      if (sel.hasClass('fancified') || sel[0].tagName !== 'SELECT') {
+        return;
+      }
+      sel.addClass('fancified');
+      sel.css({
+        width: 1,
+        height: 1,
+        display: 'block',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        opacity: 0
+      });
+      sel.wrap('<div class="fancy-select">');
+      wrapper = sel.parent();
+      if (sel.data('class')) {
+        wrapper.addClass(sel.data('class'));
+      }
+      wrapper.append('<div class="trigger">');
+      if (!(isiOS && !settings.forceiOS)) {
+        wrapper.append('<ul class="options">');
+      }
+      trigger = wrapper.find('.trigger');
+      options = wrapper.find('.options');
+      disabled = sel.prop('disabled');
+      if (disabled) {
+        wrapper.addClass('disabled');
+      }
+      updateTriggerText = function updateTriggerText() {
+        var triggerHtml;
+        triggerHtml = settings.triggerTemplate(sel.find(':selected'));
+        return trigger.html(triggerHtml);
+      };
+      sel.on('blur.fs', function () {
+        if (trigger.hasClass('open')) {
+          return setTimeout(function () {
+            return trigger.trigger('close.fs');
+          }, 120);
+        }
+      });
+      trigger.on('close.fs', function () {
+        trigger.removeClass('open');
+        return options.removeClass('open');
+      });
+      trigger.on('click.fs', function () {
+        var offParent, parent;
+        if (!disabled) {
+          trigger.toggleClass('open');
+          if (isiOS && !settings.forceiOS) {
+            if (trigger.hasClass('open')) {
+              return sel.focus();
+            }
+          } else {
+            if (trigger.hasClass('open')) {
+              parent = trigger.parent();
+              offParent = parent.offsetParent();
+              if (parent.offset().top + parent.outerHeight() + options.outerHeight() + 20 > $(window).height() + $(window).scrollTop()) {
+                options.addClass('overflowing');
+              } else {
+                options.removeClass('overflowing');
+              }
+            }
+            options.toggleClass('open');
+            if (!isiOS) {
+              return sel.focus();
+            }
+          }
+        }
+      });
+      sel.on('enable', function () {
+        sel.prop('disabled', false);
+        wrapper.removeClass('disabled');
+        disabled = false;
+        return copyOptionsToList();
+      });
+      sel.on('disable', function () {
+        sel.prop('disabled', true);
+        wrapper.addClass('disabled');
+        return disabled = true;
+      });
+      sel.on('change.fs', function (e) {
+        if (e.originalEvent && e.originalEvent.isTrusted) {
+          return e.stopPropagation();
+        } else {
+          return updateTriggerText();
+        }
+      });
+      sel.on('keydown', function (e) {
+        var hovered, newHovered, w;
+        w = e.which;
+        hovered = options.find('.hover');
+        hovered.removeClass('hover');
+        if (!options.hasClass('open')) {
+          if (w === 13 || w === 32 || w === 38 || w === 40) {
+            e.preventDefault();
+            return trigger.trigger('click.fs');
+          }
+        } else {
+          if (w === 38) {
+            e.preventDefault();
+            if (hovered.length && hovered.index() > 0) {
+              hovered.prev().addClass('hover');
+            } else {
+              options.find('li:last-child').addClass('hover');
+            }
+          } else if (w === 40) {
+            e.preventDefault();
+            if (hovered.length && hovered.index() < options.find('li').length - 1) {
+              hovered.next().addClass('hover');
+            } else {
+              options.find('li:first-child').addClass('hover');
+            }
+          } else if (w === 27) {
+            e.preventDefault();
+            trigger.trigger('click.fs');
+          } else if (w === 13 || w === 32) {
+            e.preventDefault();
+            hovered.trigger('mousedown.fs');
+          } else if (w === 9) {
+            if (trigger.hasClass('open')) {
+              trigger.trigger('close.fs');
+            }
+          }
+          newHovered = options.find('.hover');
+          if (newHovered.length) {
+            options.scrollTop(0);
+            return options.scrollTop(newHovered.position().top - 12);
+          }
+        }
+      });
+      options.on('mousedown.fs', 'li', function (e) {
+        var clicked;
+        clicked = $(this);
+        sel.val(clicked.data('raw-value'));
+        if (!isiOS) {
+          sel.trigger('blur.fs').trigger('focus.fs');
+        }
+        options.find('.selected').removeClass('selected');
+        clicked.addClass('selected');
+        trigger.addClass('selected');
+        return sel.val(clicked.data('raw-value')).trigger('change.fs').trigger('blur.fs').trigger('focus.fs');
+      });
+      options.on('mouseenter.fs', 'li', function () {
+        var hovered, nowHovered;
+        nowHovered = $(this);
+        hovered = options.find('.hover');
+        hovered.removeClass('hover');
+        return nowHovered.addClass('hover');
+      });
+      options.on('mouseleave.fs', 'li', function () {
+        return options.find('.hover').removeClass('hover');
+      });
+      copyOptionsToList = function copyOptionsToList() {
+        var selOpts;
+        updateTriggerText();
+        if (isiOS && !settings.forceiOS) {
+          return;
+        }
+        selOpts = sel.find('option');
+        return sel.find('option').each(function (i, opt) {
+          var optHtml;
+          opt = $(opt);
+          if (!opt.prop('disabled') && (opt.val() || settings.includeBlank)) {
+            optHtml = settings.optionTemplate(opt);
+            if (opt.prop('selected')) {
+              return options.append("<li data-raw-value=\"" + opt.val() + "\" class=\"selected\">" + optHtml + "</li>");
+            } else {
+              return options.append("<li data-raw-value=\"" + opt.val() + "\">" + optHtml + "</li>");
+            }
+          }
+        });
+      };
+      sel.on('update.fs', function () {
+        wrapper.find('.options').empty();
+        return copyOptionsToList();
+      });
+      return copyOptionsToList();
+    });
+  };
+}).call(undefined);
 "use strict";
 
 require('angular');
 require('angular-ui-router');
+require('angular-modal-service');
 
-var controllerArray = ["ui.router"];
+var controllerArray = ["ui.router", "angularModalService"];
 
 var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
 
@@ -34272,6 +34626,16 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
 
   $rootScope.curUser = null;
 });
+'use strict';
+
+moviePitchApp.controller('MainController', ['$scope', 'ModalService', function ($scope, ModalService) {
+  $scope.showPitchModal = function () {
+    ModalService.showModal({
+      controller: function controller($scope) {},
+      templateUrl: "src/modals/pitch-modal/pitch-modal.html"
+    }).then(function (modal) {});
+  };
+}]);
 "use strict";
 
 moviePitchApp.factory('adminFactory', function ($http) {
@@ -34726,22 +35090,64 @@ moviePitchApp.directive('pitchBox', function () {
         angular.element(selectGenre).remove();
       });
     },
-    restrict: "A",
-    templateUrl: "src/components/checkout/pitch-box.html"
+    restrict: "A"
+    // templateUrl: "src/components/checkout/pitch-box.html"
   };
 });
 "use strict";
 
-moviePitchApp.directive('contactUsForm', function (emailFactory) {
+moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
       $scope.data = {
-        name: null,
-        email: null,
+        name: "",
+        email: "",
         msgSubject: "General",
-        message: null,
-        subjects: ["General", "Billing", "Sales", "Support"]
+        message: "",
+        subjects: ["General", "Billing", "Sales", "Support"],
+        errors: {
+          email: true,
+          username: true,
+          message: true
+        }
+      };
 
+      $scope.btnState = "btn--inactive";
+
+      $scope.btnStateChange = function () {
+        console.log($scope.data.errors);
+        if ($scope.data.errors.email === true || $scope.data.errors.username === true || $scope.data.errors.message === true) {
+          $scope.btnState = "btn--inactive";
+        } else {
+          $scope.btnState = "";
+        }
+      };
+
+      $scope.validateName = function () {
+        console.log('validating name');
+        if ($scope.data.name === "") {
+          $scope.data.errors.username = true;
+        } else {
+          $scope.data.errors.username = false;
+        }
+      };
+
+      $scope.validateEmail = function () {
+        console.log('validating email');
+        emailFactory.validateEmail($scope.data.email).then(function (resp) {
+          $scope.data.errors.email = false;
+        }, function (err) {
+          $scope.data.errors.email = true;
+        });
+      };
+
+      $scope.validateMsg = function () {
+        console.log('validating message');
+        if ($scope.data.name === "") {
+          $scope.data.errors.message = true;
+        } else {
+          $scope.data.errors.message = false;
+        }
       };
 
       var clearErrors = function clearErrors() {
@@ -34754,35 +35160,122 @@ moviePitchApp.directive('contactUsForm', function (emailFactory) {
         $scope.data.email = null;
         $scope.data.message = null;
         $scope.data.msgSubject = "General";
+        $scope.btnState = "btn--inactive";
       };
 
       $scope.submitContactForm = function () {
-        clearErrors();
-
-        emailFactory.validateEmail($scope.data.email).then(function (resp) {
-          if ($scope.data.name === "" || $scope.data.name === null || $scope.data.email === "" || $scope.data.email === null || $scope.data.msgSubject === "" || $scope.data.msgSubject === null || $scope.data.message === "" || $scope.data.message === null) {
+        if ($scope.btnState === "btn--inactive") {
+          console.log('inactive');
+        } else {
+          clearErrors();
+          emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
+            clearErrors();
+            clearFields();
+            $scope.submitSuccess = "show-alert";
+            $scope.successText = "Success! Your message has been submitted.";
+            $timeout(function () {
+              $scope.submitSuccess = "";
+              $scope.successText = "";
+            }, 4000);
+            // console.log(resp);
+          }, function (err) {
+            $scope.errorText = "An error has occurred. Your message was not sent.";
             $scope.messageError = "show-alert";
-            $scope.errorText = "Please fill out each field before submitting.";
-          } else {
-            emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
-              clearErrors();
-              clearFields();
-              $scope.submitSuccess = "show-alert";
-              $scope.successText = "Success! Your message has been submitted.";
-              // console.log(resp);
-            }, function (err) {
-              $scope.errorText = "An error has occurred. Your message was not sent.";
-              $scope.messageError = "show-alert";
-            });
-          }
-        }, function (err) {
-          $scope.messageError = "show-alert";
-          $scope.errorText = "Please enter a valid email address.";
-        });
+          });
+          console.log($scope.data);
+        }
+
+        // emailFactory.validateEmail($scope.data.email)
+        //   .then(
+        //     function(resp){
+        //       if(
+        //         $scope.data.name === "" ||
+        //         $scope.data.name === null ||
+        //         $scope.data.email === "" ||
+        //         $scope.data.email === null ||
+        //         $scope.data.msgSubject === "" ||
+        //         $scope.data.msgSubject === null ||
+        //         $scope.data.message === "" ||
+        //         $scope.data.message === null
+        //       ){
+        //         $scope.messageError = "show-alert";
+        //         $scope.errorText = "Please fill out each field before submitting.";
+        //       }
+        //       else {
+        //         emailFactory
+        //           .sendContactUsMessage(
+        //             $scope.data.name,
+        //             $scope.data.email,
+        //             $scope.data.msgSubject,
+        //             $scope.data.message
+        //           )
+        //           .then(
+        //             function(resp){
+        //               clearErrors();
+        //               clearFields();
+        //               $scope.submitSuccess = "show-alert";
+        //               $scope.successText = "Success! Your message has been submitted.";
+        //               // console.log(resp);
+        //             },
+        //             function(err){
+        //               $scope.errorText = "An error has occurred. Your message was not sent.";
+        //               $scope.messageError = "show-alert";
+        //             }
+        //           )
+        //       }
+        //     },
+        //     function(err){
+        //       $scope.messageError = "show-alert";
+        //       $scope.errorText = "Please enter a valid email address.";
+        //     }
+        //   );
       };
+    },
+    link: function link(scope, el, attrs) {
+      var $select = $('#contact-subject');
+
+      function selectReady() {
+        var numOptions = $select.find('option').length;
+
+        if (numOptions > 1) {
+          $select.fancySelect();
+        } else {
+          $timeout(selectReady, 75);
+        }
+      }
+
+      // The fancySelect function runs before the page
+      // is fully loaded, hence the timeout function
+      selectReady();
     },
     restrict: "A",
     templateUrl: "src/components/contact-us-form/contact-us-form.html"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
   };
 });
 'use strict';
@@ -35008,6 +35501,50 @@ moviePitchApp.directive('signup', function () {
 });
 "use strict";
 
+moviePitchApp.directive('successCarousel', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.index = 1;
+
+      $scope.stories = [{
+        name: "Emily Lloyd",
+        text: "A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”"
+      }, {
+        name: "David Simon",
+        text: "I brought my original idea ‘The High School Security Tapes’ to Bob. He not only sold it to DreamWorks, he also made sure I got to write the screenplay. Since then, he sold another idea with Katherine Heigl to Fox 2000 and another with director Todd Phillips (THE HANGOVER) to Warner Brothers."
+      }, {
+        name: "Tom Newman",
+        text: "I was living in London when I heard about Bob Kosberg. I sent him a one page outline called ‘The Beauty Contest.’ Within one week, Bob had attached Meg Ryan to star and sold the project to New Line."
+      }, {
+        name: "Steve List",
+        text: "I attended one of Bob’s pitch events. I literally pitched Bob a thirty second story while we walked through the lobby. Bob had Paramount and Fox interested in buying my pitch and soon we had Drew Barrymore attached and I began writing the script at Fox Studios. I now have a writing career in Hollywood and it all started with Bob; he believed in my project and set it up at a studio."
+      }];
+
+      $scope.length = $scope.stories.length;
+      $scope.carouselClass = "test";
+
+      $scope.moveCarousel = function (dir) {
+        var curIndex = $scope.index;
+        var maxLength = $scope.length;
+        var integer = dir;
+
+        if (dir === 1 && curIndex === maxLength) {
+          $scope.index = 1;
+        } else if (dir === -1 && curIndex === 1) {
+          $scope.index = maxLength;
+        } else {
+          $scope.index = $scope.index + dir;
+        }
+
+        $scope.carouselClass = "carousel-" + $scope.index;
+      };
+    },
+    restrict: "A",
+    templateUrl: "src/components/success-carousel/success-carousel.html"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('userPitches', function () {
   return {
     controller: function controller($scope, userFactory) {
@@ -35033,4 +35570,4 @@ moviePitchApp.directive('userPitches', function () {
     templateUrl: "src/components/user-pitches/user-pitches.html"
   };
 });
-},{"angular":3,"angular-ui-router":1}]},{},[4]);
+},{"angular":4,"angular-modal-service":1,"angular-ui-router":2}]},{},[5]);
