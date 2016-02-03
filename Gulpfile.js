@@ -14,6 +14,7 @@ const psi         = require('psi');
 const imagemin    = require('gulp-imagemin');
 const pngquant    = require('imagemin-pngquant');
 const htmlmin     = require('gulp-htmlmin');
+const runSequence = require('run-sequence');
 
 const localSite = 'http://moviepitchapp.herokuapp.com';
 
@@ -44,7 +45,7 @@ const paths = {
 gulp.task('watch', function(){
   gulp.watch(paths.html, ['min-html']);
   gulp.watch(paths.stylesheets, ['sass']);
-  gulp.watch(paths.js, ['scripts', 'browserify']);
+  gulp.watch(paths.js, ['scripts', 'browserify', 'min-scripts']);
   gulp.watch(paths.images, ['images']);
 });
 
@@ -96,7 +97,7 @@ gulp.task('vendor-build', function(){
   return gulp.src(paths.vendor)
   .pipe(concat('vendor.js'))
   .pipe(uglify({
-    mangle: false
+    mangle: true
   }))
   .pipe(gulp.dest('./public/dist/js'));
 });
@@ -110,10 +111,35 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest('./public/dist/js'));
 });
 
+gulp.task('scripts-sequenced-watch', function(){
+  runSequence(
+    ['vendor', 'scripts'],
+    'browserify',
+    'min-scripts',
+    'watch'
+  );
+});
+
+gulp.task('scripts-sequenced', function(){
+  runSequence(
+    ['vendor-build', 'scripts'],
+    'browserify',
+    'min-scripts'
+  );
+});
+
+gulp.task('min-scripts', function(){
+  return gulp.src('./public/dist/js/bundled-main.js')
+    .pipe(uglify({
+      mangle: false
+    }))
+    .pipe(gulp.dest('./public/dist/js'));
+});
+
 gulp.task('min-html', function(){
   return gulp.src('./public/src/**/*.html')
     .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('./public/dist'))
+    .pipe(gulp.dest('./public/dist'));
 });
 
 // Please feel free to use the `nokey` option to try out PageSpeed
@@ -143,6 +169,6 @@ gulp.task('desktop', function () {
     });
 });
 
-gulp.task('default', ['min-html', 'images', 'vendor', 'scripts', 'browserify', 'watch']);
+gulp.task('default', ['min-html', 'images', 'scripts-sequenced-watch']);
 
-gulp.task('build', ['min-html', 'images', 'sass-build', 'vendor-build', 'scripts', 'browserify']);
+gulp.task('build', ['min-html', 'images', 'sass-build', 'scripts-sequenced']);
