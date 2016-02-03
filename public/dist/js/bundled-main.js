@@ -33879,7 +33879,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 
     ModalService.showModal({
       controller: "PitchModalController",
-      templateUrl: "src/modals/pitch-modal/pitch-modal.html"
+      templateUrl: "dist/modals/pitch-modal/pitch-modal.html"
     }).then(function (modal) {
       populateFancySelect('#select-genre');
       closeModalTasks(modal);
@@ -33891,7 +33891,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 
     ModalService.showModal({
       controller: "CustomModalController",
-      templateUrl: "src/modals/examples-modal/examples-modal.html"
+      templateUrl: "dist/modals/examples-modal/examples-modal.html"
     }).then(function (modal) {
       closeModalTasks(modal);
     });
@@ -34245,31 +34245,6 @@ moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
 });
 "use strict";
 
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "A"
-  };
-});
-"use strict";
-
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
@@ -34423,7 +34398,32 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
       selectReady();
     },
     restrict: "A",
-    templateUrl: "src/components/contact-us-form/contact-us-form.html"
+    templateUrl: "dist/components/contact-us-form/contact-us-form.html"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('adminPitchReview', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "A"
   };
 });
 'use strict';
@@ -34479,7 +34479,7 @@ moviePitchApp.directive('login', function () {
       };
     },
     restrict: "E",
-    templateUrl: "src/components/login/login.html"
+    templateUrl: "dist/components/login/login.html"
   };
 });
 "use strict";
@@ -34542,7 +34542,7 @@ moviePitchApp.directive('loginModal', function ($rootScope, $state) {
       };
     },
     restrict: "E",
-    templateUrl: 'src/components/login-modal/login-modal.html'
+    templateUrl: 'dist/components/login-modal/login-modal.html'
   };
 });
 "use strict";
@@ -34585,7 +34585,7 @@ moviePitchApp.directive('appHeader', function ($state) {
       // });
     },
     restrict: "A",
-    templateUrl: "src/components/nav/nav.html"
+    templateUrl: "dist/components/nav/nav.html"
   };
 });
 "use strict";
@@ -34670,34 +34670,7 @@ moviePitchApp.directive('signup', function () {
       };
     },
     restrict: "E",
-    templateUrl: "src/components/signup/signup.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('userPitches', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "E",
-    templateUrl: "src/components/user-pitches/user-pitches.html"
+    templateUrl: "dist/components/signup/signup.html"
   };
 });
 "use strict";
@@ -34741,7 +34714,34 @@ moviePitchApp.directive('successCarousel', function () {
       };
     },
     restrict: "A",
-    templateUrl: "src/components/success-carousel/success-carousel.html"
+    templateUrl: "dist/components/success-carousel/success-carousel.html"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('userPitches', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "E",
+    templateUrl: "dist/components/user-pitches/user-pitches.html"
   };
 });
 "use strict";

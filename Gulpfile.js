@@ -11,8 +11,9 @@ const browserify  = require('browserify');
 const source      = require('vinyl-source-stream');
 const buffer      = require('vinyl-buffer');
 const psi         = require('psi');
-const imagemin = require('gulp-imagemin');
-const pngquant = require('imagemin-pngquant');
+const imagemin    = require('gulp-imagemin');
+const pngquant    = require('imagemin-pngquant');
+const htmlmin     = require('gulp-htmlmin');
 
 const localSite = 'http://moviepitchapp.herokuapp.com';
 
@@ -26,6 +27,7 @@ const paths = {
     "public/src/img/**/*.jpg",
     "public/src/img/**/*.jpeg"
   ],
+  html: "public/src/**/*.html",
   js: [
     "public/src/js/fancySelect.js",
     "public/src/js/index.js",
@@ -40,6 +42,7 @@ const paths = {
 }
 
 gulp.task('watch', function(){
+  gulp.watch(paths.html, ['min-html']);
   gulp.watch(paths.stylesheets, ['sass']);
   gulp.watch(paths.js, ['scripts', 'browserify']);
   gulp.watch(paths.images, ['images']);
@@ -107,6 +110,12 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest('./public/dist/js'));
 });
 
+gulp.task('min-html', function(){
+  return gulp.src('./public/src/**/*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('./public/dist'))
+});
+
 // Please feel free to use the `nokey` option to try out PageSpeed
 // Insights as part of your build process. For more frequent use,
 // we recommend registering for your own API key. For more info:
@@ -134,6 +143,6 @@ gulp.task('desktop', function () {
     });
 });
 
-gulp.task('default', ['images', 'vendor', 'scripts', 'browserify', 'watch']);
+gulp.task('default', ['min-html', 'images', 'vendor', 'scripts', 'browserify', 'watch']);
 
-gulp.task('build', ['images', 'sass-build', 'vendor-build', 'scripts', 'browserify']);
+gulp.task('build', ['min-html', 'images', 'sass-build', 'vendor-build', 'scripts', 'browserify']);

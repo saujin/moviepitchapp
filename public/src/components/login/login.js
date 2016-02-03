@@ -32,6 +32,6 @@ moviePitchApp.directive('login', function(){
       }
     },
     restrict: "E",
-    templateUrl: "src/components/login/login.html"
+    templateUrl: "dist/components/login/login.html"
   }
 });

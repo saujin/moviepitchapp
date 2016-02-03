@@ -92,6 +92,6 @@ moviePitchApp.directive('signup', function(){
       }
     },
     restrict: "E",
-    templateUrl: "src/components/signup/signup.html"
+    templateUrl: "dist/components/signup/signup.html"
   }
 });

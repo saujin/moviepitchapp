@@ -23,6 +23,6 @@ moviePitchApp.directive('userPitches', function(){
       ]
     },
     restrict: "E",
-    templateUrl: "src/components/user-pitches/user-pitches.html"
+    templateUrl: "dist/components/user-pitches/user-pitches.html"
   }
 });

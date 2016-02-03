@@ -57,6 +57,6 @@ moviePitchApp.directive('loginModal', function($rootScope, $state){
 
     },
     restrict: "E",
-    templateUrl: 'src/components/login-modal/login-modal.html'
+    templateUrl: 'dist/components/login-modal/login-modal.html'
   }
 })

@@ -42,6 +42,6 @@ moviePitchApp.directive('successCarousel', function(){
       }
     },
     restrict: "A",
-    templateUrl: "src/components/success-carousel/success-carousel.html"
+    templateUrl: "dist/components/success-carousel/success-carousel.html"
   }
 })

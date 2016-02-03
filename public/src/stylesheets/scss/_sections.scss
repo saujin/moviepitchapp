@@ -12,12 +12,6 @@
 }
 
 .section--regular {
-
-  .section-title {
-
-  }
-
-
   .section-content {
     max-width: 940px;
   }
@@ -25,9 +19,7 @@
 .section-vertical {
   align-items: center;
 }
-.section-content--centered {
 
-}
 // Specific Sections
 .section--hero {
   background-image: url(../img/hollywood-bg.jpg);
@@ -45,6 +37,7 @@
   	display: block;
     left: 0;
     height: 5vw;
+    max-width: 100%;
     position: absolute;
   	width: 100vw;
   }

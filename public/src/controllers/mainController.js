@@ -46,7 +46,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 
       ModalService.showModal({
         controller: "PitchModalController",
-        templateUrl: "src/modals/pitch-modal/pitch-modal.html"
+        templateUrl: "dist/modals/pitch-modal/pitch-modal.html"
       })
         .then(function(modal) {
           populateFancySelect('#select-genre');
@@ -61,7 +61,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 
       ModalService.showModal({
           controller: "CustomModalController",
-          templateUrl: "src/modals/examples-modal/examples-modal.html"
+          templateUrl: "dist/modals/examples-modal/examples-modal.html"
         })
         .then(function(modal) {
           closeModalTasks(modal);

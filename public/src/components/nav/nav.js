@@ -40,6 +40,6 @@ moviePitchApp.directive('appHeader', function($state){
       // });
     },
     restrict: "A",
-    templateUrl: "src/components/nav/nav.html"
+    templateUrl: "dist/components/nav/nav.html"
   }
 });

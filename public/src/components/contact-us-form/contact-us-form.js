@@ -173,6 +173,6 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
 
     },
     restrict: "A",
-    templateUrl: "src/components/contact-us-form/contact-us-form.html"
+    templateUrl: "dist/components/contact-us-form/contact-us-form.html"
   }
 });
