@@ -10,6 +10,9 @@ const babel       = require('gulp-babel');
 const browserify  = require('browserify');
 const source      = require('vinyl-source-stream');
 const buffer      = require('vinyl-buffer');
+const psi         = require('psi');
+
+const localSite = 'http://moviepitchapp.herokuapp.com';
 
 const paths = {
   vendor: [
@@ -82,6 +85,35 @@ gulp.task('scripts', function(){
     //   mangle: false
     // }))
     .pipe(gulp.dest('./public/dist/js'));
+});
+
+
+
+// Please feel free to use the `nokey` option to try out PageSpeed
+// Insights as part of your build process. For more frequent use,
+// we recommend registering for your own API key. For more info:
+// https://developers.google.com/speed/docs/insights/v2/getting-started
+
+gulp.task('mobile', function () {
+    return psi(localSite, {
+        // key: key
+        nokey: 'true',
+        strategy: 'mobile',
+    }).then(function (data) {
+        console.log('Speed score: ' + data.ruleGroups.SPEED.score);
+        console.log('Usability score: ' + data.ruleGroups.USABILITY.score);
+    });
+});
+
+gulp.task('desktop', function () {
+    return psi(localSite, {
+        nokey: 'true',
+        // key: key,
+        strategy: 'desktop',
+    }).then(function (data) {
+        console.log('Speed score: ' + data.ruleGroups.SPEED.score);
+        console.log(data.pageStats);
+    });
 });
 
 gulp.task('default', ['images', 'vendor', 'scripts', 'browserify', 'watch']);

@@ -96,6 +96,11 @@ div.fancy-select.disabled {
 	background: $off-white;
 }
 
+@media all and (max-width: $tabletMax){
+	.trigger {
+		padding: 10px 24px 9px 7px;
+	}
+}
 @media all and (min-width: $browserMin){
 	.trigger {
 		padding: 10px 24px 9px 9px;
