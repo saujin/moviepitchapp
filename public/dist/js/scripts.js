@@ -704,6 +704,31 @@ moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
 });
 "use strict";
 
+moviePitchApp.directive('adminPitchReview', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "A"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
@@ -860,31 +885,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     templateUrl: "src/components/contact-us-form/contact-us-form.html"
   };
 });
-"use strict";
-
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "A"
-  };
-});
 'use strict';
 
 moviePitchApp.directive('labelWrapper', function () {
@@ -939,49 +939,6 @@ moviePitchApp.directive('login', function () {
     },
     restrict: "E",
     templateUrl: "src/components/login/login.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('appHeader', function ($state) {
-  return {
-    controller: function controller($scope, userFactory) {
-      $scope.menuToggleStatus = "menu-closed";
-      $scope.currentLogAction = "show-login";
-
-      $scope.toggleMenu = function () {
-        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
-      };
-
-      $scope.$on('login-update', function () {
-        $scope.currentLogAction = "show-logout";
-      });
-
-      $scope.$on('logout-update', function () {
-        $scope.currentLogAction = "show-login";
-      });
-
-      $scope.logoutUser = function () {
-        userFactory.logoutUser().then(function (resp) {
-          console.log(resp);
-          $state.go('index');
-        }, function (err) {
-          console.log(err);
-        });
-      };
-
-      $scope.openLoginModal = function () {
-        // $('#login-modal').modal('show');
-      };
-    },
-
-    link: function link(scope, el, attrs) {
-      // $(el).find('.main-nav a').on('click', function(){
-      //   scope.toggleMenu();
-      // });
-    },
-    restrict: "A",
-    templateUrl: "src/components/nav/nav.html"
   };
 });
 "use strict";
@@ -1045,6 +1002,49 @@ moviePitchApp.directive('loginModal', function ($rootScope, $state) {
     },
     restrict: "E",
     templateUrl: 'src/components/login-modal/login-modal.html'
+  };
+});
+"use strict";
+
+moviePitchApp.directive('appHeader', function ($state) {
+  return {
+    controller: function controller($scope, userFactory) {
+      $scope.menuToggleStatus = "menu-closed";
+      $scope.currentLogAction = "show-login";
+
+      $scope.toggleMenu = function () {
+        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
+      };
+
+      $scope.$on('login-update', function () {
+        $scope.currentLogAction = "show-logout";
+      });
+
+      $scope.$on('logout-update', function () {
+        $scope.currentLogAction = "show-login";
+      });
+
+      $scope.logoutUser = function () {
+        userFactory.logoutUser().then(function (resp) {
+          console.log(resp);
+          $state.go('index');
+        }, function (err) {
+          console.log(err);
+        });
+      };
+
+      $scope.openLoginModal = function () {
+        // $('#login-modal').modal('show');
+      };
+    },
+
+    link: function link(scope, el, attrs) {
+      // $(el).find('.main-nav a').on('click', function(){
+      //   scope.toggleMenu();
+      // });
+    },
+    restrict: "A",
+    templateUrl: "src/components/nav/nav.html"
   };
 });
 "use strict";
@@ -1134,6 +1134,33 @@ moviePitchApp.directive('signup', function () {
 });
 "use strict";
 
+moviePitchApp.directive('userPitches', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "E",
+    templateUrl: "src/components/user-pitches/user-pitches.html"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('successCarousel', function () {
   return {
     controller: function controller($scope) {
@@ -1174,33 +1201,6 @@ moviePitchApp.directive('successCarousel', function () {
     },
     restrict: "A",
     templateUrl: "src/components/success-carousel/success-carousel.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('userPitches', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "E",
-    templateUrl: "src/components/user-pitches/user-pitches.html"
   };
 });
 "use strict";

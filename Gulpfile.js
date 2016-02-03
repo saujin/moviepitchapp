@@ -56,17 +56,6 @@ gulp.task('browserify', function(){
     .pipe(gulp.dest('./public/dist/js'))
 });
 
-gulp.task('browserify-build', function(){
-  return browserify('./public/dist/js/scripts.js')
-    .bundle()
-    .pipe(source('bundled-main.js'))
-    .pipe(buffer())
-    .pipe(uglify({
-      mangle: false
-    }))
-    .pipe(gulp.dest('./public/dist/js'))
-});
-
 gulp.task('sass', function(){
   return gulp.src('./public/src/stylesheets/scss/main.scss')
     .pipe(maps.init())
@@ -109,9 +98,6 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest('./public/dist/js'));
 });
 
-
-
-
 // Please feel free to use the `nokey` option to try out PageSpeed
 // Insights as part of your build process. For more frequent use,
 // we recommend registering for your own API key. For more info:
@@ -141,4 +127,4 @@ gulp.task('desktop', function () {
 
 gulp.task('default', ['images', 'vendor', 'scripts', 'browserify', 'watch']);
 
-gulp.task('build', ['images', 'sass-build', 'vendor-build', 'scripts', 'browserify-build']);
+gulp.task('build', ['images', 'sass-build', 'vendor-build', 'scripts', 'browserify']);
