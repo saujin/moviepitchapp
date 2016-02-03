@@ -26,7 +26,8 @@ const paths = {
     "public/src/js/index.js",
     "public/src/controllers/**/*.js",
     "public/src/factories/**/*.js",
-    "public/src/components/**/*.js"
+    "public/src/components/**/*.js",
+    "public/src/modals/**/*.js"
   ],
   stylesheets: [
     "public/src/stylesheets/scss/**/*.scss"

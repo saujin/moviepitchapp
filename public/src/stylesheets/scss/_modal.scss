@@ -29,12 +29,32 @@
   text-align: center;
 }
 
+ .pitch-modal {
+  .textarea-wrapper {
+    border-bottom: solid 1px $pale-grey;
+  }
+}
+
+.pitch-modal-terms {
+  padding: 20px 20px 40px 20px;
+  position: relative;
+
+  .validation-notice {
+    bottom: 15px;
+    color: $tomato;
+    left: 0;
+    font-size: .8rem;
+    left: 20px;
+    position: absolute;
+  }
+}
+
 @media all and (max-width: $tabletMax){
   .modal-bg{
     animation: slideIn 0.4s forwards;
     background: $white;
     overflow: scroll;
-    top: 70px;
+    top: 0px;
   }
 
   .modal-close-animation {
@@ -74,6 +94,12 @@
   button[type="submit"] {
     display: block;
     margin: 50px auto;
+  }
+
+  .pitch-modal-terms {
+    .validation-notice {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -131,25 +157,6 @@
     }
   }
 
-  .pitch-modal {
-    .textarea-wrapper {
-      border-bottom: solid 1px $pale-grey;
-    }
-  }
-
-  .pitch-modal-terms {
-    padding: 20px 20px 40px 20px;
-    position: relative;
-
-    .validation-notice {
-      bottom: 15px;
-      color: $tomato;
-      left: 0;
-      font-size: .8rem;
-      left: 20px;
-      position: absolute;
-    }
-  }
   .close-modal-btn {
     background: none;
     color: $white;

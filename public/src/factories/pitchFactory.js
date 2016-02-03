@@ -60,10 +60,10 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
       // console.log(pitch);
       var deferred = $q.defer();
 
+      console.log(pitch);
       if(
         pitch.userHasAcceptedTerms === true &&
         pitch.pitchText !== "" &&
-        pitch.pitchText !== null &&
         pitch.genre !== "Select Genre" &&
         pitch.genre !== ""
       ) {
@@ -77,8 +77,9 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
       }
 
       else if (
-        pitch.pitchText === "" || pitch.pitchText === null &&
-        pitch.genre === "" || pitch.genre === "Select Genre") {
+        pitch.pitchText === "" &&
+        pitch.userHasAcceptedTerms === false &&
+        pitch.genre === "Select Genre") {
           deferred.reject({
             status: "error",
             errorCode: 1000,
@@ -86,11 +87,11 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
           });
       }
 
-      else if(pitch.userHasAcceptedTerms === false){
+      else if (pitch.genre === "" || pitch.genre === "Select Genre"){
         deferred.reject({
           status: "error",
           errorCode: 1001,
-          msg: "Please accept the terms in order to continue."
+          msg: "Please select a genre."
         });
       }
 
@@ -98,29 +99,28 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
         deferred.reject({
           status: "error",
           errorCode: 1002,
-          msg: "Robert is good, but not good enough to sell a blank pitch!"
+          msg: "Please write your movie idea in the textarea."
         });
       }
 
-      else if (pitch.genre === "" || pitch.genre === "Select Genre"){
+      else if(pitch.userHasAcceptedTerms === false){
         deferred.reject({
           status: "error",
           errorCode: 1003,
-          msg: "What kind of movie is it? Please select a genre."
+          msg: "Please accept the terms in order to continue."
         });
       }
 
       else {
         deferred.reject({
           status: "error",
-          errorCode: 9999,
-          msg: "An unknown error has occurred.",
+          errorCode: 1010,
+          msg: "Something has gone wrong. Please refresh the page.",
         });
       }
 
       return deferred.promise;
     }
-
   };
 
   return factory;

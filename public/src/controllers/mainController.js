@@ -13,11 +13,6 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
       });
     }
 
-    function dismissModalTasks(result){
-      $('#modal-bg').addClass('modal-close-animation');
-      close('Modal Dismissed', 500);
-    }
-
     function populateFancySelect(id){
       let $select = $(id);
 
@@ -36,6 +31,16 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
       selectReady();
     }
 
+    $scope.scrollToLink = function(id){
+      let offset = $(id).offset().top;
+
+      $('html, body').animate({
+        scrollTop: offset
+      }, 500);
+
+      return false;
+    }
+
     $scope.showPitchModal = function() {
       openModalTasks();
 
@@ -44,10 +49,11 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
         templateUrl: "src/modals/pitch-modal/pitch-modal.html"
       })
         .then(function(modal) {
+          populateFancySelect('#select-genre');
           closeModalTasks(modal);
         });
 
-      populateFancySelect('#select-genre');
+
     };
 
     $scope.showExampleModal = function() {
@@ -65,9 +71,15 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 ]);
 
 moviePitchApp.controller('PitchModalController', ['$scope', 'close', function($scope, close) {
-  $scope.dismissModal = dismissModalTasks;
+  $scope.dismissModal = function(){
+    $('#modal-bg').addClass('modal-close-animation');
+    close('Modal Dismissed', 500);
+  }
 }]);
 
 moviePitchApp.controller('CustomModalController', ['$scope', 'close', function($scope, close) {
-  $scope.dismissModal = dismissModalTasks;
+  $scope.dismissModal = function(){
+    $('#modal-bg').addClass('modal-close-animation');
+    close('Modal Dismissed', 500);
+  }
 }])
