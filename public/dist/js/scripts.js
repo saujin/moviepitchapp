@@ -1134,33 +1134,6 @@ moviePitchApp.directive('signup', function () {
 });
 "use strict";
 
-moviePitchApp.directive('userPitches', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "E",
-    templateUrl: "src/components/user-pitches/user-pitches.html"
-  };
-});
-"use strict";
-
 moviePitchApp.directive('successCarousel', function () {
   return {
     controller: function controller($scope) {
@@ -1201,6 +1174,33 @@ moviePitchApp.directive('successCarousel', function () {
     },
     restrict: "A",
     templateUrl: "src/components/success-carousel/success-carousel.html"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('userPitches', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "E",
+    templateUrl: "src/components/user-pitches/user-pitches.html"
   };
 });
 "use strict";

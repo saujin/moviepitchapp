@@ -11,6 +11,8 @@ const browserify  = require('browserify');
 const source      = require('vinyl-source-stream');
 const buffer      = require('vinyl-buffer');
 const psi         = require('psi');
+const imagemin = require('gulp-imagemin');
+const pngquant = require('imagemin-pngquant');
 
 const localSite = 'http://moviepitchapp.herokuapp.com';
 
@@ -45,6 +47,13 @@ gulp.task('watch', function(){
 
 gulp.task('images', function(){
   return gulp.src('./public/src/img/**/*')
+    .pipe(imagemin({
+  			progressive: true,
+  			svgoPlugins: [{removeViewBox: false}],
+  			use: [pngquant({
+          quality: '80', speed: 5
+        })]
+  		}))
     .pipe(gulp.dest('./public/dist/img'));
 });
 
