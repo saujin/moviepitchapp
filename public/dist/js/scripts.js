@@ -291,12 +291,61 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
 });
 'use strict';
 
-moviePitchApp.controller('MainController', ['$scope', 'ModalService', function ($scope, ModalService) {
+moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout', function ($scope, ModalService, $timeout) {
   $scope.showPitchModal = function () {
+
     ModalService.showModal({
-      controller: function controller($scope) {},
+      controller: "PitchModalController",
       templateUrl: "src/modals/pitch-modal/pitch-modal.html"
-    }).then(function (modal) {});
+    }).then(function (modal) {
+      modal.close.then(function (result) {
+        console.log(result);
+      });
+
+      var $select = $('#select-genre');
+      console.log($select);
+
+      function selectReady() {
+        var numOptions = $select.find('option').length;
+
+        if (numOptions > 1) {
+          $select.fancySelect();
+        } else {
+          $timeout(selectReady, 50);
+        }
+      }
+
+      // The fancySelect function runs before the page
+      // is fully loaded, hence the timeout function
+      selectReady();
+    });
+  };
+
+  $scope.showExampleModal = function () {
+    $('.modal-close-animation').removeClass('modal-close-animation');
+
+    ModalService.showModal({
+      controller: "CustomModalController",
+      templateUrl: "src/modals/examples-modal/examples-modal.html"
+    }).then(function (modal) {
+      modal.close.then(function (result) {
+        console.log(result);
+      });
+    });
+  };
+}]);
+
+moviePitchApp.controller('PitchModalController', ['$scope', 'close', function ($scope, close) {
+  $scope.dismissModal = function (result) {
+    $('#modal-bg').addClass('modal-close-animation');
+    close('result 1', 500);
+  };
+}]);
+
+moviePitchApp.controller('CustomModalController', ['$scope', 'close', function ($scope, close) {
+  $scope.dismissModal = function (result) {
+    $('#modal-bg').addClass('modal-close-animation');
+    close('result 1', 500);
   };
 }]);
 "use strict";
@@ -658,15 +707,15 @@ moviePitchApp.directive('adminPitchReview', function () {
 });
 "use strict";
 
-moviePitchApp.directive('pitchBox', function () {
+moviePitchApp.directive('pitchBox', function ($timeout) {
   return {
     controller: function controller($scope, $q, $http, adminFactory, paymentFactory, pitchFactory) {
 
       // Populate an array of genres, and create some variables
       // for the ng-models to bind to
       $scope.data = {
-        genres: ["Select Genre", "Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"],
-        pitchGenre: "Select Genre",
+        genres: ["Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"],
+        pitchGenre: "Action",
         pitchText: null,
         termsAgree: false
       };
@@ -748,10 +797,11 @@ moviePitchApp.directive('pitchBox', function () {
       };
     },
     link: function link(scope, el, attrs) {
-      el.find('select').on('focus', function () {
-        var selectGenre = el.find('option')[0];
-        angular.element(selectGenre).remove();
-      });
+      // el.find('select').on('focus', function(){
+      //   const selectGenre = el.find('option')[0];
+      //   angular.element(selectGenre).remove();
+      // });
+
     },
     restrict: "A"
     // templateUrl: "src/components/checkout/pitch-box.html"
@@ -903,7 +953,7 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
         if (numOptions > 1) {
           $select.fancySelect();
         } else {
-          $timeout(selectReady, 75);
+          $timeout(selectReady, 50);
         }
       }
 
@@ -913,32 +963,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "src/components/contact-us-form/contact-us-form.html"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
   };
 });
 'use strict';
@@ -969,6 +993,32 @@ moviePitchApp.directive('login', function () {
     },
     restrict: "E",
     templateUrl: "src/components/login/login.html"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
   };
 });
 "use strict";

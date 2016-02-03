@@ -14,7 +14,7 @@
 .section--regular {
 
   .section-title {
-    
+
   }
 
 
@@ -53,9 +53,7 @@
   background: $tomato;
   padding: 60px 0;
 }
-.section--stories {
-  background-image: linear-gradient($tomato, $tomato 60%, $white 60%, $white);
-}
+
 .section--team {}
 .section--team .btn--action {
   margin-top: 100px;
@@ -90,7 +88,7 @@
   color: $silver;
   font-size: 1rem;
   line-height: 2;
-  margin-bottom: 30px;
+  margin-bottom: 1.75rem;
 }
 .team-text {
   font-size: 1.25rem;
@@ -136,10 +134,28 @@
   color: $indian-red;
   display: block;
   flex: 0 0 auto;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   text-align: center;
   text-decoration: underline;
   text-transform: uppercase;
   width: 100%;
+}
+
+@media all and (max-width: $tabletMax){
+  .section--hero {
+    min-height: 550px;
+  }
+  .flex-item {
+    flex: 1 1 100%;
+    padding: 0;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+@media all and (min-width: $browserMin){
+  .section--stories {
+    background-image: linear-gradient($tomato, $tomato 60%, $white 60%, $white);
+  }
 }

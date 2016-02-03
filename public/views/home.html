@@ -18,19 +18,19 @@
         <span class="flex-item-icon icon-pen"></span>
         <h3 class="flex-item-header">A great pitch doesn't have to be long</h3>
         <p class="flex-item-content">A sentence or two is all it takes. Aim for an intriguing idea that can be stated in a few words and is easily understood by all.</p>
-        <a href="#" class="flex-item-link">Examples</a>
+        <a href="" class="flex-item-link" ng-click="showExampleModal()">Examples</a>
       </div>
       <div class="flex-item">
         <span class="flex-item-icon icon-id"></span>
         <h3 class="flex-item-header">Real Hollywood Producers Review Your Pitch</h3>
         <p class="flex-item-content">Each pitch is reviewed by real Hollywood producers.</p>
-        <a href="#" class="flex-item-link">The Team</a>
+        <a href="#the-team" class="flex-item-link">The Team</a>
       </div>
       <div class="flex-item">
         <span class="flex-item-icon icon-thumbs"></span>
         <h3 class="flex-item-header">If Sold, You earn up to $50,000!</h3>
         <p class="flex-item-content">Our team will package and sell your idea to real studio executives and, if sold, we pay you the option fees.</p>
-        <a href="#" class="flex-item-link">Submit Your Pitch</a>
+        <a href="" ng-click="showPitchModal()" class="flex-item-link">Submit Your Pitch</a>
       </div>
     </div>
   </div>
@@ -40,8 +40,9 @@
   <div success-carousel class="section-content"></div>
 </section>
 
-<section class="section section-center section--team">
+<section class="section section-center section--team" id="the-team">
   <div class="section-content">
+    <h2 class="heading heading--section">The Team</h2>
     <div class="flex-container">
       <div class="flex-item flex-item--first">
         <div class="team-photo team-photo--bob"></div>
@@ -59,7 +60,7 @@
     </div>
 
     <div class="btn-container">
-      <button launch-modal class="btn btn--action">Submit Your Pitch</button>
+      <button class="btn btn--primary" ng-click="showPitchModal()" >Submit Your Pitch</button>
     </div>
   </div>
 </section>

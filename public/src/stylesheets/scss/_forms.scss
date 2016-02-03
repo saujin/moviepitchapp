@@ -6,15 +6,7 @@ textarea:hover {
 
 fieldset {
   border: none;
-  padding: 10px 20px;
-}
-
-.select-wrapper {
-
-}
-
-.textarea-wrapper {
-  padding: 20px;
+  padding: 10px;
 }
 
 textarea {
@@ -22,7 +14,7 @@ textarea {
   border-bottom: solid 1px $pale-grey;
   display: block;
   font-size: 1.25rem;
-  padding: 10px;
+  padding: 10px 0;
   resize: none;
   width: 100%;
 }
@@ -81,6 +73,14 @@ textarea {
 
 
 @media all and (min-width: $browserMin){
+  fieldset {
+    padding: 10px 20px;
+  }
+
+  .textarea-wrapper {
+    padding: 20px;
+  }
+
   .message-bubble {
     border-radius: 20px;
     box-shadow: 0 2px 50px rgba(0, 0, 0, 0.2);

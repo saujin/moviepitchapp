@@ -1,7 +1,5 @@
-<div pitch-box class="modal-bg">
-  <button class="btn close-modal-btn">
-    <i class="icon">X</i>
-  </button>
+<div pitch-box class="modal-bg" id="modal-bg">
+  <button class="btn close-modal-btn" ng-click="dismissModal()"></button>
 
   <div class="modal pitch-modal">
     <h2 class="modal-title">Submit Your Pitch</h2>
@@ -11,7 +9,7 @@
       </select>
     </fieldset>
     <fieldset class="textarea-wrapper">
-      <textarea ng-model="data.pitchText" class="form-control" id="pitch-text" rows="8" placeholder="Submit your pitch idea here. Individual pitches should be no more than one or two paragraphs. "></textarea>
+      <textarea ng-model="data.pitchText" class="form-control" id="pitch-text" rows="8" placeholder="Your pitch idea..."></textarea>
     </fieldset>
     <fieldset>
       <label>

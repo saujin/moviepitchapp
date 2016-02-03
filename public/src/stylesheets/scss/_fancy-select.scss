@@ -11,16 +11,12 @@ div.fancy-select.disabled {
 	color: $purplish-grey;
 	cursor: pointer;
 	overflow: hidden;
-	padding: 10px 24px 9px 9px;
+	padding: 10px 24px 9px 0px;
 	position: relative;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 
 	transition: all 240ms ease-out;
-}
-
-.trigger.selected {
-	// color: inherit;
 }
 
 .trigger:after {
@@ -98,4 +94,10 @@ div.fancy-select.disabled {
 
 .options li.selected {
 	background: $off-white;
+}
+
+@media all and (min-width: $browserMin){
+	.trigger {
+		padding: 10px 24px 9px 9px;
+	}
 }

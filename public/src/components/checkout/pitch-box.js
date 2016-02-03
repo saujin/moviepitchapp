@@ -1,4 +1,4 @@
-moviePitchApp.directive('pitchBox', function(){
+moviePitchApp.directive('pitchBox', function($timeout){
   return {
     controller: function($scope, $q, $http, adminFactory, paymentFactory, pitchFactory){
 
@@ -6,7 +6,6 @@ moviePitchApp.directive('pitchBox', function(){
       // for the ng-models to bind to
       $scope.data = {
         genres: [
-          "Select Genre",
           "Action",
           "Adventure",
           "Animated",
@@ -28,7 +27,7 @@ moviePitchApp.directive('pitchBox', function(){
           "Thriller",
           "Western"
         ],
-        pitchGenre: "Select Genre",
+        pitchGenre: "Action",
         pitchText: null,
         termsAgree: false
       }
@@ -118,10 +117,12 @@ moviePitchApp.directive('pitchBox', function(){
 
     },
     link: function(scope, el, attrs){
-      el.find('select').on('focus', function(){
-        const selectGenre = el.find('option')[0];
-        angular.element(selectGenre).remove();
-      });
+      // el.find('select').on('focus', function(){
+      //   const selectGenre = el.find('option')[0];
+      //   angular.element(selectGenre).remove();
+      // });
+
+
     },
     restrict: "A"
     // templateUrl: "src/components/checkout/pitch-box.html"

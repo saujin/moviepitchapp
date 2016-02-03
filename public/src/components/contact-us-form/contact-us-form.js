@@ -163,7 +163,7 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
         if(numOptions > 1){
           $select.fancySelect();
         } else {
-          $timeout(selectReady, 75);
+          $timeout(selectReady, 50);
         }
       }
 

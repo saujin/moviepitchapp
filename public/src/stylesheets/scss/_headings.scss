@@ -38,13 +38,17 @@
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 50px;
+  margin-bottom: 3rem;
   letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
 }
 
 @media all and (max-width: $tabletMax){
+  .heading--primary {
+    font-size: 2.5rem;
+  }
+
   .heading-title {
      font-size: 2.25rem;
      margin-top: 60px;
@@ -56,5 +60,9 @@
   .heading-title {
     font-size: 1.78rem;
     margin-top: 40px;
+  }
+
+  .heading-meta {
+    margin-bottom: 2rem;
   }
 }
