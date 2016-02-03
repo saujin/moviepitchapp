@@ -3,6 +3,14 @@
   display: flex;
 }
 
+.btn-container--center {
+  justify-content: center; 
+}
+
+.btn-container--padded {
+  margin: 100px 0;
+}
+
 .btn {
   border: none;
   border-radius: 4px;
@@ -52,43 +60,3 @@
   }
 }
 
-// .btn-action {
-//   background: $color-accent-0;
-//   border-radius: 10px;
-//   color: $white;
-//   cursor: pointer;
-//   display: block;
-//   font-weight: 300;
-//   margin: 3rem auto 0rem auto;
-//   padding: 1rem 1.5rem;
-//   text-align: center;
-//   text-transform: uppercase;
-//   transition: all 0.35s;
-//   width: 280px;
-//
-//   &:hover {
-//     background: $color-accent-1;
-//     color: $white;
-//   }
-// }
-//
-// .btn-primary {
-//   @extend .clear-outlines;
-//   background-color: $color-accent-0;
-//   border-color: $color-accent-0;
-//
-//   &:hover {
-//     background-color: $color-accent-1;
-//     border-color: $color-accent-1;
-//   }
-//
-//   &:focus,
-//   &:active {
-//     background-color: $color-accent-2;
-//     border-color: $color-accent-2;
-//   }
-// }
-//
-// [type="submit"]{
-//   float: right;
-// }

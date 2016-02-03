@@ -1,14 +1,14 @@
-<fieldset class="form-group">
-  <select class="form-control" id="select-genre" ng-model="data.pitchGenre">
+<fieldset class="">
+  <select class="" id="select-genre" ng-model="data.pitchGenre">
     <option ng-repeat="genre in data.genres" value="{{genre}}">{{genre}}</option>
   </select>
 </fieldset>
 
-<fieldset class="form-group form-group--tight">
+<fieldset>
   <textarea ng-model="data.pitchText" class="form-control" id="pitch-text" rows="8" placeholder="Submit your pitch idea here. Individual pitches should be no more than one or two paragraphs. "></textarea>
 </fieldset>
 
-<fieldset class="form-group form-group--tight">
+<fieldset>
   <label>
     <input ng-model="data.termsAgree" type="checkbox" value="">I have read and agree to the <a ui-sref="legal" target="_blank">terms</a> of this site
   </label>

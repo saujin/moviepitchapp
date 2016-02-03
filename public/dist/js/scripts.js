@@ -292,33 +292,53 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
 'use strict';
 
 moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout', function ($scope, ModalService, $timeout) {
+  $scope.isModalShown = "modal-hidden";
+
+  function openModalTasks() {
+    $('.modal-close-animation').removeClass('modal-close-animation');
+  }
+
+  function closeModalTasks(modal) {
+    $scope.isModalShown = "modal-shown";
+    modal.close.then(function (result) {
+      $scope.isModalShown = "modal-hidden";
+    });
+  }
+
+  function dismissModalTasks(result) {
+    $('#modal-bg').addClass('modal-close-animation');
+    close('Modal Dismissed', 500);
+  }
+
+  function populateFancySelect(id) {
+    var $select = $(id);
+
+    function selectReady() {
+      var numOptions = $select.find('option').length;
+
+      if (numOptions > 1) {
+        $select.fancySelect();
+      } else {
+        $timeout(selectReady, 50);
+      }
+    }
+
+    // The fancySelect function runs before the page
+    // is fully loaded, hence the timeout function
+    selectReady();
+  }
+
   $scope.showPitchModal = function () {
+    openModalTasks();
 
     ModalService.showModal({
       controller: "PitchModalController",
       templateUrl: "src/modals/pitch-modal/pitch-modal.html"
     }).then(function (modal) {
-      modal.close.then(function (result) {
-        console.log(result);
-      });
-
-      var $select = $('#select-genre');
-      console.log($select);
-
-      function selectReady() {
-        var numOptions = $select.find('option').length;
-
-        if (numOptions > 1) {
-          $select.fancySelect();
-        } else {
-          $timeout(selectReady, 50);
-        }
-      }
-
-      // The fancySelect function runs before the page
-      // is fully loaded, hence the timeout function
-      selectReady();
+      closeModalTasks(modal);
     });
+
+    populateFancySelect('#select-genre');
   };
 
   $scope.showExampleModal = function () {
@@ -328,25 +348,17 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
       controller: "CustomModalController",
       templateUrl: "src/modals/examples-modal/examples-modal.html"
     }).then(function (modal) {
-      modal.close.then(function (result) {
-        console.log(result);
-      });
+      closeModalTasks(modal);
     });
   };
 }]);
 
 moviePitchApp.controller('PitchModalController', ['$scope', 'close', function ($scope, close) {
-  $scope.dismissModal = function (result) {
-    $('#modal-bg').addClass('modal-close-animation');
-    close('result 1', 500);
-  };
+  $scope.dismissModal = dismissModalTasks;
 }]);
 
 moviePitchApp.controller('CustomModalController', ['$scope', 'close', function ($scope, close) {
-  $scope.dismissModal = function (result) {
-    $('#modal-bg').addClass('modal-close-animation');
-    close('result 1', 500);
-  };
+  $scope.dismissModal = dismissModalTasks;
 }]);
 "use strict";
 
@@ -707,108 +719,6 @@ moviePitchApp.directive('adminPitchReview', function () {
 });
 "use strict";
 
-moviePitchApp.directive('pitchBox', function ($timeout) {
-  return {
-    controller: function controller($scope, $q, $http, adminFactory, paymentFactory, pitchFactory) {
-
-      // Populate an array of genres, and create some variables
-      // for the ng-models to bind to
-      $scope.data = {
-        genres: ["Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"],
-        pitchGenre: "Action",
-        pitchText: null,
-        termsAgree: false
-      };
-
-      // Carve out a place for storing a submitted pitch
-      $scope.pitch = null;
-
-      // Set this property to configure alert messages displayed
-      // on validation failures
-      $scope.validationText = null;
-
-      // The Handler has some basic Stripe config and then calls the payment
-      // success function
-      $scope.handler = StripeCheckout.configure({
-        key: 'pk_test_XHkht0GMLQPrn2sYCXSFy4Fs',
-        // image: '/img/documentation/checkout/marketplace.png',
-        locale: 'auto',
-        token: function token(_token) {
-          // Update the pitch object with the payment token
-          $scope.pitch.token = _token;
-          $scope.pitch.submitterEmail = _token.email;
-
-          console.log($scope.pitch);
-          paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
-            debugger;
-            console.log(resp);
-            pitchFactory.submitPitch($scope.pitch).then(function (resp) {
-              console.log(resp);
-            }).catch(function (err) {
-              console.log(err);
-            });
-          }).catch(function (err) {
-            console.log(err);
-          });
-        }
-      });
-
-      // Run the handler when someone clicks 'submit'
-      $scope.submitPitch = function (ev) {
-
-        // Create a pitch object for validation
-        $scope.pitch = {
-          genre: $scope.data.pitchGenre,
-          pitchText: $scope.data.pitchText,
-          userHasAcceptedTerms: $scope.data.termsAgree
-        };
-
-        pitchFactory
-        // Validate the pitch object
-        .validatePitch($scope.pitch)
-        // .then(function(resp){
-        //   pitchFactory.lockPitch('56a92ab8bc55811100089d1a')
-        //     .then(function(resp){
-        //       console.log(resp);
-        //     })
-        //     .catch(function(err){
-        //       console.log(err.status);
-        //       console.log(err.statusText)
-        //       console.log(err.data);
-        //     });
-        // })
-        .then(function (resp) {
-          // If Pitch validates, build a pitch in $scope
-          $scope.validationText = "";
-          $scope.pitch = resp.pitch;
-
-          // Open the Stripe Checkout Handler
-          $scope.handler.open({
-            name: "MoviePitch.com",
-            description: "Pitch Submission",
-            amount: 200
-          });
-        }).catch(function (err) {
-          $scope.validationText = err.msg;
-          console.log(err);
-        });
-
-        ev.preventDefault();
-      };
-    },
-    link: function link(scope, el, attrs) {
-      // el.find('select').on('focus', function(){
-      //   const selectGenre = el.find('option')[0];
-      //   angular.element(selectGenre).remove();
-      // });
-
-    },
-    restrict: "A"
-    // templateUrl: "src/components/checkout/pitch-box.html"
-  };
-});
-"use strict";
-
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
@@ -965,6 +875,134 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     templateUrl: "src/components/contact-us-form/contact-us-form.html"
   };
 });
+"use strict";
+
+moviePitchApp.directive('pitchBox', function ($timeout) {
+  return {
+    controller: function controller($scope, $q, $http, adminFactory, paymentFactory, pitchFactory) {
+
+      // Populate an array of genres, and create some variables
+      // for the ng-models to bind to
+      $scope.data = {
+        genres: ["Action", "Adventure", "Animated", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Historical Fiction", "Horror", "Kids", "Mystery", "Political", "Religious", "Romance", "Romantic Comedy", "Satire", "Science Fiction", "Thriller", "Western"],
+        pitchGenre: "Action",
+        pitchText: null,
+        termsAgree: false
+      };
+
+      // Carve out a place for storing a submitted pitch
+      $scope.pitch = null;
+
+      // Set this property to configure alert messages displayed
+      // on validation failures
+      $scope.validationText = null;
+
+      // The Handler has some basic Stripe config and then calls the payment
+      // success function
+      $scope.handler = StripeCheckout.configure({
+        key: 'pk_test_XHkht0GMLQPrn2sYCXSFy4Fs',
+        // image: '/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function token(_token) {
+          // Update the pitch object with the payment token
+          $scope.pitch.token = _token;
+          $scope.pitch.submitterEmail = _token.email;
+
+          console.log($scope.pitch);
+          paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
+            debugger;
+            console.log(resp);
+            pitchFactory.submitPitch($scope.pitch).then(function (resp) {
+              console.log(resp);
+            }).catch(function (err) {
+              console.log(err);
+            });
+          }).catch(function (err) {
+            console.log(err);
+          });
+        }
+      });
+
+      // Run the handler when someone clicks 'submit'
+      $scope.submitPitch = function (ev) {
+
+        // Create a pitch object for validation
+        $scope.pitch = {
+          genre: $scope.data.pitchGenre,
+          pitchText: $scope.data.pitchText,
+          userHasAcceptedTerms: $scope.data.termsAgree
+        };
+
+        pitchFactory
+        // Validate the pitch object
+        .validatePitch($scope.pitch)
+        // .then(function(resp){
+        //   pitchFactory.lockPitch('56a92ab8bc55811100089d1a')
+        //     .then(function(resp){
+        //       console.log(resp);
+        //     })
+        //     .catch(function(err){
+        //       console.log(err.status);
+        //       console.log(err.statusText)
+        //       console.log(err.data);
+        //     });
+        // })
+        .then(function (resp) {
+          // If Pitch validates, build a pitch in $scope
+          $scope.validationText = "";
+          $scope.pitch = resp.pitch;
+
+          // Open the Stripe Checkout Handler
+          $scope.handler.open({
+            name: "MoviePitch.com",
+            description: "Pitch Submission",
+            amount: 200
+          });
+        }).catch(function (err) {
+          $scope.validationText = err.msg;
+          console.log(err);
+        });
+
+        ev.preventDefault();
+      };
+    },
+    link: function link(scope, el, attrs) {
+      // el.find('select').on('focus', function(){
+      //   const selectGenre = el.find('option')[0];
+      //   angular.element(selectGenre).remove();
+      // });
+
+    },
+    restrict: "A"
+    // templateUrl: "src/components/checkout/pitch-box.html"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
 'use strict';
 
 moviePitchApp.directive('login', function () {
@@ -993,32 +1031,6 @@ moviePitchApp.directive('login', function () {
     },
     restrict: "E",
     templateUrl: "src/components/login/login.html"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
   };
 });
 "use strict";

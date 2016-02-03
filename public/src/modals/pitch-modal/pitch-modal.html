@@ -3,20 +3,24 @@
 
   <div class="modal pitch-modal">
     <h2 class="modal-title">Submit Your Pitch</h2>
+
     <fieldset class="select-wrapper top-radiused">
       <select class="form-control" id="select-genre" ng-model="data.pitchGenre">
         <option ng-repeat="genre in data.genres" value="{{genre}}">{{genre}}</option>
       </select>
     </fieldset>
+
     <fieldset class="textarea-wrapper">
       <textarea ng-model="data.pitchText" class="form-control" id="pitch-text" rows="8" placeholder="Your pitch idea..."></textarea>
     </fieldset>
-    <fieldset>
+
+    <fieldset class="pitch-modal-terms">
       <label>
         <input type="checkbox">I have read and agree to the <a ui-sref="legal" class="inline-link" target="_blank">terms</a> of this site
       </label>
+       <span class="validation-notice">{{validationText}}</span>
     </fieldset>
-    <span class="validation-notice">{{validationText}}</span>
+
     <button type="submit" class="btn btn--primary" id="submit-pitch" ng-click="submitPitch($event)">Continue</button>
   </div>
 </div>
