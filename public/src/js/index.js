@@ -85,15 +85,15 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
   ])
   .run(function($rootScope){
 
-    $rootScope.$on('$stateChangeStart', function(event, toState){
-      let requireLogin = toState.data.requireLogin;
-
-      if(requireLogin === true && $rootScope.curUser === null){
-        event.preventDefault();
-        $('#login-modal').modal('show');
-        $rootScope.targetState = toState.name;
-      }
-    });
-
-    $rootScope.curUser = null;
+    // $rootScope.$on('$stateChangeStart', function(event, toState){
+    //   let requireLogin = toState.data.requireLogin;
+    //
+    //   if(requireLogin === true && $rootScope.curUser === null){
+    //     event.preventDefault();
+    //     $('#login-modal').modal('show');
+    //     $rootScope.targetState = toState.name;
+    //   }
+    // });
+    //
+    // $rootScope.curUser = null;
   });

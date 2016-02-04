@@ -20,8 +20,6 @@ const localSite = 'http://moviepitchapp.herokuapp.com';
 
 const paths = {
   vendor: [
-    "node_modules/jquery/dist/jquery.js",
-    // "node_modules/bootstrap/dist/js/bootstrap.js"
   ],
   images: [
     "public/src/img/**/*.png",
@@ -42,11 +40,10 @@ const paths = {
   ]
 }
 
-gulp.task('watch', function(){
-  gulp.watch(paths.html, ['min-html']);
-  gulp.watch(paths.stylesheets, ['sass']);
-  gulp.watch(paths.js, ['scripts', 'browserify', 'min-scripts']);
-  gulp.watch(paths.images, ['images']);
+gulp.task('min-html', function(){
+  return gulp.src('./public/src/**/*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('./public/dist'));
 });
 
 gulp.task('images', function(){
@@ -59,14 +56,6 @@ gulp.task('images', function(){
         })]
   		}))
     .pipe(gulp.dest('./public/dist/img'));
-});
-
-gulp.task('browserify', function(){
-  return browserify('./public/dist/js/scripts.js')
-    .bundle()
-    .pipe(source('bundled-main.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest('./public/dist/js'))
 });
 
 gulp.task('sass', function(){
@@ -87,9 +76,7 @@ gulp.task('sass-build', function(){
 
 gulp.task('vendor', function(){
   return gulp.src(paths.vendor)
-    // .pipe(maps.init())
     .pipe(concat('vendor.js'))
-    // .pipe(maps.write())
     .pipe(gulp.dest('./public/dist/js'));
 });
 
@@ -111,21 +98,12 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest('./public/dist/js'));
 });
 
-gulp.task('scripts-sequenced-watch', function(){
-  runSequence(
-    ['vendor', 'scripts'],
-    'browserify',
-    'min-scripts',
-    'watch'
-  );
-});
-
-gulp.task('scripts-sequenced', function(){
-  runSequence(
-    ['vendor-build', 'scripts'],
-    'browserify',
-    'min-scripts'
-  );
+gulp.task('browserify', function(){
+  return browserify('./public/dist/js/scripts.js')
+    .bundle()
+    .pipe(source('bundled-main.js'))
+    .pipe(buffer())
+    .pipe(gulp.dest('./public/dist/js'))
 });
 
 gulp.task('min-scripts', function(){
@@ -136,11 +114,30 @@ gulp.task('min-scripts', function(){
     .pipe(gulp.dest('./public/dist/js'));
 });
 
-gulp.task('min-html', function(){
-  return gulp.src('./public/src/**/*.html')
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('./public/dist'));
+
+gulp.task('watch', function(){
+  gulp.watch(paths.html, ['min-html']);
+  gulp.watch(paths.stylesheets, ['sass']);
+  gulp.watch(paths.js, ['scripts', 'browserify', 'min-scripts']);
+  gulp.watch(paths.images, ['images']);
 });
+
+gulp.task('scripts-sequenced-watch', function(){
+  runSequence(
+    'scripts',
+    'browserify',
+    'watch'
+  );
+});
+
+gulp.task('scripts-sequenced', function(){
+  runSequence(
+    'scripts',
+    'browserify',
+    'min-scripts'
+  );
+});
+
 
 // Please feel free to use the `nokey` option to try out PageSpeed
 // Insights as part of your build process. For more frequent use,
@@ -169,6 +166,6 @@ gulp.task('desktop', function () {
     });
 });
 
-gulp.task('default', ['min-html', 'images', 'scripts-sequenced-watch']);
+gulp.task('default', ['min-html', 'scripts-sequenced-watch']);
 
 gulp.task('build', ['min-html', 'images', 'sass-build', 'scripts-sequenced']);
