@@ -44,6 +44,11 @@ body {
   border-top-left-radius: 20px;
 }
 
+.firefox-flex-wrapper {
+  flex: 1 1 auto;
+  text-align: right;
+}
+
 @media all and (max-width: $tabletMax){
   html {
     font-size: 85%

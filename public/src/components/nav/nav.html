@@ -1,7 +1,9 @@
 <a class="nav-logo" ui-sref="index">
   <img class="nav-logo-img" src="dist/img/clean-logo-2x.png" alt="MoviePitch"/>
 </a>
-<button class="menu-toggle" aria-label="menu toggle" ng-click="toggleMenu()"></button>
+<div class="firefox-flex-wrapper">
+  <button class="menu-toggle" aria-label="menu toggle" ng-click="toggleMenu()"></button>
+</div>
 <nav class="main-nav {{menuToggleStatus}}" aria-label="Main Nav" role="menubar">
   <a class="main-nav-link" ui-sref="faq" ui-sref-active="main-nav-link--active" role="menuitem">FAQ</a>
   <a class="main-nav-link" ui-sref="legal" ui-sref-active="main-nav-link--active" role="menuitem">Legal</a>
