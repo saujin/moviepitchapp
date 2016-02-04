@@ -34776,23 +34776,33 @@ moviePitchApp.factory('adminFactory', function ($http) {
 });
 "use strict";
 
-moviePitchApp.factory('emailFactory', function ($q) {
+moviePitchApp.factory('emailFactory', function ($q, $http) {
+  var urlBase = "https://moviepitchapi.herokuapp.com";
+
   var factory = {
 
-    // Mock up sending a contact email
-    // https://nodemailer.com/
     sendContactUsMessage: function sendContactUsMessage(name, email, subject, msg) {
-      var deferred = $q.defer();
+      // let deferred = $q.defer();
 
-      deferred.resolve({
-        status: "success",
-        name: name,
-        email: email,
-        subject: subject,
-        message: msg
+      // deferred.resolve({
+      //   status: "success",
+      //   name: name,
+      //   email: email,
+      //   subject: subject,
+      //   message: msg
+      // });
+
+      // return deferred.promise;
+      return $http({
+        method: "POST",
+        url: urlBase + "/contact/",
+        data: {
+          name: name,
+          email: email,
+          subject: subject,
+          message: msg
+        }
       });
-
-      return deferred.promise;
     },
 
     validateEmail: function validateEmail(email) {
@@ -35095,6 +35105,119 @@ moviePitchApp.directive('labelWrapper', function () {
     restrict: "A"
   };
 });
+"use strict";
+
+moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
+  return {
+    controller: function controller($scope) {
+      $scope.data = {
+        name: "",
+        email: "",
+        msgSubject: "General",
+        message: "",
+        subjects: ["General", "Billing", "Sales", "Support"],
+        errors: {
+          email: true,
+          username: true,
+          message: true
+        }
+      };
+
+      $scope.btnState = "btn--inactive";
+
+      $scope.btnStateChange = function () {
+        // console.log($scope.data.errors);
+        if ($scope.data.errors.email === true || $scope.data.errors.username === true || $scope.data.errors.message === true) {
+          $scope.btnState = "btn--inactive";
+        } else {
+          $scope.btnState = "";
+        }
+      };
+
+      $scope.validateName = function () {
+        // console.log('validating name');
+        if ($scope.data.name === "") {
+          $scope.data.errors.username = true;
+        } else {
+          $scope.data.errors.username = false;
+        }
+      };
+
+      $scope.validateEmail = function () {
+        // console.log('validating email');
+        emailFactory.validateEmail($scope.data.email).then(function (resp) {
+          $scope.data.errors.email = false;
+        }, function (err) {
+          $scope.data.errors.email = true;
+        });
+      };
+
+      $scope.validateMsg = function () {
+        // console.log('validating message');
+        if ($scope.data.name === "") {
+          $scope.data.errors.message = true;
+        } else {
+          $scope.data.errors.message = false;
+        }
+      };
+
+      var clearErrors = function clearErrors() {
+        $scope.messageError = "";
+        $scope.submitSuccess = "";
+      };
+
+      var clearFields = function clearFields() {
+        $scope.data.name = null;
+        $scope.data.email = null;
+        $scope.data.message = null;
+        $scope.data.msgSubject = "General";
+        $scope.btnState = "btn--inactive";
+      };
+
+      $scope.submitContactForm = function () {
+        if ($scope.btnState === "btn--inactive") {
+          // console.log('inactive');
+        } else {
+            clearErrors();
+            emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
+              clearErrors();
+              clearFields();
+              $scope.submitSuccess = "show-alert";
+              $scope.successText = "Success! Your message has been submitted.";
+              // console.log(resp);
+              $timeout(function () {
+                $scope.submitSuccess = "";
+                $scope.successText = "";
+              }, 4000);
+            }, function (err) {
+              $scope.errorText = "An error has occurred. Your message was not sent.";
+              $scope.messageError = "show-alert";
+            });
+            // console.log($scope.data);
+          }
+      };
+    },
+    link: function link(scope, el, attrs) {
+      var $select = $('#contact-subject');
+
+      function selectReady() {
+        var numOptions = $select.find('option').length;
+
+        if (numOptions > 1) {
+          $select.fancySelect();
+        } else {
+          $timeout(selectReady, 50);
+        }
+      }
+
+      // The fancySelect function runs before the page
+      // is fully loaded, hence the timeout function
+      selectReady();
+    },
+    restrict: "A",
+    templateUrl: "dist/components/contact-us-form/contact-us-form.html"
+  };
+});
 'use strict';
 
 moviePitchApp.directive('login', function () {
@@ -35123,164 +35246,6 @@ moviePitchApp.directive('login', function () {
     },
     restrict: "E",
     templateUrl: "dist/components/login/login.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
-  return {
-    controller: function controller($scope) {
-      $scope.data = {
-        name: "",
-        email: "",
-        msgSubject: "General",
-        message: "",
-        subjects: ["General", "Billing", "Sales", "Support"],
-        errors: {
-          email: true,
-          username: true,
-          message: true
-        }
-      };
-
-      $scope.btnState = "btn--inactive";
-
-      $scope.btnStateChange = function () {
-        console.log($scope.data.errors);
-        if ($scope.data.errors.email === true || $scope.data.errors.username === true || $scope.data.errors.message === true) {
-          $scope.btnState = "btn--inactive";
-        } else {
-          $scope.btnState = "";
-        }
-      };
-
-      $scope.validateName = function () {
-        console.log('validating name');
-        if ($scope.data.name === "") {
-          $scope.data.errors.username = true;
-        } else {
-          $scope.data.errors.username = false;
-        }
-      };
-
-      $scope.validateEmail = function () {
-        console.log('validating email');
-        emailFactory.validateEmail($scope.data.email).then(function (resp) {
-          $scope.data.errors.email = false;
-        }, function (err) {
-          $scope.data.errors.email = true;
-        });
-      };
-
-      $scope.validateMsg = function () {
-        console.log('validating message');
-        if ($scope.data.name === "") {
-          $scope.data.errors.message = true;
-        } else {
-          $scope.data.errors.message = false;
-        }
-      };
-
-      var clearErrors = function clearErrors() {
-        $scope.messageError = "";
-        $scope.submitSuccess = "";
-      };
-
-      var clearFields = function clearFields() {
-        $scope.data.name = null;
-        $scope.data.email = null;
-        $scope.data.message = null;
-        $scope.data.msgSubject = "General";
-        $scope.btnState = "btn--inactive";
-      };
-
-      $scope.submitContactForm = function () {
-        if ($scope.btnState === "btn--inactive") {
-          console.log('inactive');
-        } else {
-          clearErrors();
-          emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
-            clearErrors();
-            clearFields();
-            $scope.submitSuccess = "show-alert";
-            $scope.successText = "Success! Your message has been submitted.";
-            $timeout(function () {
-              $scope.submitSuccess = "";
-              $scope.successText = "";
-            }, 4000);
-            // console.log(resp);
-          }, function (err) {
-            $scope.errorText = "An error has occurred. Your message was not sent.";
-            $scope.messageError = "show-alert";
-          });
-          console.log($scope.data);
-        }
-
-        // emailFactory.validateEmail($scope.data.email)
-        //   .then(
-        //     function(resp){
-        //       if(
-        //         $scope.data.name === "" ||
-        //         $scope.data.name === null ||
-        //         $scope.data.email === "" ||
-        //         $scope.data.email === null ||
-        //         $scope.data.msgSubject === "" ||
-        //         $scope.data.msgSubject === null ||
-        //         $scope.data.message === "" ||
-        //         $scope.data.message === null
-        //       ){
-        //         $scope.messageError = "show-alert";
-        //         $scope.errorText = "Please fill out each field before submitting.";
-        //       }
-        //       else {
-        //         emailFactory
-        //           .sendContactUsMessage(
-        //             $scope.data.name,
-        //             $scope.data.email,
-        //             $scope.data.msgSubject,
-        //             $scope.data.message
-        //           )
-        //           .then(
-        //             function(resp){
-        //               clearErrors();
-        //               clearFields();
-        //               $scope.submitSuccess = "show-alert";
-        //               $scope.successText = "Success! Your message has been submitted.";
-        //               // console.log(resp);
-        //             },
-        //             function(err){
-        //               $scope.errorText = "An error has occurred. Your message was not sent.";
-        //               $scope.messageError = "show-alert";
-        //             }
-        //           )
-        //       }
-        //     },
-        //     function(err){
-        //       $scope.messageError = "show-alert";
-        //       $scope.errorText = "Please enter a valid email address.";
-        //     }
-        //   );
-      };
-    },
-    link: function link(scope, el, attrs) {
-      var $select = $('#contact-subject');
-
-      function selectReady() {
-        var numOptions = $select.find('option').length;
-
-        if (numOptions > 1) {
-          $select.fancySelect();
-        } else {
-          $timeout(selectReady, 50);
-        }
-      }
-
-      // The fancySelect function runs before the page
-      // is fully loaded, hence the timeout function
-      selectReady();
-    },
-    restrict: "A",
-    templateUrl: "dist/components/contact-us-form/contact-us-form.html"
   };
 });
 "use strict";
@@ -35391,6 +35356,77 @@ moviePitchApp.directive('appHeader', function ($state) {
 });
 "use strict";
 
+moviePitchApp.directive('successCarousel', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.index = 1;
+
+      $scope.stories = [{
+        name: "Emily Lloyd",
+        text: "A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”"
+      }, {
+        name: "David Simon",
+        text: "I brought my original idea ‘The High School Security Tapes’ to Bob. He not only sold it to DreamWorks, he also made sure I got to write the screenplay. Since then, he sold another idea with Katherine Heigl to Fox 2000 and another with director Todd Phillips (THE HANGOVER) to Warner Brothers."
+      }, {
+        name: "Tom Newman",
+        text: "I was living in London when I heard about Bob Kosberg. I sent him a one page outline called ‘The Beauty Contest.’ Within one week, Bob had attached Meg Ryan to star and sold the project to New Line."
+      }, {
+        name: "Steve List",
+        text: "I attended one of Bob’s pitch events. I literally pitched Bob a thirty second story while we walked through the lobby. Bob had Paramount and Fox interested in buying my pitch and soon we had Drew Barrymore attached and I began writing the script at Fox Studios. I now have a writing career in Hollywood and it all started with Bob; he believed in my project and set it up at a studio."
+      }];
+
+      $scope.length = $scope.stories.length;
+      $scope.carouselClass = "test";
+
+      $scope.moveCarousel = function (dir) {
+        var curIndex = $scope.index;
+        var maxLength = $scope.length;
+        var integer = dir;
+
+        if (dir === 1 && curIndex === maxLength) {
+          $scope.index = 1;
+        } else if (dir === -1 && curIndex === 1) {
+          $scope.index = maxLength;
+        } else {
+          $scope.index = $scope.index + dir;
+        }
+
+        $scope.carouselClass = "carousel-" + $scope.index;
+      };
+    },
+    restrict: "A",
+    templateUrl: "dist/components/success-carousel/success-carousel.html"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('userPitches', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "E",
+    templateUrl: "dist/components/user-pitches/user-pitches.html"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('signup', function () {
   return {
     controller: function controller($scope, $timeout, $state, $rootScope, userFactory, emailFactory) {
@@ -35472,77 +35508,6 @@ moviePitchApp.directive('signup', function () {
     },
     restrict: "E",
     templateUrl: "dist/components/signup/signup.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('successCarousel', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.index = 1;
-
-      $scope.stories = [{
-        name: "Emily Lloyd",
-        text: "A grandmother from Ozark, Arkansas, sent Bob an index card about a man who lived in the Statue of Liberty. He sold the project to Universal Studios. Ryan Murphy (GLEE) wrote the script. “I can’t believe Bob was able to sell my one line idea. He was great to work with. I can’t wait to send him more.”"
-      }, {
-        name: "David Simon",
-        text: "I brought my original idea ‘The High School Security Tapes’ to Bob. He not only sold it to DreamWorks, he also made sure I got to write the screenplay. Since then, he sold another idea with Katherine Heigl to Fox 2000 and another with director Todd Phillips (THE HANGOVER) to Warner Brothers."
-      }, {
-        name: "Tom Newman",
-        text: "I was living in London when I heard about Bob Kosberg. I sent him a one page outline called ‘The Beauty Contest.’ Within one week, Bob had attached Meg Ryan to star and sold the project to New Line."
-      }, {
-        name: "Steve List",
-        text: "I attended one of Bob’s pitch events. I literally pitched Bob a thirty second story while we walked through the lobby. Bob had Paramount and Fox interested in buying my pitch and soon we had Drew Barrymore attached and I began writing the script at Fox Studios. I now have a writing career in Hollywood and it all started with Bob; he believed in my project and set it up at a studio."
-      }];
-
-      $scope.length = $scope.stories.length;
-      $scope.carouselClass = "test";
-
-      $scope.moveCarousel = function (dir) {
-        var curIndex = $scope.index;
-        var maxLength = $scope.length;
-        var integer = dir;
-
-        if (dir === 1 && curIndex === maxLength) {
-          $scope.index = 1;
-        } else if (dir === -1 && curIndex === 1) {
-          $scope.index = maxLength;
-        } else {
-          $scope.index = $scope.index + dir;
-        }
-
-        $scope.carouselClass = "carousel-" + $scope.index;
-      };
-    },
-    restrict: "A",
-    templateUrl: "dist/components/success-carousel/success-carousel.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('userPitches', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "E",
-    templateUrl: "dist/components/user-pitches/user-pitches.html"
   };
 });
 "use strict";

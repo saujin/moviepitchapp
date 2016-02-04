@@ -22,7 +22,7 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
       $scope.btnState = "btn--inactive";
 
       $scope.btnStateChange = function(){
-        console.log($scope.data.errors);
+        // console.log($scope.data.errors);
         if(
           $scope.data.errors.email === true ||
           $scope.data.errors.username === true ||
@@ -35,7 +35,7 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
       }
 
       $scope.validateName = function(){
-        console.log('validating name');
+        // console.log('validating name');
         if($scope.data.name === ""){
           $scope.data.errors.username = true;
         } else {
@@ -44,7 +44,7 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
       }
 
       $scope.validateEmail = function(){
-        console.log('validating email');
+        // console.log('validating email');
         emailFactory.validateEmail($scope.data.email)
           .then(function(resp){
             $scope.data.errors.email = false;
@@ -54,7 +54,7 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
       }
 
       $scope.validateMsg = function(){
-        console.log('validating message');
+        // console.log('validating message');
         if($scope.data.name === ""){
           $scope.data.errors.message = true;
         } else {
@@ -77,7 +77,7 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
 
       $scope.submitContactForm = function(){
         if($scope.btnState === "btn--inactive"){
-          console.log('inactive');
+          // console.log('inactive');
         } else {
           clearErrors();
           emailFactory
@@ -93,65 +93,19 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
                 clearFields();
                 $scope.submitSuccess = "show-alert";
                 $scope.successText = "Success! Your message has been submitted.";
+                // console.log(resp);
                 $timeout(function(){
                   $scope.submitSuccess = "";
                   $scope.successText = "";
                 }, 4000)
-                // console.log(resp);
               },
               function(err){
                 $scope.errorText = "An error has occurred. Your message was not sent.";
                 $scope.messageError = "show-alert";
               }
             )
-          console.log($scope.data);
+          // console.log($scope.data);
         }
-
-
-        // emailFactory.validateEmail($scope.data.email)
-        //   .then(
-        //     function(resp){
-        //       if(
-        //         $scope.data.name === "" ||
-        //         $scope.data.name === null ||
-        //         $scope.data.email === "" ||
-        //         $scope.data.email === null ||
-        //         $scope.data.msgSubject === "" ||
-        //         $scope.data.msgSubject === null ||
-        //         $scope.data.message === "" ||
-        //         $scope.data.message === null
-        //       ){
-        //         $scope.messageError = "show-alert";
-        //         $scope.errorText = "Please fill out each field before submitting.";
-        //       }
-        //       else {
-        //         emailFactory
-        //           .sendContactUsMessage(
-        //             $scope.data.name,
-        //             $scope.data.email,
-        //             $scope.data.msgSubject,
-        //             $scope.data.message
-        //           )
-        //           .then(
-        //             function(resp){
-        //               clearErrors();
-        //               clearFields();
-        //               $scope.submitSuccess = "show-alert";
-        //               $scope.successText = "Success! Your message has been submitted.";
-        //               // console.log(resp);
-        //             },
-        //             function(err){
-        //               $scope.errorText = "An error has occurred. Your message was not sent.";
-        //               $scope.messageError = "show-alert";
-        //             }
-        //           )
-        //       }
-        //     },
-        //     function(err){
-        //       $scope.messageError = "show-alert";
-        //       $scope.errorText = "Please enter a valid email address.";
-        //     }
-        //   );
       };
     },
     link: function(scope, el, attrs){
