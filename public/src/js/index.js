@@ -83,7 +83,7 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
 
     }
   ])
-  .run(function($rootScope){
+  // .run(function($rootScope){
 
     // $rootScope.$on('$stateChangeStart', function(event, toState){
     //   let requireLogin = toState.data.requireLogin;
@@ -96,4 +96,4 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
     // });
     //
     // $rootScope.curUser = null;
-  });
+  // });

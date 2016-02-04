@@ -1,6 +1,9 @@
 moviePitchApp.directive('pitchModal', function($timeout){
   return {
-    controller: function($scope, $q, $http, adminFactory, paymentFactory, pitchFactory){
+    controller: function(
+      $scope, $q, $http, adminFactory, $rootScope,
+      paymentFactory, pitchFactory
+    ){
 
       // Populate an array of genres, and create some variables
       // for the ng-models to bind to
@@ -42,7 +45,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
       // The Handler has some basic Stripe config and then calls the payment
       // success function
       $scope.handler = StripeCheckout.configure({
-        key: 'sk_test_jGkEuv4sLEOhZhBxTdlJExvt',
+        key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
         // image: '/img/documentation/checkout/marketplace.png',
         locale: 'auto',
         token: function(token) {
@@ -58,14 +61,19 @@ moviePitchApp.directive('pitchModal', function($timeout){
             .then(function(resp){
 
               // if charge is successful submit the pitch
+              console.log('Transaction complete.')
               console.log(resp);
-              // pitchFactory.submitPitch($scope.pitch)
-              //   .then(function(resp){
-              //     console.log(resp);
-              //   })
-              //   .catch(function(err){
-              //     console.log(err);
-              //   })
+              pitchFactory.submitPitch($scope.pitch)
+                .then(function(resp){
+                  $scope.validationText = "Success! Pitch submitted.";
+
+                  console.log('Pitch submitted');
+                  console.log(resp);
+                  $rootScope.$broadcast('close-modal');
+                })
+                .catch(function(err){
+                  console.log(err);
+                })
             })
             .catch(function(err){
               console.log(err);
@@ -76,7 +84,6 @@ moviePitchApp.directive('pitchModal', function($timeout){
 
       // Run the handler when someone clicks 'submit'
       $scope.submitPitch = function(ev){
-
         // Get the value for the genre (fancybox binding issue)
         $scope.pitch.genre = $('#select-genre').val();
 

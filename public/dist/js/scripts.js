@@ -275,20 +275,21 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
       requireLogin: false
     }
   });
-}]).run(function ($rootScope) {
+}]);
+// .run(function($rootScope){
 
-  // $rootScope.$on('$stateChangeStart', function(event, toState){
-  //   let requireLogin = toState.data.requireLogin;
-  //
-  //   if(requireLogin === true && $rootScope.curUser === null){
-  //     event.preventDefault();
-  //     $('#login-modal').modal('show');
-  //     $rootScope.targetState = toState.name;
-  //   }
-  // });
-  //
-  // $rootScope.curUser = null;
-});
+// $rootScope.$on('$stateChangeStart', function(event, toState){
+//   let requireLogin = toState.data.requireLogin;
+//
+//   if(requireLogin === true && $rootScope.curUser === null){
+//     event.preventDefault();
+//     $('#login-modal').modal('show');
+//     $rootScope.targetState = toState.name;
+//   }
+// });
+//
+// $rootScope.curUser = null;
+// });
 'use strict';
 
 moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout', function ($scope, ModalService, $timeout) {
@@ -338,7 +339,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 
     ModalService.showModal({
       controller: "PitchModalController",
-      templateUrl: "dist/modals/pitch-modal/pitch-modal.html"
+      templateUrl: "src/modals/pitch-modal/pitch-modal.html"
     }).then(function (modal) {
       populateFancySelect('#select-genre');
       closeModalTasks(modal);
@@ -350,7 +351,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
 
     ModalService.showModal({
       controller: "CustomModalController",
-      templateUrl: "dist/modals/examples-modal/examples-modal.html"
+      templateUrl: "src/modals/examples-modal/examples-modal.html"
     }).then(function (modal) {
       closeModalTasks(modal);
     });
@@ -362,6 +363,10 @@ moviePitchApp.controller('PitchModalController', ['$scope', 'close', function ($
     $('#modal-bg').addClass('modal-close-animation');
     close('Modal Dismissed', 500);
   };
+
+  $scope.$on('close-modal', function () {
+    $scope.dismissModal();
+  });
 }]);
 
 moviePitchApp.controller('CustomModalController', ['$scope', 'close', function ($scope, close) {
@@ -704,6 +709,31 @@ moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
 });
 "use strict";
 
+moviePitchApp.directive('adminPitchReview', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.pitches = [{
+        pitchDate: "November 3rd, 2015",
+        genre: "Romantic Comedy",
+        pitchText: "A man falls in love with a lady, but it's funny.",
+        status: "rejected"
+      }, {
+        pitchDate: "October 23rd, 2015",
+        genre: "Horror",
+        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
+        status: "rejected"
+      }, {
+        pitchDate: "June 3rd, 2015",
+        genre: "Western",
+        pitchText: "Some cowboys ride around chasing a gang of thieves",
+        status: "accepted"
+      }];
+    },
+    restrict: "A"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
@@ -858,31 +888,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "A"
   };
 });
 'use strict';
@@ -1207,7 +1212,7 @@ moviePitchApp.directive('userPitches', function () {
 
 moviePitchApp.directive('pitchModal', function ($timeout) {
   return {
-    controller: function controller($scope, $q, $http, adminFactory, paymentFactory, pitchFactory) {
+    controller: function controller($scope, $q, $http, adminFactory, $rootScope, paymentFactory, pitchFactory) {
 
       // Populate an array of genres, and create some variables
       // for the ng-models to bind to
@@ -1227,7 +1232,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
       // The Handler has some basic Stripe config and then calls the payment
       // success function
       $scope.handler = StripeCheckout.configure({
-        key: 'sk_test_jGkEuv4sLEOhZhBxTdlJExvt',
+        key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
         // image: '/img/documentation/checkout/marketplace.png',
         locale: 'auto',
         token: function token(_token) {
@@ -1241,14 +1246,17 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
           paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
 
             // if charge is successful submit the pitch
+            console.log('Transaction complete.');
             console.log(resp);
-            // pitchFactory.submitPitch($scope.pitch)
-            //   .then(function(resp){
-            //     console.log(resp);
-            //   })
-            //   .catch(function(err){
-            //     console.log(err);
-            //   })
+            pitchFactory.submitPitch($scope.pitch).then(function (resp) {
+              $scope.validationText = "Success! Pitch submitted.";
+
+              console.log('Pitch submitted');
+              console.log(resp);
+              $rootScope.$broadcast('close-modal');
+            }).catch(function (err) {
+              console.log(err);
+            });
           }).catch(function (err) {
             console.log(err);
           });
@@ -1257,7 +1265,6 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
 
       // Run the handler when someone clicks 'submit'
       $scope.submitPitch = function (ev) {
-
         // Get the value for the genre (fancybox binding issue)
         $scope.pitch.genre = $('#select-genre').val();
 
