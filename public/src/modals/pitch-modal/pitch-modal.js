@@ -72,6 +72,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
                   $rootScope.$broadcast('close-modal');
                 })
                 .catch(function(err){
+                  $scope.validationText = "Error: Pitch not submitted.";
                   console.log(err);
                 })
             })

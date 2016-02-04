@@ -35069,6 +35069,62 @@ moviePitchApp.directive('adminPitchReview', function () {
     restrict: "A"
   };
 });
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('login', function () {
+  return {
+    controller: function controller($scope, userFactory) {
+      $scope.loginUser = function () {
+        var user, pwd;
+
+        user = angular.element(document.getElementById('user-login-username')).val();
+        pwd = angular.element(document.getElementById('user-login-pwd')).val();
+
+        userFactory.loginUser(user, pwd).then(function (resp) {
+          console.log(resp);
+        }, function (err) {
+          console.log(err);
+        });
+      };
+
+      $scope.logoutUser = function () {
+        userFactory.logoutUser().then(function (resp) {
+          console.log(resp);
+        }, function (err) {
+          console.log(err);
+        });
+      };
+    },
+    restrict: "E",
+    templateUrl: "dist/components/login/login.html"
+  };
+});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
@@ -35225,62 +35281,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('login', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-      $scope.loginUser = function () {
-        var user, pwd;
-
-        user = angular.element(document.getElementById('user-login-username')).val();
-        pwd = angular.element(document.getElementById('user-login-pwd')).val();
-
-        userFactory.loginUser(user, pwd).then(function (resp) {
-          console.log(resp);
-        }, function (err) {
-          console.log(err);
-        });
-      };
-
-      $scope.logoutUser = function () {
-        userFactory.logoutUser().then(function (resp) {
-          console.log(resp);
-        }, function (err) {
-          console.log(err);
-        });
-      };
-    },
-    restrict: "E",
-    templateUrl: "dist/components/login/login.html"
   };
 });
 "use strict";
@@ -35592,6 +35592,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
               console.log(resp);
               $rootScope.$broadcast('close-modal');
             }).catch(function (err) {
+              $scope.validationText = "Error: Pitch not submitted.";
               console.log(err);
             });
           }).catch(function (err) {
