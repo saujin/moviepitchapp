@@ -439,23 +439,33 @@ moviePitchApp.factory('adminFactory', function ($http) {
 });
 "use strict";
 
-moviePitchApp.factory('emailFactory', function ($q) {
+moviePitchApp.factory('emailFactory', function ($q, $http) {
+  var urlBase = "https://moviepitchapi.herokuapp.com";
+
   var factory = {
 
-    // Mock up sending a contact email
-    // https://nodemailer.com/
     sendContactUsMessage: function sendContactUsMessage(name, email, subject, msg) {
-      var deferred = $q.defer();
+      // let deferred = $q.defer();
 
-      deferred.resolve({
-        status: "success",
-        name: name,
-        email: email,
-        subject: subject,
-        message: msg
+      // deferred.resolve({
+      //   status: "success",
+      //   name: name,
+      //   email: email,
+      //   subject: subject,
+      //   message: msg
+      // });
+
+      // return deferred.promise;
+      return $http({
+        method: "POST",
+        url: urlBase + "/contact/",
+        data: {
+          name: name,
+          email: email,
+          subject: subject,
+          message: msg
+        }
       });
-
-      return deferred.promise;
     },
 
     validateEmail: function validateEmail(email) {
@@ -753,7 +763,7 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
       $scope.btnState = "btn--inactive";
 
       $scope.btnStateChange = function () {
-        console.log($scope.data.errors);
+        // console.log($scope.data.errors);
         if ($scope.data.errors.email === true || $scope.data.errors.username === true || $scope.data.errors.message === true) {
           $scope.btnState = "btn--inactive";
         } else {
@@ -762,7 +772,7 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
       };
 
       $scope.validateName = function () {
-        console.log('validating name');
+        // console.log('validating name');
         if ($scope.data.name === "") {
           $scope.data.errors.username = true;
         } else {
@@ -771,7 +781,7 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
       };
 
       $scope.validateEmail = function () {
-        console.log('validating email');
+        // console.log('validating email');
         emailFactory.validateEmail($scope.data.email).then(function (resp) {
           $scope.data.errors.email = false;
         }, function (err) {
@@ -780,7 +790,7 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
       };
 
       $scope.validateMsg = function () {
-        console.log('validating message');
+        // console.log('validating message');
         if ($scope.data.name === "") {
           $scope.data.errors.message = true;
         } else {
@@ -803,70 +813,25 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
 
       $scope.submitContactForm = function () {
         if ($scope.btnState === "btn--inactive") {
-          console.log('inactive');
+          // console.log('inactive');
         } else {
-          clearErrors();
-          emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
             clearErrors();
-            clearFields();
-            $scope.submitSuccess = "show-alert";
-            $scope.successText = "Success! Your message has been submitted.";
-            $timeout(function () {
-              $scope.submitSuccess = "";
-              $scope.successText = "";
-            }, 4000);
-            // console.log(resp);
-          }, function (err) {
-            $scope.errorText = "An error has occurred. Your message was not sent.";
-            $scope.messageError = "show-alert";
-          });
-          console.log($scope.data);
-        }
-
-        // emailFactory.validateEmail($scope.data.email)
-        //   .then(
-        //     function(resp){
-        //       if(
-        //         $scope.data.name === "" ||
-        //         $scope.data.name === null ||
-        //         $scope.data.email === "" ||
-        //         $scope.data.email === null ||
-        //         $scope.data.msgSubject === "" ||
-        //         $scope.data.msgSubject === null ||
-        //         $scope.data.message === "" ||
-        //         $scope.data.message === null
-        //       ){
-        //         $scope.messageError = "show-alert";
-        //         $scope.errorText = "Please fill out each field before submitting.";
-        //       }
-        //       else {
-        //         emailFactory
-        //           .sendContactUsMessage(
-        //             $scope.data.name,
-        //             $scope.data.email,
-        //             $scope.data.msgSubject,
-        //             $scope.data.message
-        //           )
-        //           .then(
-        //             function(resp){
-        //               clearErrors();
-        //               clearFields();
-        //               $scope.submitSuccess = "show-alert";
-        //               $scope.successText = "Success! Your message has been submitted.";
-        //               // console.log(resp);
-        //             },
-        //             function(err){
-        //               $scope.errorText = "An error has occurred. Your message was not sent.";
-        //               $scope.messageError = "show-alert";
-        //             }
-        //           )
-        //       }
-        //     },
-        //     function(err){
-        //       $scope.messageError = "show-alert";
-        //       $scope.errorText = "Please enter a valid email address.";
-        //     }
-        //   );
+            emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
+              clearErrors();
+              clearFields();
+              $scope.submitSuccess = "show-alert";
+              $scope.successText = "Success! Your message has been submitted.";
+              // console.log(resp);
+              $timeout(function () {
+                $scope.submitSuccess = "";
+                $scope.successText = "";
+              }, 4000);
+            }, function (err) {
+              $scope.errorText = "An error has occurred. Your message was not sent.";
+              $scope.messageError = "show-alert";
+            });
+            // console.log($scope.data);
+          }
       };
     },
     link: function link(scope, el, attrs) {

@@ -1,20 +1,32 @@
-moviePitchApp.factory('emailFactory', function($q){
+"use strict";
+
+moviePitchApp.factory('emailFactory', function($q, $http){
+  const urlBase = "https://moviepitchapi.herokuapp.com";
+
   let factory = {
 
-    // Mock up sending a contact email
-    // https://nodemailer.com/
     sendContactUsMessage: function(name, email, subject, msg){
-      let deferred = $q.defer();
+      // let deferred = $q.defer();
 
-      deferred.resolve({
-        status: "success",
-        name: name,
-        email: email,
-        subject: subject,
-        message: msg
+      // deferred.resolve({
+      //   status: "success",
+      //   name: name,
+      //   email: email,
+      //   subject: subject,
+      //   message: msg
+      // });
+
+      // return deferred.promise;
+      return $http({
+        method: "POST",
+        url: urlBase + "/contact/",
+        data: {
+          name: name,
+          email: email,
+          subject: subject,
+          message: msg
+        }
       });
-
-      return deferred.promise;
     },
 
     validateEmail: function(email) {
