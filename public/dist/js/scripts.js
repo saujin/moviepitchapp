@@ -331,6 +331,14 @@ moviePitchApp.controller('AdminController', ['$scope', '$rootScope', 'adminFacto
 		});
 	};
 
+	$scope.logoutAdmin = function () {
+		adminFactory.logoutAdmin().then(function (resp) {
+			console.log(resp);
+		}).catch(function (err) {
+			console.log(err);
+		});
+	};
+
 	$scope.adminUsernameRegister = "";
 	$scope.adminEmailRegister = "";
 	$scope.adminPasswordRegister = "";
