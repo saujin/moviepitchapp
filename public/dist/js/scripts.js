@@ -920,6 +920,33 @@ moviePitchApp.directive('adminContactEmail', function () {
 });
 "use strict";
 
+moviePitchApp.directive('adminPitchReview', function () {
+  return {
+    controller: function controller($scope, pitchFactory) {
+      $scope.pageTitle = "Please Log In";
+      $scope.data = {
+        username: "",
+        password: ""
+      };
+
+      $scope.loginAdmin = function () {
+        $scope.$emit('admin-logged-in');
+
+        $scope.pageTitle = "Admin";
+
+        pitchFactory.getAllPitches().then(function (resp) {
+          console.log(resp);
+          $scope.pitches = resp.data.docs;
+        }).catch(function (err) {
+          console.log(err);
+        });
+      };
+    },
+    restrict: "A"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
@@ -1031,33 +1058,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
   };
 });
-"use strict";
-
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope, pitchFactory) {
-      $scope.pageTitle = "Please Log In";
-      $scope.data = {
-        username: "",
-        password: ""
-      };
-
-      $scope.loginAdmin = function () {
-        $scope.$emit('admin-logged-in');
-
-        $scope.pageTitle = "Admin";
-
-        pitchFactory.getAllPitches().then(function (resp) {
-          console.log(resp);
-          $scope.pitches = resp.data.docs;
-        }).catch(function (err) {
-          console.log(err);
-        });
-      };
-    },
-    restrict: "A"
-  };
-});
 'use strict';
 
 moviePitchApp.directive('labelWrapper', function () {
@@ -1112,49 +1112,6 @@ moviePitchApp.directive('login', function () {
     },
     restrict: "E",
     templateUrl: "dist/components/login/login.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('appHeader', function ($state) {
-  return {
-    controller: function controller($scope, userFactory) {
-      $scope.menuToggleStatus = "menu-closed";
-      $scope.currentLogAction = "show-login";
-
-      $scope.toggleMenu = function () {
-        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
-      };
-
-      $scope.$on('login-update', function () {
-        $scope.currentLogAction = "show-logout";
-      });
-
-      $scope.$on('logout-update', function () {
-        $scope.currentLogAction = "show-login";
-      });
-
-      $scope.logoutUser = function () {
-        userFactory.logoutUser().then(function (resp) {
-          console.log(resp);
-          $state.go('index');
-        }, function (err) {
-          console.log(err);
-        });
-      };
-
-      $scope.openLoginModal = function () {
-        // $('#login-modal').modal('show');
-      };
-    },
-
-    link: function link(scope, el, attrs) {
-      // $(el).find('.main-nav a').on('click', function(){
-      //   scope.toggleMenu();
-      // });
-    },
-    restrict: "A",
-    templateUrl: "dist/components/nav/nav.html"
   };
 });
 "use strict";
@@ -1218,6 +1175,49 @@ moviePitchApp.directive('loginModal', function ($rootScope, $state) {
     },
     restrict: "E",
     templateUrl: 'dist/components/login-modal/login-modal.html'
+  };
+});
+"use strict";
+
+moviePitchApp.directive('appHeader', function ($state) {
+  return {
+    controller: function controller($scope, userFactory) {
+      $scope.menuToggleStatus = "menu-closed";
+      $scope.currentLogAction = "show-login";
+
+      $scope.toggleMenu = function () {
+        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
+      };
+
+      $scope.$on('login-update', function () {
+        $scope.currentLogAction = "show-logout";
+      });
+
+      $scope.$on('logout-update', function () {
+        $scope.currentLogAction = "show-login";
+      });
+
+      $scope.logoutUser = function () {
+        userFactory.logoutUser().then(function (resp) {
+          console.log(resp);
+          $state.go('index');
+        }, function (err) {
+          console.log(err);
+        });
+      };
+
+      $scope.openLoginModal = function () {
+        // $('#login-modal').modal('show');
+      };
+    },
+
+    link: function link(scope, el, attrs) {
+      // $(el).find('.main-nav a').on('click', function(){
+      //   scope.toggleMenu();
+      // });
+    },
+    restrict: "A",
+    templateUrl: "dist/components/nav/nav.html"
   };
 });
 "use strict";
