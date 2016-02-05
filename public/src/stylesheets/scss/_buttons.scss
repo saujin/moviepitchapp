@@ -4,7 +4,7 @@
 }
 
 .btn-container--center {
-  justify-content: center; 
+  justify-content: center;
 }
 
 .btn-container--padded {
@@ -29,6 +29,24 @@
   text-transform: uppercase;
   transition: all 0.35s;
   width: 270px;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $dark-tomato;
+  }
+}
+
+.btn--secondary {
+  background: $tomato;
+  color: $white;
+  font-size: .875rem;
+  letter-spacing: 2px;
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.35s;
+  width: auto;
 
   &:hover,
   &:focus,

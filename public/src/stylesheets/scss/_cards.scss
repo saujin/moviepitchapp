@@ -1,0 +1,30 @@
+.card {
+	border-radius: 10px;
+	border: solid 1px $silver;
+	margin-bottom: 2rem;
+	padding: 20px;
+}
+
+.card-heading {
+	margin-top: 0px;
+}
+
+.current-admin-list {
+	padding-left: 0px;
+}
+
+.admin-user {
+	display: flex;
+	margin-bottom: 1rem;
+
+	> div {
+		flex: 1 1 auto;
+	}
+
+	> button {
+		flex: 0 0 120px;
+		font-size: 1rem;
+		width: 200px;
+	}
+}
+

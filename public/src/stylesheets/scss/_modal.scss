@@ -24,9 +24,52 @@
   text-transform: uppercase;
 }
 
-.example-modal p {
-  margin-bottom: 2rem;
-  text-align: center;
+.example-modal {
+  &:before {
+    background-image: url('../img/quotes-shadowed.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    content: "";
+    display: block;
+    left: 20px;
+    height: 160px;
+    margin-top: -90px;
+    position: absolute;
+    width: 160px;
+    z-index: 100;
+  }
+
+  .pitch-viewer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 20px 0;
+
+    strong {
+      display: block;
+      font-size: 1.875rem;
+      opacity: 0;
+      text-align: center;
+
+    }
+
+    .reveal-title {
+      transition: all 0.5s;
+      opacity: 1;
+    }
+
+    p {
+      max-width: 600px;
+      text-align: center;
+    }
+
+    button {
+
+    }
+  }
 }
 
  .pitch-modal {

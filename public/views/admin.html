@@ -1,21 +1,39 @@
-<div class="container-fluid container-content admin-section">
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>Admin</h1>
-    </div>
-  </div>
+<header class="header" app-header></header>
 
-  <div class="row">
-    <div admin-pitch-review class="card-columns">
-      <div ng-repeat="pitch in pitches" class="card card-block">
-        <blockquote class="card-blockquote">
+<section class="section section--regular">
+  <div class="section-content">
+    <div admin-login class="">
+      <form class="card">
+        <h3 class="card-heading">Please Log In</h3>
+        <div class="label-wrapper" label-wrapper>
+          <input type="text" ng-model="data.username" class="label-wrapper-input" id="admin-username">
+          <label class="label-wrapper-label {{labelState}}" for="admin-username">Username</label>
+        </div>
+        <div class="label-wrapper" label-wrapper>
+          <input type="password" ng-model="data.password" class="label-wrapper-input" id="admin-password">
+          <label class="label-wrapper-label {{labelState}}" for="admin-password">Password</label>
+        </div>
+        <div class="btn-container">
+          <button class="btn btn--primary" type="submit" ng-click="loginAdmin()">Log In</button>
+        </div>
+      </form>
+
+      <!-- List all Admin Emails w/ Controls -->
+      <div admin-contact-email class="admin-email-widget card">
+      </div>
+
+      <!-- List All Pitches -->
+      <div admin-pitch-review class="card-columns card">
+        <h3 class="card-heading">Unreviewed Pitches</h3>
+        <div ng-repeat="pitch in pitches" class="card">
+          <div class="pitch-genre">{{pitch.genre}}</div>
           <p>{{pitch.pitchText}}</p>
-          <footer>
-            <small class="text-muted">{{pitch.genre}}</small>
-          </footer>
-        </blockquote>
+          <div class="btn-container">
+            <button class="btn">Reject</button>
+            <button class="btn">Accept</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-</div>
+</section>

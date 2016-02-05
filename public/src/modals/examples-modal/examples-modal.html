@@ -1,10 +1,20 @@
-<div pitch-box class="modal-bg" id="modal-bg">
+<div examples-modal class="modal-bg" id="modal-bg">
   <button class="btn close-modal-btn" ng-click="dismissModal()"></button>
 
   <div class="modal example-modal">
     <h2 class="modal-title">Pitch Examples</h2>
-    <p>A woman and her sled-dogs race 1,000 miles through the wilderness to deliver medicine to a rural Alaskan town.</p>
-    <p>A talented golden retriever makes the middle-school basketball team.</p>
-    <p>A man discovers his whole life is a set for a reality TV show.</p>
+    	<div class="pitch-viewer">
+				<p><strong class="{{reveal}}">{{curPitch.title}} </strong>{{curPitch.pitch}}</p>
+    		<button class="btn btn--secondary" ng-click="getNewPitch()">{{actionText}}</button>
+    	</div>
+
+    <!-- <ul> -->
+			<!-- <li ng-repeat="pitch in pitches">
+				<p><strong>{{pitch.title}} </strong>{{pitch.pitch}}</p>
+			</li> -->
+    	<!-- <li> -->
+
+    	<!-- </li> -->
+    <!-- </ul> -->
   </div>
 </div>

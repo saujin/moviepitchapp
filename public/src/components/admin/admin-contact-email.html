@@ -1,0 +1,15 @@
+<h3 class="card-heading">Admin Email List</h3>
+
+<p>This is the list of email addresses that will receive notifications when a new pitch is submitted.</p>
+<div class="label-wrapper label-wrapper-inline" label-wrapper>
+  <input type="email" class="label-wrapper-input" id="new-admin-email">
+  <label class="label-wrapper-label {{labelState}}" for="new-admin-email">Add Email For Notifications</label>
+	<button type="submit" class="btn btn--secondary" ng-click="addAdmin()">Subscribe</button>
+</div>
+
+<ul class="current-admin-list">
+  <li class="admin-user" ng-repeat="email in emails">
+    <div>{{email.email_address}}</div>
+    <button class="btn" ng-click="removeAdmin($index)">Unsubscribe</button>
+  </li>
+</ul>

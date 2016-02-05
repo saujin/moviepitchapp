@@ -118,7 +118,7 @@ gulp.task('min-scripts', function(){
 gulp.task('watch', function(){
   gulp.watch(paths.html, ['min-html']);
   gulp.watch(paths.stylesheets, ['sass']);
-  gulp.watch(paths.js, ['scripts', 'browserify', 'min-scripts']);
+  gulp.watch(paths.js, ['scripts', 'browserify']);
   gulp.watch(paths.images, ['images']);
 });
 

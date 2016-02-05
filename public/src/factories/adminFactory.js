@@ -10,6 +10,29 @@ moviePitchApp.factory('adminFactory', function($http){
   };
 
   let factory = {
+    getAdminEmails: function(){
+      return $http({
+        method: "GET",
+        url: urlBase + "/admin/destination_emails"
+      });
+    },
+
+    addAdminEmail: function(email){
+      return $http({
+        method: "POST",
+        url: urlBase + "/admin/add_destination_email/",
+        data: {
+          email_address: email
+        }
+      });
+    },
+
+    removeAdminEmail: function(email){
+      return $http({
+        method: "GET",
+        url: urlBase + "/admin/remove_email/" + email
+      });
+    },
 
     loginAdmin: function(email, pwd){
       return $http({

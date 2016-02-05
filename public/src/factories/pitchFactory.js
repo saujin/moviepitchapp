@@ -13,7 +13,6 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
     },
 
     getAllPitches: function(){
-      // return $http.get(urlBase + "/get_all_pitches");
       return $http({
         method: "GET",
         url: urlBase + "/pitch"
