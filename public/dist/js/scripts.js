@@ -224,33 +224,49 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
     data: {
       requireLogin: false
     }
+  }).state('login', {
+    url: "/login",
+    templateUrl: "views/login.html",
+    data: {
+      requireLogin: false
+    }
   }).state('admin', {
     url: "/admin",
     templateUrl: "views/admin.html",
     data: {
       requireLogin: true
     }
-  });
-
-  // Account
-  // $stateProvider
-  //   .state('register', {
-  //     url: "/register",
-  //     templateUrl: "views/register.html",
-  //     data: {
-  //       requireLogin: false
-  //     }
-  //   })
-  //   .state('my-account', {
-  //     url: "/my-account",
-  //     templateUrl: "views/my-account.html",
-  //     data: {
-  //       requireLogin: true
-  //     }
-  //   });
-
-  // Footer Nav
-  $stateProvider.state('faq', {
+  }).state('admin-register', {
+    url: "/admin/register",
+    templateUrl: "views/admin/register.html",
+    data: {
+      requireLogin: true
+    }
+  }).state('admin-notifications', {
+    url: "/admin/notifications",
+    templateUrl: "views/admin/notifications.html",
+    data: {
+      requireLogin: true
+    }
+  }).state('admin-unreviewed', {
+    url: "/admin/pitches/unreviewed",
+    templateUrl: "views/admin/unreviewed-pitches.html",
+    data: {
+      requireLogin: true
+    }
+  }).state('admin-pending', {
+    url: "/admin/pitches/pending",
+    templateUrl: "views/admin/pending-pitches.html",
+    data: {
+      requireLogin: true
+    }
+  }).state('admin-accepted', {
+    url: "/admin/pitches-accepted",
+    templateUrl: "views/admin/accepted-pitches.html",
+    data: {
+      requireLogin: true
+    }
+  }).state('faq', {
     url: "/faq",
     templateUrl: "views/faq.html",
     data: {
@@ -275,21 +291,75 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
       requireLogin: false
     }
   });
-}]);
-// .run(function($rootScope){
+}]).run(function ($rootScope, $state) {
+  $rootScope.curUser = null;
 
-// $rootScope.$on('$stateChangeStart', function(event, toState){
-//   let requireLogin = toState.data.requireLogin;
-//
-//   if(requireLogin === true && $rootScope.curUser === null){
-//     event.preventDefault();
-//     $('#login-modal').modal('show');
-//     $rootScope.targetState = toState.name;
-//   }
-// });
-//
-// $rootScope.curUser = null;
-// });
+  $rootScope.$on('$stateChangeStart', function (event, toState) {
+    var requireLogin = toState.data.requireLogin;
+
+    if (requireLogin === true && $rootScope.curUser === null) {
+      event.preventDefault();
+      $rootScope.targetState = toState.name;
+      $state.go('login');
+    }
+  });
+});
+'use strict';
+
+moviePitchApp.controller('AdminController', ['$scope', '$rootScope', 'adminFactory', '$state', function ($scope, $rootScope, adminFactory, $state) {
+
+	$scope.adminEmail = "";
+	$scope.adminPassword = "";
+
+	$scope.loginAdmin = function () {
+		console.log($scope.adminEmail);
+		console.log($scope.adminPassword);
+
+		adminFactory.loginAdmin($scope.adminEmail, $scope.adminPassword).then(function (resp) {
+			console.log(resp);
+			$rootScope.curUser = resp.data.token;
+
+			if ($rootScope.targetState === "" || $rootScope.targetState === undefined) {
+				$state.go('admin');
+			} else {
+				$state.go($rootScope.targetState);
+			}
+
+			$rootScope.targetState = "";
+		}).catch(function (err) {
+			console.log(err);
+		});
+	};
+
+	$scope.adminUsernameRegister = "";
+	$scope.adminEmailRegister = "";
+	$scope.adminPasswordRegister = "";
+	$scope.adminPasswordRegisterConfirm = "";
+
+	$scope.registerAdmin = function () {
+		console.log($scope.adminUsernameRegister);
+		console.log($scope.adminEmailRegister);
+		console.log($scope.adminPasswordRegister);
+		console.log($scope.adminPasswordRegisterConfirm);
+
+		if ($scope.adminPasswordRegister === $scope.adminPasswordRegisterConfirm) {
+			var data = {
+				name: $scope.adminUsernameRegister,
+				email: $scope.adminEmailRegister,
+				password: $scope.adminPasswordRegister
+			};
+			console.log(data);
+
+			adminFactory.registerAdmin(data).then(function (resp) {
+				console.log(resp);
+			}).catch(function (err) {
+				console.log(err);
+			});
+		} else {
+			console.log('passwords do not match');
+		}
+	};
+}]);
 'use strict';
 
 moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout', function ($scope, ModalService, $timeout) {
@@ -377,7 +447,7 @@ moviePitchApp.controller('CustomModalController', ['$scope', 'close', function (
 }]);
 "use strict";
 
-moviePitchApp.factory('adminFactory', function ($http) {
+moviePitchApp.factory('adminFactory', function ($http, $q, $rootScope) {
   var urlBase = "https://moviepitchapi.herokuapp.com";
 
   var testUser = {
@@ -422,6 +492,26 @@ moviePitchApp.factory('adminFactory', function ($http) {
       });
     },
 
+    logoutAdmin: function logoutAdmin() {
+      var deferred = $q.defer();
+
+      $rootScope.curUser = null;
+
+      if ($rootScope.curUser === null) {
+        deferred.resolve({
+          status: "Success",
+          message: "User is logged out"
+        });
+      } else {
+        deferred.reject({
+          status: "Logout error",
+          message: "User is still logged in"
+        });
+      }
+
+      return deferred.promise;
+    },
+
     registerAdmin: function registerAdmin(data) {
       return $http({
         method: "POST",
@@ -429,7 +519,7 @@ moviePitchApp.factory('adminFactory', function ($http) {
         data: {
           name: data.name,
           email: data.email,
-          password: data.pwd
+          password: data.password
         }
       });
     },
@@ -468,17 +558,7 @@ moviePitchApp.factory('emailFactory', function ($q, $http) {
   var factory = {
 
     sendContactUsMessage: function sendContactUsMessage(name, email, subject, msg) {
-      // let deferred = $q.defer();
 
-      // deferred.resolve({
-      //   status: "success",
-      //   name: name,
-      //   email: email,
-      //   subject: subject,
-      //   message: msg
-      // });
-
-      // return deferred.promise;
       return $http({
         method: "POST",
         url: urlBase + "/contact/",
@@ -867,19 +947,14 @@ moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
 
   return factory;
 });
-'use strict';
+"use strict";
 
 moviePitchApp.directive('adminContactEmail', function () {
 	return {
-		controller: function controller($scope, adminFactory) {
+		controller: function controller($scope, adminFactory, emailFactory) {
 			// Define Scope Variables;
 			$scope.emails = [];
-
-			$scope.$on('admin-logged-in', function () {
-				console.log('received event');
-				// Init Directive
-				$scope.refreshEmails();
-			});
+			$scope.newAdminEmail = "";
 
 			$scope.refreshEmails = function () {
 				adminFactory.getAdminEmails().then(function (resp) {
@@ -891,10 +966,14 @@ moviePitchApp.directive('adminContactEmail', function () {
 			};
 
 			$scope.addAdmin = function () {
-				adminFactory.addAdminEmail(email).then(function (resp) {
+				console.log($scope.newAdminEmail);
+
+				adminFactory.addAdminEmail($scope.newAdminEmail).then(function (resp) {
 					console.log(resp);
+					$scope.newAdminEmail = "";
+					$scope.refreshEmails();
 				}).catch(function (err) {
-					consol.log(err);
+					console.log(err);
 				});
 			};
 
@@ -907,9 +986,11 @@ moviePitchApp.directive('adminContactEmail', function () {
 					$scope.refreshEmails();
 				}).catch(function (err) {
 					console.log(err);
-					$scope.emails.splice(id, 1);
 				});
 			};
+
+			// Init Page
+			$scope.refreshEmails();
 		},
 		link: function link(scope, el, attrs) {
 			$(el).find('');
@@ -917,59 +998,6 @@ moviePitchApp.directive('adminContactEmail', function () {
 		restrict: "A",
 		templateUrl: "dist/components/admin/admin-contact-email.html"
 	};
-});
-"use strict";
-
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope, pitchFactory) {
-      $scope.pageTitle = "Please Log In";
-      $scope.data = {
-        username: "",
-        password: ""
-      };
-
-      $scope.loginAdmin = function () {
-        $scope.$emit('admin-logged-in');
-
-        $scope.pageTitle = "Admin";
-
-        pitchFactory.getAllPitches().then(function (resp) {
-          console.log(resp);
-          $scope.pitches = resp.data.docs;
-        }).catch(function (err) {
-          console.log(err);
-        });
-      };
-    },
-    restrict: "A"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
-  };
 });
 "use strict";
 
@@ -1086,95 +1114,28 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
 });
 'use strict';
 
-moviePitchApp.directive('login', function () {
+moviePitchApp.directive('labelWrapper', function () {
   return {
-    controller: function controller($scope, userFactory) {
-      $scope.loginUser = function () {
-        var user, pwd;
-
-        user = angular.element(document.getElementById('user-login-username')).val();
-        pwd = angular.element(document.getElementById('user-login-pwd')).val();
-
-        userFactory.loginUser(user, pwd).then(function (resp) {
-          console.log(resp);
-        }, function (err) {
-          console.log(err);
-        });
-      };
-
-      $scope.logoutUser = function () {
-        userFactory.logoutUser().then(function (resp) {
-          console.log(resp);
-        }, function (err) {
-          console.log(err);
-        });
-      };
+    controller: function controller($scope) {
+      $scope.labelState = "";
     },
-    restrict: "E",
-    templateUrl: "dist/components/login/login.html"
-  };
-});
-"use strict";
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
 
-moviePitchApp.directive('loginModal', function ($rootScope, $state) {
-  return {
-    controller: function controller($scope, userFactory) {
-      $scope.inputsError = "";
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
 
-      $scope.clearInputErrors = function () {
-        $scope.inputsError = "";
-      };
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
 
-      $scope.flagInputErrors = function () {
-        $scope.inputsError = "is-error";
-      };
-
-      $scope.isAlertShown = "alert-hidden";
-      $scope.hideAlert = function () {
-        $scope.isAlertShown = "alert-hidden";
-      };
-      $scope.showAlert = function () {
-        $scope.isAlertShown = "alert-shown";
-      };
-
-      $scope.clearForms = function () {
-        var modal = $('#login-modal');
-
-        // Clear Existing Inputs
-        modal.find('input').val('');
-
-        // Reset Error Notifications
-        $scope.clearInputErrors();
-      };
-
-      $scope.userLogin = function () {
-        var user, pwd;
-        var modal = $('#login-modal');
-
-        user = angular.element(document.getElementById('login-username')).val();
-        pwd = angular.element(document.getElementById('login-password')).val();
-
-        userFactory.loginUser(user, pwd).then(function (resp) {
-          $('#login-modal').modal('hide');
-          $scope.clearInputErrors();
-          $scope.clearForms();
-          $scope.hideAlert();
-
-          // if the $rootScope is in the process of navigating to a state,
-          // as in an event where login interrupts navigation to a restricted page
-          // continue to that state, otherwise clear the $rootScope.targetState
-          if ($rootScope.targetState !== null) {
-            $state.go($rootScope.targetState);
-            $rootScope.targetState = null;
-          }
-        }, function (err) {
-          $scope.flagInputErrors();
-          $scope.showAlert();
-        });
-      };
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
     },
-    restrict: "E",
-    templateUrl: 'dist/components/login-modal/login-modal.html'
+    restrict: "A"
   };
 });
 "use strict";
@@ -1222,91 +1183,6 @@ moviePitchApp.directive('appHeader', function ($state) {
 });
 "use strict";
 
-moviePitchApp.directive('signup', function () {
-  return {
-    controller: function controller($scope, $timeout, $state, $rootScope, userFactory, emailFactory) {
-      // $scope.generalError = "show-alert";
-      // $scope.usernameError = "show-alert";
-      // $scope.emailError = "show-alert";
-      // $scope.passwordError = "";
-
-      $scope.validateEmail = function () {
-        var email = angular.element(document.getElementById('register-email')).val();
-
-        emailFactory.validateEmail(email).then(function (resp) {
-          $scope.emailError = "";
-        }, function (err) {
-          $scope.emailErrorText = "Please enter a valid email address.";
-          $scope.emailError = "show-alert";
-        });
-      };
-
-      $scope.signupUser = function () {
-        var username, email, pwd, confirmPwd;
-        var testArray = [];
-
-        username = angular.element(document.getElementById('register-username')).val();
-        email = angular.element(document.getElementById('register-email')).val();
-        pwd = angular.element(document.getElementById('register-password')).val();
-        confirmPwd = angular.element(document.getElementById('register-confirm-password')).val();
-
-        // Make sure entries exist for all three primary fields
-        if (username === "" || email === "" || pwd === "") {
-          $scope.generalError = "show-alert";
-          testArray.push(false);
-        } else {
-          $scope.generalError = "";
-        }
-
-        if (pwd !== confirmPwd) {
-          $scope.passwordError = "show-alert";
-          testArray.push(false);
-        } else {
-          $scope.passwordError = "";
-        }
-
-        if (testArray.length === 0) {
-          userFactory.signUp(username, email, pwd).then(function (resp) {
-            $rootScope.$broadcast('login-update');
-            $scope.signupSuccess = "show-alert";
-
-            // login the user after a successful signup and navigate to submit-pitch
-            userFactory.loginUser(username, pwd).then(function (resp) {
-              $timeout(function () {
-                $state.go('submit-pitch');
-              }, 550);
-            }, function (err) {
-              console.log(err);
-            });
-          }, function (err) {
-            switch (err.error.code) {
-              case -1:
-                $scope.usernameErrorText = "The username field is empty.";
-                $scope.usernameError = "show-alert";
-                break;
-
-              case 202:
-                $scope.usernameErrorText = "The desired username is already taken.";
-                $scope.usernameError = "show-alert";
-                break;
-
-              case 203:
-                $scope.emailErrorText = "An account has already been created at " + email + ".";
-                $scope.emailError = "show-alert";
-
-              default:
-                console.log('uncaught error');
-            }
-          });
-        }
-      };
-    },
-    restrict: "E",
-    templateUrl: "dist/components/signup/signup.html"
-  };
-});
-"use strict";
-
 moviePitchApp.directive('successCarousel', function () {
   return {
     controller: function controller($scope) {
@@ -1347,33 +1223,6 @@ moviePitchApp.directive('successCarousel', function () {
     },
     restrict: "A",
     templateUrl: "dist/components/success-carousel/success-carousel.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('userPitches', function () {
-  return {
-    controller: function controller($scope, userFactory) {
-
-      $scope.pitches = [{
-        pitchDate: "November 3rd, 2015",
-        genre: "Romantic Comedy",
-        pitchText: "A man falls in love with a lady, but it's funny.",
-        status: "rejected"
-      }, {
-        pitchDate: "October 23rd, 2015",
-        genre: "Horror",
-        pitchText: "A woman keeps checking her fridge, but there's never anything worth eating.",
-        status: "rejected"
-      }, {
-        pitchDate: "June 3rd, 2015",
-        genre: "Western",
-        pitchText: "Some cowboys ride around chasing a gang of thieves",
-        status: "accepted"
-      }];
-    },
-    restrict: "E",
-    templateUrl: "dist/components/user-pitches/user-pitches.html"
   };
 });
 "use strict";

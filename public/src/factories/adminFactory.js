@@ -1,6 +1,6 @@
 "use strict";
 
-moviePitchApp.factory('adminFactory', function($http){
+moviePitchApp.factory('adminFactory', function($http, $q, $rootScope){
   const urlBase = "https://moviepitchapi.herokuapp.com";
 
   const testUser = {
@@ -45,6 +45,26 @@ moviePitchApp.factory('adminFactory', function($http){
       });
     },
 
+    logoutAdmin: function(){
+      let deferred = $q.defer();
+
+      $rootScope.curUser = null;
+
+      if($rootScope.curUser === null){
+        deferred.resolve({
+        status: "Success",
+        message: "User is logged out"
+      });
+      } else {
+        deferred.reject({
+          status: "Logout error",
+          message: "User is still logged in"
+        });
+      }
+
+      return deferred.promise;
+    },
+
     registerAdmin: function(data){
       return $http({
         method: "POST",
@@ -52,7 +72,7 @@ moviePitchApp.factory('adminFactory', function($http){
         data: {
           name      : data.name,
           email     : data.email,
-          password  : data.pwd
+          password  : data.password
         }
       });
     },

@@ -1,14 +1,9 @@
 moviePitchApp.directive('adminContactEmail', function(){
 	return {
-		controller: function($scope, adminFactory){
+		controller: function($scope, adminFactory, emailFactory){
 			// Define Scope Variables;
 			$scope.emails = [];
-
-			$scope.$on('admin-logged-in', function(){
-				console.log('received event');
-				// Init Directive
-				$scope.refreshEmails();
-			});
+			$scope.newAdminEmail = "";
 
 			$scope.refreshEmails = function(){
 				adminFactory.getAdminEmails()
@@ -22,12 +17,16 @@ moviePitchApp.directive('adminContactEmail', function(){
 			};
 
 			$scope.addAdmin = function(){
-				adminFactory.addAdminEmail(email)
+				console.log($scope.newAdminEmail);
+
+				adminFactory.addAdminEmail($scope.newAdminEmail)
 					.then(function(resp){
 						console.log(resp);
+						$scope.newAdminEmail = "";
+						$scope.refreshEmails();
 					})
 					.catch(function(err){
-						consol.log(err)
+						console.log(err)
 					});
 			};
 
@@ -42,9 +41,11 @@ moviePitchApp.directive('adminContactEmail', function(){
 					})
 					.catch(function(err){
 						console.log(err);
-						$scope.emails.splice(id, 1);
 					});
 			}
+
+			// Init Page
+			$scope.refreshEmails();
 		},
 		link: function(scope, el, attrs){
 			$(el).find('')
