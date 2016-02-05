@@ -1,0 +1,32 @@
+<header class="header" app-header></header>
+
+<section ng-controller="AdminController" class="section section--regular">
+  <div class="section-content section-content--has-nav">
+    <div class="section-content-nav" ng-include src="'views/subviews/admin-nav.html'"></div>
+
+    <div class="section-content-content">
+      <form class="card">
+        <h3 class="card-heading">Register A New Admin</h3>
+        <div class="label-wrapper" label-wrapper>
+          <input type="text" ng-model="adminUsernameRegister" class="label-wrapper-input" id="admin-username-register">
+          <label class="label-wrapper-label {{labelState}}" for="admin-username-register">Username</label>
+        </div>
+        <div class="label-wrapper" label-wrapper>
+          <input type="text" ng-model="adminEmailRegister" class="label-wrapper-input" id="admin-email-register">
+          <label class="label-wrapper-label {{labelState}}" for="admin-email-register">Email Address</label>
+        </div>
+        <div class="label-wrapper" label-wrapper>
+          <input type="password" ng-model="adminPasswordRegister" class="label-wrapper-input" id="admin-password-register">
+          <label class="label-wrapper-label {{labelState}}" for="admin-password-register">Password</label>
+        </div>
+        <div class="label-wrapper" label-wrapper>
+          <input type="password" ng-model="adminPasswordRegisterConfirm" class="label-wrapper-input" id="admin-password-register-confirm">
+          <label class="label-wrapper-label {{labelState}}" for="admin-password-register-confirm">Confirm Password</label>
+        </div>
+        <div class="btn-container">
+          <button class="btn btn--primary" type="submit" ng-click="registerAdmin()">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

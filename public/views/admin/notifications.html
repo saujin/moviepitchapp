@@ -2,12 +2,11 @@
 
 <section ng-controller="AdminController" class="section section--regular">
   <div class="section-content section-content--has-nav">
-    <div class="section-content-nav" ng-include src="'views/subviews/admin-nav.html'">
-    </div>
+    <div class="section-content-nav" ng-include src="'views/subviews/admin-nav.html'"></div>
 
     <div class="section-content-content">
-      <div class="card">
-        <p>Welcome to the admin section. Use the link on the left.</p>
+      <!-- List all Admin Emails w/ Controls -->
+      <div admin-contact-email class="admin-email-widget card">
       </div>
     </div>
   </div>

@@ -1,0 +1,20 @@
+<header class="header" app-header></header>
+
+<section ng-controller="AdminController" class="section section--regular">
+  <div class="section-content">
+    <form class="card">
+      <h3 class="card-heading">Please Log In</h3>
+      <div class="label-wrapper" label-wrapper>
+        <input type="text" ng-model="adminEmail" class="label-wrapper-input" id="admin-email">
+        <label class="label-wrapper-label {{labelState}}" for="admin-email">Email Address</label>
+      </div>
+      <div class="label-wrapper" label-wrapper>
+        <input type="password" ng-model="adminPassword" class="label-wrapper-input" id="admin-password">
+        <label class="label-wrapper-label {{labelState}}" for="admin-password">Password</label>
+      </div>
+      <div class="btn-container">
+        <button class="btn btn--primary" type="submit" ng-click="loginAdmin()">Log In</button>
+      </div>
+    </form>
+  </div>
+</section>

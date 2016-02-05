@@ -3,6 +3,7 @@
 // General Sections
 .section {
   display: flex;
+  min-height: calc(100vh - 182px);
   justify-content: center;
 }
 .section-content {
@@ -150,5 +151,31 @@
 @media all and (min-width: $browserMin){
   .section--stories {
     background-image: linear-gradient($tomato, $tomato 60%, $white 60%, $white);
+  }
+
+  .section-content--has-nav {
+    display: flex;
+  }
+
+  .section-content-nav {
+    flex: 2 2 16.6666%;
+  }
+
+  .section-nav-link {
+    color: $dark-grey;
+    display: block;
+    font-weight: 700;
+    margin-bottom: .5rem;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .section-nav-link--active {
+    color: $tomato;
+  }
+
+  .section-content-content {
+    flex: 10 10 83.3334%;
   }
 }

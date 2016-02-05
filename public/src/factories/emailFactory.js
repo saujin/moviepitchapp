@@ -6,17 +6,7 @@ moviePitchApp.factory('emailFactory', function($q, $http){
   let factory = {
 
     sendContactUsMessage: function(name, email, subject, msg){
-      // let deferred = $q.defer();
 
-      // deferred.resolve({
-      //   status: "success",
-      //   name: name,
-      //   email: email,
-      //   subject: subject,
-      //   message: msg
-      // });
-
-      // return deferred.promise;
       return $http({
         method: "POST",
         url: urlBase + "/contact/",

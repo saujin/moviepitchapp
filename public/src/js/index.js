@@ -24,34 +24,55 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
             requireLogin: false
           }
         })
+        .state('login', {
+          url: "/login",
+          templateUrl: "views/login.html",
+          data: {
+            requireLogin: false
+          }
+        })
         .state('admin', {
           url: "/admin",
           templateUrl: "views/admin.html",
           data: {
             requireLogin: true
           }
-        });
-
-      // Account
-      // $stateProvider
-      //   .state('register', {
-      //     url: "/register",
-      //     templateUrl: "views/register.html",
-      //     data: {
-      //       requireLogin: false
-      //     }
-      //   })
-      //   .state('my-account', {
-      //     url: "/my-account",
-      //     templateUrl: "views/my-account.html",
-      //     data: {
-      //       requireLogin: true
-      //     }
-      //   });
-
-
-      // Footer Nav
-      $stateProvider
+        })
+        .state('admin-register', {
+          url: "/admin/register",
+          templateUrl: "views/admin/register.html",
+          data: {
+            requireLogin: true
+          }
+        })
+        .state('admin-notifications', {
+          url: "/admin/notifications",
+          templateUrl: "views/admin/notifications.html",
+          data: {
+            requireLogin: true
+          }
+        })
+        .state('admin-unreviewed', {
+          url: "/admin/pitches/unreviewed",
+          templateUrl: "views/admin/unreviewed-pitches.html",
+          data: {
+            requireLogin: true
+          }
+        })
+        .state('admin-pending', {
+          url: "/admin/pitches/pending",
+          templateUrl: "views/admin/pending-pitches.html",
+          data: {
+            requireLogin: true
+          }
+        })
+        .state('admin-accepted', {
+          url: "/admin/pitches-accepted",
+          templateUrl: "views/admin/accepted-pitches.html",
+          data: {
+            requireLogin: true
+          }
+        })
         .state('faq', {
           url: "/faq",
           templateUrl: "views/faq.html",
@@ -83,17 +104,16 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
 
     }
   ])
-  // .run(function($rootScope){
+  .run(function($rootScope, $state){
+    $rootScope.curUser = null;
 
-    // $rootScope.$on('$stateChangeStart', function(event, toState){
-    //   let requireLogin = toState.data.requireLogin;
-    //
-    //   if(requireLogin === true && $rootScope.curUser === null){
-    //     event.preventDefault();
-    //     $('#login-modal').modal('show');
-    //     $rootScope.targetState = toState.name;
-    //   }
-    // });
-    //
-    // $rootScope.curUser = null;
-  // });
+    $rootScope.$on('$stateChangeStart', function(event, toState){
+      let requireLogin = toState.data.requireLogin;
+
+      if(requireLogin === true && $rootScope.curUser === null){
+        event.preventDefault();
+        $rootScope.targetState = toState.name;
+        $state.go('login');
+      }
+    });
+  });

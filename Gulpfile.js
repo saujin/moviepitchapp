@@ -26,7 +26,9 @@ const paths = {
     "public/src/img/**/*.jpg",
     "public/src/img/**/*.jpeg"
   ],
-  html: "public/src/**/*.html",
+  html: [
+    "public/src/**/*.html"
+  ],
   js: [
     "public/src/js/fancySelect.js",
     "public/src/js/index.js",
