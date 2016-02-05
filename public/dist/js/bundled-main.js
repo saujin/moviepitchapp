@@ -35257,6 +35257,59 @@ moviePitchApp.directive('adminContactEmail', function () {
 });
 "use strict";
 
+moviePitchApp.directive('adminPitchReview', function () {
+  return {
+    controller: function controller($scope, pitchFactory) {
+      $scope.pageTitle = "Please Log In";
+      $scope.data = {
+        username: "",
+        password: ""
+      };
+
+      $scope.loginAdmin = function () {
+        $scope.$emit('admin-logged-in');
+
+        $scope.pageTitle = "Admin";
+
+        pitchFactory.getAllPitches().then(function (resp) {
+          console.log(resp);
+          $scope.pitches = resp.data.docs;
+        }).catch(function (err) {
+          console.log(err);
+        });
+      };
+    },
+    restrict: "A"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
+"use strict";
+
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
   return {
     controller: function controller($scope) {
@@ -35366,59 +35419,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('adminPitchReview', function () {
-  return {
-    controller: function controller($scope, pitchFactory) {
-      $scope.pageTitle = "Please Log In";
-      $scope.data = {
-        username: "",
-        password: ""
-      };
-
-      $scope.loginAdmin = function () {
-        $scope.$emit('admin-logged-in');
-
-        $scope.pageTitle = "Admin";
-
-        pitchFactory.getAllPitches().then(function (resp) {
-          console.log(resp);
-          $scope.pitches = resp.data.docs;
-        }).catch(function (err) {
-          console.log(err);
-        });
-      };
-    },
-    restrict: "A"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
   };
 });
 'use strict';
