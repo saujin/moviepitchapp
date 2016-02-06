@@ -266,6 +266,12 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
     data: {
       requireLogin: true
     }
+  }).state('admin-rejected', {
+    url: "/admin/pitches-rejected",
+    templateUrl: "views/admin/rejected-pitches.html",
+    data: {
+      requireLogin: true
+    }
   }).state('faq', {
     url: "/faq",
     templateUrl: "views/faq.html",
@@ -306,17 +312,16 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
 });
 'use strict';
 
-moviePitchApp.controller('AdminController', ['$scope', '$rootScope', 'adminFactory', '$state', function ($scope, $rootScope, adminFactory, $state) {
+moviePitchApp.controller('AdminController', ['$scope', '$rootScope', 'adminFactory', '$state', 'pitchFactory', function ($scope, $rootScope, adminFactory, $state, pitchFactory) {
 
-	$scope.adminEmail = "j@j.com";
-	$scope.adminPassword = "test";
-
+	// Login an Admin
+	// $scope.adminEmail = "j@j.com";
+	// $scope.adminPassword = "test";
+	$scope.adminEmail = "";
+	$scope.adminPassword = "";
 	$scope.loginAdmin = function () {
-		console.log($scope.adminEmail);
-		console.log($scope.adminPassword);
 
 		adminFactory.loginAdmin($scope.adminEmail, $scope.adminPassword).then(function (resp) {
-			console.log(resp);
 			$rootScope.curUser = resp.data.token;
 
 			if ($rootScope.targetState === "" || $rootScope.targetState === undefined) {
@@ -331,32 +336,28 @@ moviePitchApp.controller('AdminController', ['$scope', '$rootScope', 'adminFacto
 		});
 	};
 
+	// Logout an Admin
 	$scope.logoutAdmin = function () {
 		adminFactory.logoutAdmin().then(function (resp) {
-			console.log(resp);
+			console.log('Logging out');
 		}).catch(function (err) {
 			console.log(err);
 		});
 	};
 
+	// Register an Admin
 	$scope.adminUsernameRegister = "";
 	$scope.adminEmailRegister = "";
 	$scope.adminPasswordRegister = "";
 	$scope.adminPasswordRegisterConfirm = "";
 
 	$scope.registerAdmin = function () {
-		console.log($scope.adminUsernameRegister);
-		console.log($scope.adminEmailRegister);
-		console.log($scope.adminPasswordRegister);
-		console.log($scope.adminPasswordRegisterConfirm);
-
 		if ($scope.adminPasswordRegister === $scope.adminPasswordRegisterConfirm) {
 			var data = {
 				name: $scope.adminUsernameRegister,
 				email: $scope.adminEmailRegister,
 				password: $scope.adminPasswordRegister
 			};
-			console.log(data);
 
 			adminFactory.registerAdmin(data).then(function (resp) {
 				console.log(resp);
@@ -367,6 +368,14 @@ moviePitchApp.controller('AdminController', ['$scope', '$rootScope', 'adminFacto
 			console.log('passwords do not match');
 		}
 	};
+}]);
+'use strict';
+
+moviePitchApp.controller('CustomModalController', ['$scope', 'close', function ($scope, close) {
+  $scope.dismissModal = function () {
+    $('#modal-bg').addClass('modal-close-animation');
+    close('Modal Dismissed', 500);
+  };
 }]);
 'use strict';
 
@@ -435,6 +444,7 @@ moviePitchApp.controller('MainController', ['$scope', 'ModalService', '$timeout'
     });
   };
 }]);
+'use strict';
 
 moviePitchApp.controller('PitchModalController', ['$scope', 'close', function ($scope, close) {
   $scope.dismissModal = function () {
@@ -445,13 +455,6 @@ moviePitchApp.controller('PitchModalController', ['$scope', 'close', function ($
   $scope.$on('close-modal', function () {
     $scope.dismissModal();
   });
-}]);
-
-moviePitchApp.controller('CustomModalController', ['$scope', 'close', function ($scope, close) {
-  $scope.dismissModal = function () {
-    $('#modal-bg').addClass('modal-close-animation');
-    close('Modal Dismissed', 500);
-  };
 }]);
 "use strict";
 
@@ -774,7 +777,7 @@ moviePitchApp.factory('pitchFactory', function ($q, $http) {
       });
     },
 
-    getPitchByFilter: function getPitchByFilter(filterString) {
+    getPitchesByFilter: function getPitchesByFilter(filterString) {
       return $http({
         method: "GET",
         url: urlBase + "/pitch?" + filterString
@@ -808,6 +811,39 @@ moviePitchApp.factory('pitchFactory', function ($q, $http) {
         url: urlBase + "/pitch",
         data: pitch
       });
+    },
+
+    updatePitchStatus: function updatePitchStatus(id, status) {
+      var validStatuses = ["created", "rejected", "pending", "accepted"];
+      var testResults = false;
+
+      // test each valid status against passed in status
+      validStatuses.forEach(function (val, index, arr) {
+        if (val === status) {
+          testResults = true;
+        }
+      });
+
+      // proceed if status matches any valid status
+      if (testResults === true) {
+        return $http({
+          method: "PUT",
+          url: urlBase + "/pitch/update/" + id,
+          data: {
+            status: status
+          }
+        });
+      }
+
+      // throw a promise error back test fails
+      else {
+          var deferred = $q.defer();
+          deferred.reject({
+            status: "Error",
+            message: status + " is not a valid status"
+          });
+          return deferred.promise;
+        }
     },
 
     validatePitch: function validatePitch(pitch) {
@@ -1007,6 +1043,101 @@ moviePitchApp.directive('adminContactEmail', function () {
 		templateUrl: "dist/components/admin/admin-contact-email.html"
 	};
 });
+'use strict';
+
+moviePitchApp.directive('adminPitchList', function () {
+	return {
+		controller: function controller($scope, pitchFactory) {
+
+			// Load all the unreviewed pitches
+			$scope.getPitches = function (status) {
+				pitchFactory.getPitchesByFilter('status=' + status).then(function (resp) {
+					console.log(resp);
+					$scope.pitches = resp.data.docs;
+				}).catch(function (err) {
+					console.log(err);
+				});
+			};
+
+			// Reject a pitch by ID
+			$scope.rejectPitch = function (id, status) {
+				pitchFactory.rejectPitch(id).then(function (resp) {
+					console.log(resp);
+					$scope.getPitches(status);
+				}).catch(function (err) {
+					console.log(err);
+				});
+			};
+
+			$scope.updatePitch = function (id, data, status) {
+				pitchFactory.updatePitchStatus(id, data).then(function (resp) {
+					console.log(resp);
+					$scope.getPitches(status);
+				}).catch(function (err) {
+					console.log(err);
+				});
+			};
+		},
+		link: function link(scope, el, attrs) {
+			// Load all the unreviewed pitches on init
+			scope.getPitches(attrs.status);
+		},
+		restrict: "A"
+	};
+});
+
+moviePitchApp.directive('adminPitch', function () {
+	return {
+		link: function link(scope, el, attrs) {
+			$(el).find('.js-reject-unreviewed-pitch').on('click', function () {
+				scope.updatePitch(attrs.id, 'rejected', 'created');
+			});
+
+			$(el).find('.js-accept-unreviewed-pitch').on('click', function () {
+				scope.updatePitch(attrs.id, 'pending', 'created');
+			});
+
+			$(el).find('.js-reject-pending-pitch').on('click', function () {
+				scope.updatePitch(attrs.id, 'rejected', 'pending');
+			});
+
+			$(el).find('.js-accept-pending-pitch').on('click', function () {
+				scope.updatePitch(attrs.id, 'accepted', 'pending');
+			});
+
+			$(el).find('.js-accept-rejected-pitch').on('click', function () {
+				scope.updatePitch(attrs.id, 'accepted', 'rejected');
+			});
+		},
+		restrict: "A"
+	};
+});
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
@@ -1118,32 +1249,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
   };
 });
 "use strict";

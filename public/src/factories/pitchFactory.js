@@ -19,7 +19,7 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
       });
     },
 
-    getPitchByFilter: function(filterString){
+    getPitchesByFilter: function(filterString){
       return $http({
         method: "GET",
         url: urlBase + "/pitch?" + filterString
@@ -52,7 +52,40 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
         method: "POST",
         url: urlBase + "/pitch",
         data: pitch
-      })
+      });
+    },
+
+    updatePitchStatus: function(id, status){
+      const validStatuses = ["created", "rejected", "pending", "accepted"];
+      let testResults = false;
+
+      // test each valid status against passed in status
+      validStatuses.forEach(function(val, index, arr){
+        if(val === status){
+          testResults = true;
+        }
+      });
+
+      // proceed if status matches any valid status
+      if(testResults === true){
+        return $http({
+          method: "PUT",
+          url: urlBase + "/pitch/update/" + id,
+          data: {
+            status: status
+          }
+        });
+      }
+
+      // throw a promise error back test fails
+      else {
+        let deferred = $q.defer();
+        deferred.reject({
+          status: "Error",
+          message: status + " is not a valid status"
+        });
+        return deferred.promise;
+      }
     },
 
     validatePitch: function(pitch){
