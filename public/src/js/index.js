@@ -73,6 +73,13 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
             requireLogin: true
           }
         })
+        .state('admin-rejected', {
+          url: "/admin/pitches-rejected",
+          templateUrl: "views/admin/rejected-pitches.html",
+          data: {
+            requireLogin: true
+          }
+        })
         .state('faq', {
           url: "/faq",
           templateUrl: "views/faq.html",

@@ -6,12 +6,13 @@
 
     <div class="section-content-content">
       <!-- List All Pitches -->
-      <div admin-pitch-list data-status="accepted" class="card-columns card">
-        <h3 class="card-heading">Accepted Pitches</h3>
+      <div admin-pitch-list data-status="rejected" class="card-columns card">
+        <h3 class="card-heading">Rejected Pitches</h3>
         <div admin-pitch ng-repeat="pitch in pitches" class="card" data-id="{{pitch._id}}">
           <div class="pitch-genre">{{pitch.genre}}</div>
           <p>{{pitch.pitchText}}</p>
           <div class="btn-container">
+            <button class="btn js-accept-rejected-pitch">Accept</button>
           </div>
         </div>
       </div>

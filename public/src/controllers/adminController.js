@@ -1,17 +1,16 @@
 moviePitchApp.controller('AdminController',
-	['$scope', '$rootScope', 'adminFactory', '$state',
-	function($scope, $rootScope, adminFactory, $state){
+	['$scope', '$rootScope', 'adminFactory', '$state', 'pitchFactory',
+	function($scope, $rootScope, adminFactory, $state, pitchFactory){
 
+	// Login an Admin
+	// $scope.adminEmail = "j@j.com";
+	// $scope.adminPassword = "test";
 	$scope.adminEmail = "";
 	$scope.adminPassword = "";
-
 	$scope.loginAdmin = function(){
-		console.log($scope.adminEmail);
-		console.log($scope.adminPassword);
 
 		adminFactory.loginAdmin($scope.adminEmail, $scope.adminPassword)
 			.then(function(resp){
-				console.log(resp);
 				$rootScope.curUser = resp.data.token;
 
 				if($rootScope.targetState === "" || $rootScope.targetState === undefined){
@@ -27,18 +26,24 @@ moviePitchApp.controller('AdminController',
 			});
 	}
 
+	// Logout an Admin
+	$scope.logoutAdmin = function(){
+		adminFactory.logoutAdmin()
+			.then(function(resp){
+				console.log('Logging out');
+			})
+			.catch(function(err){
+				console.log(err);
+			});
+	};
 
+	// Register an Admin
 	$scope.adminUsernameRegister = "";
 	$scope.adminEmailRegister = "";
 	$scope.adminPasswordRegister = "";
 	$scope.adminPasswordRegisterConfirm = "";
 
 	$scope.registerAdmin = function(){
-		console.log($scope.adminUsernameRegister);
-		console.log($scope.adminEmailRegister);
-		console.log($scope.adminPasswordRegister);
-		console.log($scope.adminPasswordRegisterConfirm);
-
 		if(
 			$scope.adminPasswordRegister ===
 			$scope.adminPasswordRegisterConfirm
@@ -48,7 +53,6 @@ moviePitchApp.controller('AdminController',
 				email: $scope.adminEmailRegister,
 				password: $scope.adminPasswordRegister
 			};
-			console.log(data);
 
 			adminFactory.registerAdmin(data)
 			.then(function(resp){
@@ -60,6 +64,6 @@ moviePitchApp.controller('AdminController',
 		} else {
 			console.log('passwords do not match');
 		}
+	};
 
-	}
 }]);
