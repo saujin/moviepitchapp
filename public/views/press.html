@@ -3,5 +3,14 @@
 <section class="section section--regular">
   <div class="section-content">
     <h2 class="heading-title">Press</h2>
+    <div class="video-wrapper">
+			<iframe class="iframe-video" src="https://player.vimeo.com/video/41812750" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
+    <ul class="list list--press" press-list>
+	    <li ng-repeat="article in articles">
+	    	<a href="{{article.url" target="_blank">{{article.title}}:</a>
+	    	<span>{{article.subtitle}}</span>
+	    </li>
+	   </ul>
   </div>
 </section>

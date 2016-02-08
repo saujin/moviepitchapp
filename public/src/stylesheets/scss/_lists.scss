@@ -1,0 +1,24 @@
+.list {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.list--press {
+	margin: 2rem 0;
+
+	a {
+		color: $tomato;
+		font-weight: 700;
+		text-decoration: none;
+		transition: all 0.35s;
+		text-transform: uppercase;
+	}
+
+	a:hover {
+		color: $dark-tomato;
+	}
+
+	 li {
+	 	margin-bottom: 1rem;
+	 }
+}
