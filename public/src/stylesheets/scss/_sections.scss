@@ -1,5 +1,4 @@
-@media all and (max-width: $tabletMax) {}
-@media all and (min-width: $browserMin) {}
+
 // General Sections
 .section {
   display: flex;
@@ -136,6 +135,18 @@
   width: 100%;
 }
 
+.section-nav-link {
+  color: $dark-grey;
+  display: block;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.section-nav-link--active {
+  color: $tomato;
+}
+
 @media all and (max-width: $tabletMax){
   .section--hero {
     min-height: 550px;
@@ -145,6 +156,21 @@
     padding: 0;
     margin-left: 30px;
     margin-right: 30px;
+  }
+
+  .section-content-nav {
+    margin-bottom: 1rem;
+  }
+
+  .section-nav-link {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .section-nav-link + .section-nav-link {
+    border-top: solid 1px $dark-grey;
   }
 }
 
@@ -162,13 +188,7 @@
   }
 
   .section-nav-link {
-    color: $dark-grey;
-    display: block;
-    font-weight: 700;
     margin-bottom: .5rem;
-    position: relative;
-    text-decoration: none;
-    text-transform: uppercase;
   }
 
   .section-nav-link--active {

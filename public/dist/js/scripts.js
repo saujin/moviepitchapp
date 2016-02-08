@@ -899,6 +899,42 @@ moviePitchApp.factory('pitchFactory', function ($q, $http) {
 });
 "use strict";
 
+moviePitchApp.factory('PressFactory', function ($q) {
+	var articles = [{
+		title: "The Art of Selling Ideas",
+		subtitle: "A few moments with Bob Kosberg, Hollywood idea man and pitch master",
+		url: "http://www.flightofideas.net/Articles/Quest%20-%20The%20Art%20of%20Selling%20Ideas%20-%20By%20Bob%20Kodzis%20Jan%20Feb%202008.pdf"
+	}, {
+		title: "Concept is King",
+		subtitle: "In today's tight spec-script market, nothing is more important than your idea",
+		url: "http://www.scriptmag.com/features/concept-is-king"
+	}, {
+		title: "The Pitch Guy",
+		subtitle: "Some people carve out a career writing screenplays. Others get rich bringing them to life onscreen. Then there’s Robert Kosberg. His specialty? Ideas",
+		url: "http://www.lamag.com/longform/the-pitch-guy/"
+	}, {
+		title: "It's the Pitch, Stupid!",
+		subtitle: "An interview with Robert Kosberg",
+		url: "http://www.absolutewrite.com/screenwriting/robert_kosberg.htm"
+	}];
+
+	var factory = {
+		getArticles: function getArticles() {
+			var deferred = $q.defer();
+
+			deferred.resolve({
+				status: "success",
+				articles: articles
+			});
+
+			return deferred.promise;
+		}
+	};
+
+	return factory;
+});
+"use strict";
+
 moviePitchApp.factory('userFactory', function ($q, $rootScope, $location) {
   var factory = {
     checkLoggedIn: function checkLoggedIn() {
@@ -1112,32 +1148,6 @@ moviePitchApp.directive('adminPitch', function () {
 		restrict: "A"
 	};
 });
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
-  };
-});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
@@ -1251,6 +1261,32 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
   };
 });
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
 "use strict";
 
 moviePitchApp.directive('appHeader', function ($state) {
@@ -1293,6 +1329,20 @@ moviePitchApp.directive('appHeader', function ($state) {
     restrict: "A",
     templateUrl: "dist/components/nav/nav.html"
   };
+});
+'use strict';
+
+moviePitchApp.directive('pressList', function () {
+	return {
+		controller: function controller($scope, PressFactory) {
+			PressFactory.getArticles().then(function (resp) {
+				console.log(resp);
+				$scope.articles = resp.articles;
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}
+	};
 });
 "use strict";
 
