@@ -1,7 +1,7 @@
 moviePitchApp.directive('pitchModal', function($timeout){
   return {
     controller: function(
-      $scope, $q, $http, adminFactory, $rootScope,
+      $scope, $q, $http, $rootScope,
       paymentFactory, pitchFactory
     ){
 
