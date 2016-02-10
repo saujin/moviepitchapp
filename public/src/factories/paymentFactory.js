@@ -5,13 +5,13 @@ moviePitchApp.factory('paymentFactory', function($http){
   let factory = {
 
     createCharge: function(amount, description, token){
-      console.log({
-        amount: amount,
-        description: description,
-        currency: "usd",
-        source: token
-      });
-      
+      // console.log({
+      //   amount: amount,
+      //   description: description,
+      //   currency: "usd",
+      //   source: token
+      // });
+
       return $http({
         method: "POST",
         url: urlBase + "/stripe/create_charge",

@@ -89,10 +89,8 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
     },
 
     validatePitch: function(pitch){
-      // console.log(pitch);
       var deferred = $q.defer();
 
-      console.log(pitch);
       if(
         pitch.userHasAcceptedTerms === true &&
         pitch.pitchText !== "" &&

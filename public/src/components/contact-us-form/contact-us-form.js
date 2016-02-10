@@ -124,7 +124,6 @@ moviePitchApp.directive('contactUsForm', function(emailFactory, $timeout){
       // The fancySelect function runs before the page
       // is fully loaded, hence the timeout function
       selectReady();
-
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"

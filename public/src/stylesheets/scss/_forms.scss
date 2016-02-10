@@ -1,3 +1,7 @@
+input,
+input:focus,
+input:active,
+input:hover,
 textarea:active,
 textarea:focus,
 textarea:hover {
@@ -7,6 +11,14 @@ textarea:hover {
 fieldset {
   border: none;
   padding: 10px;
+}
+
+.naked-input input {
+  background: $white;
+  border: none;
+  display: block;
+  padding: 10px 0;
+  width: 100%;
 }
 
 textarea {

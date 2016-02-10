@@ -349,9 +349,17 @@ moviePitchApp.factory('emailFactory', function ($q, $http) {
       var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
       if (reg.test(email)) {
-        deferred.resolve(true);
+        deferred.resolve({
+          status: "Success",
+          msg: "Email Validated",
+          data: true
+        });
       } else {
-        deferred.reject(false);
+        deferred.reject({
+          status: "Error",
+          msg: "Please enter a valid email address.",
+          data: false
+        });
       }
 
       return deferred.promise;
@@ -495,12 +503,12 @@ moviePitchApp.factory('paymentFactory', function ($http) {
   var factory = {
 
     createCharge: function createCharge(amount, description, token) {
-      console.log({
-        amount: amount,
-        description: description,
-        currency: "usd",
-        source: token
-      });
+      // console.log({
+      //   amount: amount,
+      //   description: description,
+      //   currency: "usd",
+      //   source: token
+      // });
 
       return $http({
         method: "POST",
@@ -608,10 +616,8 @@ moviePitchApp.factory('pitchFactory', function ($q, $http) {
     },
 
     validatePitch: function validatePitch(pitch) {
-      // console.log(pitch);
       var deferred = $q.defer();
 
-      console.log(pitch);
       if (pitch.userHasAcceptedTerms === true && pitch.pitchText !== "" && pitch.genre !== "Select Genre" && pitch.genre !== "") {
         pitch.status = "created";
         pitch.userHasAcceptedTime = new Date();
@@ -944,7 +950,7 @@ moviePitchApp.directive('examplesModal', function () {
 
 moviePitchApp.directive('pitchModal', function ($timeout) {
   return {
-    controller: function controller($scope, $q, $http, $rootScope, paymentFactory, pitchFactory) {
+    controller: function controller($scope, $q, $http, $rootScope, emailFactory, paymentFactory, pitchFactory) {
 
       // Populate an array of genres, and create some variables
       // for the ng-models to bind to
@@ -954,60 +960,65 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
       $scope.pitch = {
         genre: "Select Genre",
         pitchText: "",
-        userHasAcceptedTerms: false
+        userHasAcceptedTerms: false,
+        userEmail: ""
       };
 
       // Set this property to configure alert messages displayed
       // on validation failures
       $scope.validationText = null;
 
-      // The Handler has some basic Stripe config and then calls the payment
-      // success function
-      $scope.handler = StripeCheckout.configure({
-        key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
-        // image: '/img/documentation/checkout/marketplace.png',
-        locale: 'auto',
-        token: function token(_token) {
-          // Update the pitch object with the payment token
-          $scope.pitch.token = _token;
-          $scope.pitch.submitterEmail = _token.email;
-
-          console.log($scope.pitch);
-
-          // Create the charge
-          paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
-
-            // if charge is successful submit the pitch
-            console.log('Transaction complete.');
-            console.log(resp);
-            pitchFactory.submitPitch($scope.pitch).then(function (resp) {
-              $scope.validationText = "Success! Pitch submitted.";
-
-              console.log('Pitch submitted');
-              console.log(resp);
-              $rootScope.$broadcast('close-modal');
-            }).catch(function (err) {
-              $scope.validationText = "Error: Pitch not submitted.";
-              console.log(err);
-            });
-          }).catch(function (err) {
-            console.log(err);
-          });
-        }
-      });
+      $scope.modalLoadingStatus = "";
 
       // Run the handler when someone clicks 'submit'
       $scope.submitPitch = function (ev) {
         // Get the value for the genre (fancybox binding issue)
         $scope.pitch.genre = $('#select-genre').val();
 
-        // Validate the pitch object
-        pitchFactory.validatePitch($scope.pitch).then(function (resp) {
+        // The Handler has some basic Stripe config and then calls the payment
+        // success function
+        $scope.handler = StripeCheckout.configure({
+          email: $scope.pitch.userEmail,
+          key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
+          // image: '/img/documentation/checkout/marketplace.png',
+          locale: 'auto',
+          token: function token(_token) {
+            // Update the pitch object with the payment token
+            $scope.pitch.token = _token;
+            $scope.pitch.submitterEmail = _token.email;
+            $scope.modalLoadingStatus = "modal--loading";
+
+            console.log($scope.pitch);
+
+            // Create the charge
+            paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
+              pitchFactory.submitPitch($scope.pitch).then(function (resp) {
+                $scope.modalLoadingStatus = "";
+                $scope.validationText = "Success! Pitch submitted.";
+
+                // console.log('Pitch submitted');
+                console.log(resp);
+                $rootScope.$broadcast('close-modal');
+              }).catch(function (err) {
+                $scope.validationText = "Error: Pitch not submitted.";
+                console.log(err);
+              });
+            }).catch(function (err) {
+              console.log(err);
+            });
+          }
+        });
+
+        // Create a combined promise
+        $q.all([pitchFactory.validatePitch($scope.pitch), emailFactory.validateEmail($scope.pitch.userEmail)]).then(function (resp) {
+          console.log(resp[0]);
+          console.log(resp[1]);
+
           // clear the validation text
           $scope.validationText = "";
 
           // set the pitch equal to the returned & validated pitch
-          $scope.pitch = resp.pitch;
+          $scope.pitch = resp[0].pitch;
 
           $scope.handler.open({
             name: "MoviePitch.com",

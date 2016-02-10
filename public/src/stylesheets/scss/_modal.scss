@@ -15,9 +15,35 @@
   color: $purplish-grey;
   flex: 1 1 auto;
   font-size: 1.25rem;
-  height: 431px;
+  height: 496px;
   max-width: 820px;
   padding-bottom: 20px;
+  transition: all 0.25s;
+
+  &:after {
+    background-position: center center;
+    background-repeat: no-repeat;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+}
+
+.modal--loading {
+  > * {
+    opacity: .3;
+  }
+
+  &:after {
+    animation: spin 750ms infinite;
+    background-image: url('../img/logo-clean.png');
+    z-index: 1;
+  }
 }
 
 .modal-title {
@@ -55,7 +81,8 @@
 }
 
  .pitch-modal {
-  .textarea-wrapper {
+  .textarea-wrapper,
+  .naked-input {
     border-bottom: solid 1px $pale-grey;
   }
 }
