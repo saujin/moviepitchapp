@@ -8,8 +8,10 @@
     </div>
     <ul class="list list--press" press-list>
 	    <li ng-repeat="article in articles">
-	    	<a href="{{article.url}}" target="_blank">{{article.title}}:</a>
-	    	<span>{{article.subtitle}}</span>
+	    	<a href="{{article.url}}" target="_blank">
+					<span class="article-title">{{article.title}}</span>
+	    		<span class="article-content">{{article.subtitle}}</span>
+	    	</a>
 	    </li>
 	   </ul>
   </div>

@@ -6,19 +6,52 @@
 .list--press {
 	margin: 2rem 0;
 
+	li {
+		margin-bottom: 1rem;
+		padding: 2rem 0 0;
+		position: relative;
+	}
+
+	li + li {
+		&:before {
+			background: $pale-grey;
+			content: "";
+			display: block;
+			left: 50%;
+			height: 1px;
+			margin-left: -25%;
+			position: absolute;
+			width: 50%;
+			top: 0;
+		}
+	}
+
 	a {
-		color: $tomato;
-		font-weight: 700;
+		display: block;
+		text-align: center;
 		text-decoration: none;
+	}
+
+	a:hover {
+		.article-title {
+			color: $dark-tomato;
+		}
+	}
+
+	.article-title {
+		color: $tomato;
+		display: block;
+		font-weight: 700;
 		transition: all 0.35s;
 		text-transform: uppercase;
 	}
 
-	a:hover {
-		color: $dark-tomato;
+	.article-content {
+		color: $purplish-grey;
+		display: block;
+		margin: 0 auto;
+		max-width: 640px;
+		padding: 1rem 0;
+		text-align: center;
 	}
-
-	 li {
-	 	margin-bottom: 1rem;
-	 }
 }
