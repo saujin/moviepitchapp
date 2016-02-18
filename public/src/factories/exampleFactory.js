@@ -46,7 +46,7 @@ moviePitchApp.factory('exampleFactory', function($q){
 	  },
 	  {
 	    "title": "MALEFICENT",
-	    "pitch": "The classic fairy tale of SLEEPING BEAUTY is retold from the point-of-view of the villainous character Maleficent."
+	    "pitch": "The classic fairy tale of SLEEPING BEAUTY is retold from the point-of-view of the villainous character."
 	  },
 	  {
 	    "title": "SHAKESPEARE IN LOVE",
@@ -105,10 +105,6 @@ moviePitchApp.factory('exampleFactory', function($q){
 	    "pitch": "Tom Hanks falls in love with a beautiful woman... who just happens to be a mermaid."
 	  },
 	  {
-	    "title": "BREAKING BAD",
-	    "pitch": "When an underemployed teacher in New Mexico is diagnosed with  cancer, he decides to pay for treatment by using his chemistry skills to cook the best  meth in town."
-	  },
-	  {
 	    "title": "FROZEN",
 	    "pitch": "A fearless princess sets off on an epic journey alongside a rugged iceman, his  loyal pet reindeer, and a naïve snowman to find her estranged sister, whose icy powers  have inadvertently trapped the kingdom in eternal winter."
 	  },
@@ -117,33 +113,13 @@ moviePitchApp.factory('exampleFactory', function($q){
 	    "pitch": "The wartime experiences of ethnic German Oskar Schindler, who,  during the Holocaust, saved the lives of more than a thousand Polish Jews by employing  them in his factories."
 	  },
 	  {
-	    "title": "FRIED GREEN TOMATOES",
-	    "pitch": "A character‐driven comedy‐drama about the intertwining  lives of four southern women dealing with the Great Depression, abusive husbands, and  friendships that save their souls."
-	  },
-	  {
-	    "title": "THE SOPRANOS",
-	    "pitch": "Get inside the head of ruthless Mob boss Tony Soprano, who visits a  therapist as he juggles his two families."
-	  },
-	  {
 	    "title": "IT’S COMPLICATED",
 	    "pitch": "A successful divorcee starts an affair with a married man – her ex‐ husband – just as she’s starting to date again."
-	  },
-	  {
-	    "title": "24",
-	    "pitch": "Counter Terrorist Unit Agent Jack Bauer races against a real time clock as he  attempts to thwart terrorist plots, presidential assassinations, and worldwide  destruction. Each episode covers one hour in Jack Bauer’s day."
-	  },
-	  {
-	    "title": "GREASE",
-	    "pitch": "A musical love story set in 1950s Rydell High School, goodie two shoes Sandy  falls in love with high school bad boy Danny on summer vacation at the beach—only to  be surprised to find he’s head greaser of the T‐Birds gang at her new school. Will their  love survive a summer fling—and high school seniors?"
 	  },
 	  {
 	    "title": "BAND OF BROTHERS",
 	    "pitch": "The epic story of the Easy Company of the US Army’s 101st Airborne Division and their mission in World War II Europe from training through major  battles in Europe."
 	  },
-	  {
-	    "title": "SIXTEEN CANDLES",
-	    "pitch": "Sophomore Samantha Baker’s Sweet 16 is turning out to be  anything but: her entire family is focused on her older sister’s wedding the next day, and  her high school crush, Jake Ryan, has just found out she’s in love with him. Can anything  salvage this teenage nightmare?"
-	  }
 	];
 
 	const factory = {

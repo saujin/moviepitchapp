@@ -9,6 +9,13 @@ strong {
   font-weight: 700;
 }
 
+.disclaimer {
+  color: $white;
+  display: block;
+  font-size: .75rem;
+  padding-top: .75rem;
+}
+
 dd,
 p,
 li {
@@ -45,65 +52,3 @@ dd {
     font-size: 14px;
   }
 }
-
-//
-// h1, h2, h3 {
-//   font-weight: 300;
-// }
-//
-// h3 {
-//   font-size: 2rem;
-// }
-//
-// a, button {
-//   @extend .clear-outline;
-// }
-//
-// a {
-//   color: $color-accent-0;
-//   transition: color 0.35s;
-//
-//   &:hover {
-//     color: $color-accent-1;
-//     text-decoration: none;
-//   }
-// }
-//
-// dt {
-//   margin-bottom: 1rem;
-// }
-//
-// dd {
-//   margin-bottom: 2rem;
-// }
-//
-// .legal-section {
-//   h4 {
-//     font-weight: 300;
-//     margin: 2rem 0;
-//   }
-// }
-//
-// @media all and (min-width: 769px){
-//   .centered-text {
-//     margin: 0 auto 1rem auto;
-//   }
-// }
-//
-// @media all and (max-width: 768px){
-//   body {
-//     font-size: 14px;
-//   }
-//
-//   h1 {
-//     font-size: 2rem;
-//   }
-//
-//   h2 {
-//     font-size: 1.75rem;
-//   }
-//
-//   h3 {
-//     font-size: 1.5rem;
-//   }
-// }
