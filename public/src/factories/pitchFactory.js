@@ -56,7 +56,7 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
     },
 
     updatePitchStatus: function(id, status){
-      const validStatuses = ["created", "rejected", "pending", "accepted"];
+      const validStatuses = ["unreviewed", "in_negotiation", "under_consideration", "accepted", "rejected"];
       let testResults = false;
 
       // test each valid status against passed in status
@@ -97,7 +97,7 @@ moviePitchApp.factory('pitchFactory', function($q, $http) {
         pitch.genre !== "Select Genre" &&
         pitch.genre !== ""
       ) {
-        pitch.status = "created";
+        pitch.status = "unreviewed";
         pitch.userHasAcceptedTime = new Date();
 
         deferred.resolve({

@@ -24,12 +24,7 @@ fieldset {
 }
 
 .combo-input {
-  padding: 0px 10px;
-
-  input {
-    padding: 20px 10px;
-  }
-
+  padding: 0px;
 }
 
 textarea {
@@ -118,11 +113,10 @@ textarea {
 
   .combo-input {
     overflow: auto;
-    padding: 0px 10px;
 
     input {
       float: left;
-      padding: 20px 30px 20px 10px;
+      padding: 20px;
       width: 50%;
     }
 

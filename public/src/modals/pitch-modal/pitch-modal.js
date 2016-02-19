@@ -37,7 +37,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
         pitchText: "",
         userHasAcceptedTerms: false,
         userEmail: "",
-        userPhone: ""
+        submitterPhone: ""
       };
 
       // Set this property to configure alert messages displayed
@@ -60,24 +60,22 @@ moviePitchApp.directive('pitchModal', function($timeout){
           locale: 'auto',
           token: function(token) {
             // Update the pitch object with the payment token
-            $scope.pitch.token = token;
-            $scope.pitch.submitterEmail = token.email;
-            $scope.pitch.submitterPhone = $scope.pitch.userPhone;
-            $scope.modalLoadingStatus = "modal--loading";
 
-            console.log($scope.pitch);
+            $scope.pitch.paymentToken = token;
+            $scope.pitch.submitterEmail = token.email;
+            $scope.pitch.termsAcceptedTime = new Date(token.created * 1000);
+            $scope.modalLoadingStatus = "modal--loading";
 
             // Create the charge
             paymentFactory
               .createCharge(200, "Pitch submission", token.id)
               .then(function(resp){
+                console.log($scope.pitch);
                 pitchFactory.submitPitch($scope.pitch)
                   .then(function(resp){
+                    console.log(resp);
                     $scope.modalLoadingStatus = "";
                     $scope.validationText = "Success! Pitch submitted.";
-
-                    // console.log('Pitch submitted');
-                    console.log(resp);
                     $rootScope.$broadcast('close-modal');
                   })
                   .catch(function(err){
@@ -97,8 +95,8 @@ moviePitchApp.directive('pitchModal', function($timeout){
           emailFactory.validateEmail($scope.pitch.userEmail)
         ])
         .then(function(resp){
-          console.log(resp[0]);
-          console.log(resp[1]);
+          // console.log(resp[0]);
+          // console.log(resp[1]);
 
           // clear the validation text
           $scope.validationText = "";
