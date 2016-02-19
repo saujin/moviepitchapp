@@ -694,32 +694,6 @@ moviePitchApp.factory('PressFactory', function ($q) {
 
 	return factory;
 });
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
-  };
-});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
@@ -831,6 +805,32 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
+  };
+});
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
   };
 });
 "use strict";
@@ -955,7 +955,8 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         genre: "Select Genre",
         pitchText: "",
         userHasAcceptedTerms: false,
-        userEmail: ""
+        userEmail: "",
+        submitterPhone: ""
       };
 
       // Set this property to configure alert messages displayed
@@ -978,14 +979,17 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
           locale: 'auto',
           token: function token(_token) {
             // Update the pitch object with the payment token
-            $scope.pitch.token = _token;
+
+            $scope.pitch.paymentToken = _token;
             $scope.pitch.submitterEmail = _token.email;
+            $scope.pitch.termsAcceptedTime = new Date(_token.created * 1000);
             $scope.modalLoadingStatus = "modal--loading";
 
-            console.log($scope.pitch);
+            debugger;
 
             // Create the charge
             paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
+              console.log($scope.pitch);
               pitchFactory.submitPitch($scope.pitch).then(function (resp) {
                 console.log(resp);
                 $scope.modalLoadingStatus = "";

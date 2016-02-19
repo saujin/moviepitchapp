@@ -36,7 +36,8 @@ moviePitchApp.directive('pitchModal', function($timeout){
         genre: "Select Genre",
         pitchText: "",
         userHasAcceptedTerms: false,
-        userEmail: ""
+        userEmail: "",
+        submitterPhone: ""
       };
 
       // Set this property to configure alert messages displayed
@@ -59,16 +60,19 @@ moviePitchApp.directive('pitchModal', function($timeout){
           locale: 'auto',
           token: function(token) {
             // Update the pitch object with the payment token
-            $scope.pitch.token = token;
+
+            $scope.pitch.paymentToken = token;
             $scope.pitch.submitterEmail = token.email;
+            $scope.pitch.termsAcceptedTime = new Date(token.created * 1000);
             $scope.modalLoadingStatus = "modal--loading";
 
-            console.log($scope.pitch);
+            debugger;
 
             // Create the charge
             paymentFactory
               .createCharge(200, "Pitch submission", token.id)
               .then(function(resp){
+                console.log($scope.pitch);
                 pitchFactory.submitPitch($scope.pitch)
                   .then(function(resp){
                     console.log(resp);
