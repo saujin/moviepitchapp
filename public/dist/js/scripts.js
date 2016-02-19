@@ -565,7 +565,7 @@ moviePitchApp.factory('pitchFactory', function ($q, $http) {
     },
 
     updatePitchStatus: function updatePitchStatus(id, status) {
-      var validStatuses = ["created", "rejected", "pending", "accepted"];
+      var validStatuses = ["unreviewed", "in_negotiation", "under_consideration", "accepted", "rejected"];
       var testResults = false;
 
       // test each valid status against passed in status
@@ -601,7 +601,7 @@ moviePitchApp.factory('pitchFactory', function ($q, $http) {
       var deferred = $q.defer();
 
       if (pitch.userHasAcceptedTerms === true && pitch.pitchText !== "" && pitch.genre !== "Select Genre" && pitch.genre !== "") {
-        pitch.status = "created";
+        pitch.status = "unreviewed";
         pitch.userHasAcceptedTime = new Date();
 
         deferred.resolve({
@@ -908,6 +908,40 @@ moviePitchApp.directive('successCarousel', function () {
 });
 "use strict";
 
+moviePitchApp.directive('examplesModal', function () {
+	return {
+		controller: function controller($scope, exampleFactory) {
+
+			exampleFactory.getAllPitches().then(function (resp) {
+				$scope.pitches = resp.pitches;
+				$scope.reveal = "";
+				$scope.actionText = "Reveal Movie Title";
+				$scope.getNewPitch('force');
+			}).catch(function (err) {
+				console.log(err);
+			});
+
+			$scope.getNewPitch = function (override) {
+				if ($scope.reveal === "" && override !== "force") {
+					$scope.reveal = "reveal-title";
+					$scope.actionText = "See Another Example";
+				} else {
+					$scope.reveal = "";
+					$scope.actionText = "Reveal Movie Title";
+					var numPitches = $scope.pitches.length;
+					var randomPitch = Math.round(Math.random() * numPitches);
+
+					$scope.curPitch = $scope.pitches[randomPitch];
+					console.log(randomPitch);
+					console.log($scope.pitches[randomPitch]);
+				}
+			};
+		},
+		restrict: "A"
+	};
+});
+"use strict";
+
 moviePitchApp.directive('pitchModal', function ($timeout) {
   return {
     controller: function controller($scope, $q, $http, $rootScope, emailFactory, paymentFactory, pitchFactory) {
@@ -953,11 +987,9 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
             // Create the charge
             paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
               pitchFactory.submitPitch($scope.pitch).then(function (resp) {
+                console.log(resp);
                 $scope.modalLoadingStatus = "";
                 $scope.validationText = "Success! Pitch submitted.";
-
-                // console.log('Pitch submitted');
-                console.log(resp);
                 $rootScope.$broadcast('close-modal');
               }).catch(function (err) {
                 $scope.validationText = "Error: Pitch not submitted.";
@@ -971,8 +1003,8 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
 
         // Create a combined promise
         $q.all([pitchFactory.validatePitch($scope.pitch), emailFactory.validateEmail($scope.pitch.userEmail)]).then(function (resp) {
-          console.log(resp[0]);
-          console.log(resp[1]);
+          // console.log(resp[0]);
+          // console.log(resp[1]);
 
           // clear the validation text
           $scope.validationText = "";
@@ -993,38 +1025,4 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
     },
     restrict: "A"
   };
-});
-"use strict";
-
-moviePitchApp.directive('examplesModal', function () {
-	return {
-		controller: function controller($scope, exampleFactory) {
-
-			exampleFactory.getAllPitches().then(function (resp) {
-				$scope.pitches = resp.pitches;
-				$scope.reveal = "";
-				$scope.actionText = "Reveal Movie Title";
-				$scope.getNewPitch('force');
-			}).catch(function (err) {
-				console.log(err);
-			});
-
-			$scope.getNewPitch = function (override) {
-				if ($scope.reveal === "" && override !== "force") {
-					$scope.reveal = "reveal-title";
-					$scope.actionText = "See Another Example";
-				} else {
-					$scope.reveal = "";
-					$scope.actionText = "Reveal Movie Title";
-					var numPitches = $scope.pitches.length;
-					var randomPitch = Math.round(Math.random() * numPitches);
-
-					$scope.curPitch = $scope.pitches[randomPitch];
-					console.log(randomPitch);
-					console.log($scope.pitches[randomPitch]);
-				}
-			};
-		},
-		restrict: "A"
-	};
 });

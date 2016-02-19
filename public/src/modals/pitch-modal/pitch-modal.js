@@ -71,11 +71,9 @@ moviePitchApp.directive('pitchModal', function($timeout){
               .then(function(resp){
                 pitchFactory.submitPitch($scope.pitch)
                   .then(function(resp){
+                    console.log(resp);
                     $scope.modalLoadingStatus = "";
                     $scope.validationText = "Success! Pitch submitted.";
-
-                    // console.log('Pitch submitted');
-                    console.log(resp);
                     $rootScope.$broadcast('close-modal');
                   })
                   .catch(function(err){
@@ -95,8 +93,8 @@ moviePitchApp.directive('pitchModal', function($timeout){
           emailFactory.validateEmail($scope.pitch.userEmail)
         ])
         .then(function(resp){
-          console.log(resp[0]);
-          console.log(resp[1]);
+          // console.log(resp[0]);
+          // console.log(resp[1]);
 
           // clear the validation text
           $scope.validationText = "";
