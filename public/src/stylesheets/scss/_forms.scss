@@ -13,12 +13,23 @@ fieldset {
   padding: 10px;
 }
 
-.naked-input input {
-  background: $white;
-  border: none;
-  display: block;
-  padding: 10px 0;
-  width: 100%;
+.naked-input {
+  input {
+    background: $white;
+    border: none;
+    display: block;
+    padding: 10px 0;
+    width: 100%;
+  }
+}
+
+.combo-input {
+  padding: 0px 10px;
+
+  input {
+    padding: 20px 10px;
+  }
+
 }
 
 textarea {
@@ -92,9 +103,32 @@ textarea {
   border: none;
 }
 
+@media all and (max-width: $tabletMax){
+  .combo-input {
+    input + input {
+      border-top: solid 1px $pale-grey;
+    }
+  }
+}
+
 @media all and (min-width: $browserMin){
   fieldset {
     padding: 10px 20px;
+  }
+
+  .combo-input {
+    overflow: auto;
+    padding: 0px 10px;
+
+    input {
+      float: left;
+      padding: 20px 30px 20px 10px;
+      width: 50%;
+    }
+
+    input + input {
+      border-left: solid 1px $pale-grey;
+    }
   }
 
   .textarea-wrapper {

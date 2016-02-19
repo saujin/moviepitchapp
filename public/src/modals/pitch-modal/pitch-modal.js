@@ -36,7 +36,8 @@ moviePitchApp.directive('pitchModal', function($timeout){
         genre: "Select Genre",
         pitchText: "",
         userHasAcceptedTerms: false,
-        userEmail: ""
+        userEmail: "",
+        userPhone: ""
       };
 
       // Set this property to configure alert messages displayed
@@ -61,6 +62,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
             // Update the pitch object with the payment token
             $scope.pitch.token = token;
             $scope.pitch.submitterEmail = token.email;
+            $scope.pitch.submitterPhone = $scope.pitch.userPhone;
             $scope.modalLoadingStatus = "modal--loading";
 
             console.log($scope.pitch);
