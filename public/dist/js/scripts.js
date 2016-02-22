@@ -975,7 +975,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         $scope.handler = StripeCheckout.configure({
           email: $scope.pitch.userEmail,
           key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
-          // image: '/img/documentation/checkout/marketplace.png',
+          image: '/dist/img/checkout-logo.png',
           locale: 'auto',
           token: function token(_token) {
             // Update the pitch object with the payment token
@@ -1017,7 +1017,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
           $scope.handler.open({
             name: "MoviePitch.com",
             description: "Pitch Submission",
-            amount: 200
+            amount: 199
           });
         }).catch(function (err) {
           $scope.validationText = err.msg;
