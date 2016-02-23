@@ -833,20 +833,6 @@ moviePitchApp.directive('labelWrapper', function () {
     restrict: "A"
   };
 });
-'use strict';
-
-moviePitchApp.directive('pressList', function () {
-	return {
-		controller: function controller($scope, PressFactory) {
-			PressFactory.getArticles().then(function (resp) {
-				console.log(resp);
-				$scope.articles = resp.articles;
-			}).catch(function (err) {
-				console.log(err);
-			});
-		}
-	};
-});
 "use strict";
 
 moviePitchApp.directive('appHeader', function ($state) {
@@ -861,6 +847,20 @@ moviePitchApp.directive('appHeader', function ($state) {
     restrict: "A",
     templateUrl: "dist/components/nav/nav.html"
   };
+});
+'use strict';
+
+moviePitchApp.directive('pressList', function () {
+	return {
+		controller: function controller($scope, PressFactory) {
+			PressFactory.getArticles().then(function (resp) {
+				console.log(resp);
+				$scope.articles = resp.articles;
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}
+	};
 });
 "use strict";
 
@@ -987,7 +987,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
             $scope.modalLoadingStatus = "modal--loading";
 
             // Create the charge
-            paymentFactory.createCharge(200, "Pitch submission", _token.id).then(function (resp) {
+            paymentFactory.createCharge(199, "Pitch submission", _token.id).then(function (resp) {
               console.log($scope.pitch);
               pitchFactory.submitPitch($scope.pitch).then(function (resp) {
                 console.log(resp);
