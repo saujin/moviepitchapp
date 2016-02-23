@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteCond %{HTTP:X-Forwarded-Proto} !https 
+RewriteCond %{HTTP_HOST} ^moviepitch\.com [NC]
+RewriteRule ^(.*) https://www.moviepitch.com/$1 [L,R=301]
+</IfModule>
