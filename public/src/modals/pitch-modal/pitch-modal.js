@@ -69,7 +69,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
 
             // Create the charge
             paymentFactory
-              .createCharge(200, "Pitch submission", token.id)
+              .createCharge(199, "Pitch submission", token.id)
               .then(function(resp){
                 console.log($scope.pitch);
                 pitchFactory.submitPitch($scope.pitch)
