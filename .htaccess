@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-RewriteCond %{HTTP_HOST} ^domain\.com [NC]
-RewriteRule ^(.*) http://www.domain.com/$1 [L,R=301]
+RewriteCond %{HTTP_HOST} ^moviepitch\.com [NC]
+RewriteRule ^(.*) http://www.moviepitch.com/$1 [L,R=301]
 </IfModule>
