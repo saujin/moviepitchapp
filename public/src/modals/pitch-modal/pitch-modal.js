@@ -36,7 +36,8 @@ moviePitchApp.directive('pitchModal', function($timeout){
         genre: "Select Genre",
         pitchText: "",
         userHasAcceptedTerms: false,
-        userEmail: ""
+        userEmail: "",
+        submitterPhone: ""
       };
 
       // Set this property to configure alert messages displayed
@@ -55,20 +56,22 @@ moviePitchApp.directive('pitchModal', function($timeout){
         $scope.handler = StripeCheckout.configure({
           email: $scope.pitch.userEmail,
           key: 'pk_live_ssCD1YYIwILiNgCLbfZX6yty',
-          // image: '/img/documentation/checkout/marketplace.png',
+          // key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
+          image: '/dist/img/checkout-logo.png',
           locale: 'auto',
           token: function(token) {
             // Update the pitch object with the payment token
-            $scope.pitch.token = token;
-            $scope.pitch.submitterEmail = token.email;
-            $scope.modalLoadingStatus = "modal--loading";
 
-            console.log($scope.pitch);
+            $scope.pitch.paymentToken = token;
+            $scope.pitch.submitterEmail = token.email;
+            $scope.pitch.termsAcceptedTime = new Date(token.created * 1000);
+            $scope.modalLoadingStatus = "modal--loading";
 
             // Create the charge
             paymentFactory
               .createCharge(200, "Pitch submission", token.id)
               .then(function(resp){
+                console.log($scope.pitch);
                 pitchFactory.submitPitch($scope.pitch)
                   .then(function(resp){
                     console.log(resp);
@@ -105,7 +108,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
           $scope.handler.open({
             name: "MoviePitch.com",
             description: "Pitch Submission",
-            amount: 200
+            amount: 199
           });
         })
         .catch(function(err){
