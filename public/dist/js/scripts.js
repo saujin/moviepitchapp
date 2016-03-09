@@ -234,7 +234,15 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
     url: "/legal",
     templateUrl: "views/legal.html"
   });
-}]);
+}]).run(function (configFactory, $rootScope) {
+
+  // Grab the API URL from the node process
+  configFactory.getApiUrl().then(function (resp) {
+    $rootScope.api_url = resp.data;
+  }).catch(function (e) {
+    console.log(e);
+  });
+});
 'use strict';
 
 moviePitchApp.controller('CustomModalController', ['$scope', 'close', function ($scope, close) {
@@ -324,8 +332,22 @@ moviePitchApp.controller('PitchModalController', ['$scope', 'close', function ($
 }]);
 "use strict";
 
-moviePitchApp.factory('emailFactory', function ($q, $http) {
-  var urlBase = "https://moviepitchapi.herokuapp.com";
+moviePitchApp.factory('configFactory', function ($http) {
+	var factory = {
+		getApiUrl: function getApiUrl() {
+			return $http({
+				type: "GET",
+				url: "/api_url"
+			});
+		}
+	};
+
+	return factory;
+});
+"use strict";
+
+moviePitchApp.factory('emailFactory', function ($q, $http, $rootScope) {
+  var urlBase = $rootScope.api_url;
 
   var factory = {
 
@@ -480,17 +502,11 @@ moviePitchApp.factory('exampleFactory', function ($q) {
 });
 "use strict";
 
-moviePitchApp.factory('paymentFactory', function ($http) {
-  var urlBase = "https://moviepitchapi.herokuapp.com";
+moviePitchApp.factory('paymentFactory', function ($http, $rootScope) {
+  var urlBase = $rootScope.api_url;
   var factory = {
 
     createCharge: function createCharge(amount, description, token) {
-      // console.log({
-      //   amount: amount,
-      //   description: description,
-      //   currency: "usd",
-      //   source: token
-      // });
 
       return $http({
         method: "POST",
@@ -509,8 +525,8 @@ moviePitchApp.factory('paymentFactory', function ($http) {
 });
 "use strict";
 
-moviePitchApp.factory('pitchFactory', function ($q, $http) {
-  var urlBase = "https://moviepitchapi.herokuapp.com";
+moviePitchApp.factory('pitchFactory', function ($q, $http, $rootScope) {
+  var urlBase = $rootScope.api_url;
 
   var factory = {
 

@@ -39,4 +39,16 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
         });
 
     }
-  ]);
+  ])
+  .run(function(configFactory, $rootScope){
+
+    // Grab the API URL from the node process
+    configFactory.getApiUrl()
+      .then(function(resp){
+        $rootScope.api_url = resp.data
+      })
+      .catch(function(e){
+        console.log(e);
+      });
+    }
+  );
