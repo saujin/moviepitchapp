@@ -3,7 +3,6 @@ moviePitchApp.directive('pressList', function(){
 		controller: function($scope, PressFactory){
 			PressFactory.getArticles()
 				.then(function(resp){
-					console.log(resp);
 					$scope.articles = resp.articles;
 				})
 				.catch(function(err){

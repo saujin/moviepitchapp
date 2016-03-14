@@ -55,7 +55,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
         // success function
         $scope.handler = StripeCheckout.configure({
           email: $scope.pitch.userEmail,
-          key: 'pk_live_ssCD1YYIwILiNgCLbfZX6yty',
+          key: $rootScope.stripe_key,
           // key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
           image: '/dist/img/checkout-logo.png',
           locale: 'auto',

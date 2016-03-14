@@ -50,5 +50,12 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
       .catch(function(e){
         console.log(e);
       });
-    }
-  );
+
+    configFactory.getStripeKey()
+      .then(function(resp){
+        $rootScope.stripe_key = resp.data
+      })
+      .catch(function(e){
+        console.log(e)
+      })
+  });

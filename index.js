@@ -8,6 +8,10 @@ app.get('/api_url', function(req, res) {
   res.send(process.env.API_URL || "https://moviepitchapi.herokuapp.com");
 });
 
+app.get('/stripe_key', function(req, res) {
+  res.send(process.env.STRIPE_KEY || "pk_live_ssCD1YYIwILiNgCLbfZX6yty");
+});
+
 app.use(express.static(__dirname + '/public'));
 
 app.listen(app.get('port'), function() {
