@@ -51,6 +51,9 @@ moviePitchApp.directive('pitchModal', function($timeout){
         // Get the value for the genre (fancybox binding issue)
         $scope.pitch.genre = $('#select-genre').val();
 
+        // Pitch price in $0.01
+        var pitchPrice = 299;
+
         // The Handler has some basic Stripe config and then calls the payment
         // success function
         $scope.handler = StripeCheckout.configure({
@@ -69,7 +72,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
 
             // Create the charge
             paymentFactory
-              .createCharge(199, "Pitch submission", token.id)
+              .createCharge(pitchPrice, "Pitch submission", token.id)
               .then(function(resp){
                 console.log($scope.pitch);
                 pitchFactory.submitPitch($scope.pitch)
@@ -108,7 +111,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
           $scope.handler.open({
             name: "MoviePitch.com",
             description: "Pitch Submission",
-            amount: 199
+            amount: pitchPrice
           });
         })
         .catch(function(err){

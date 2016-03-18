@@ -862,19 +862,6 @@ moviePitchApp.directive('labelWrapper', function () {
     restrict: "A"
   };
 });
-'use strict';
-
-moviePitchApp.directive('pressList', function () {
-	return {
-		controller: function controller($scope, PressFactory) {
-			PressFactory.getArticles().then(function (resp) {
-				$scope.articles = resp.articles;
-			}).catch(function (err) {
-				console.log(err);
-			});
-		}
-	};
-});
 "use strict";
 
 moviePitchApp.directive('appHeader', function ($state) {
@@ -889,6 +876,19 @@ moviePitchApp.directive('appHeader', function ($state) {
     restrict: "A",
     templateUrl: "dist/components/nav/nav.html"
   };
+});
+'use strict';
+
+moviePitchApp.directive('pressList', function () {
+	return {
+		controller: function controller($scope, PressFactory) {
+			PressFactory.getArticles().then(function (resp) {
+				$scope.articles = resp.articles;
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}
+	};
 });
 "use strict";
 
@@ -998,6 +998,9 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         // Get the value for the genre (fancybox binding issue)
         $scope.pitch.genre = $('#select-genre').val();
 
+        // Pitch price in $0.01
+        var pitchPrice = 299;
+
         // The Handler has some basic Stripe config and then calls the payment
         // success function
         $scope.handler = StripeCheckout.configure({
@@ -1015,7 +1018,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
             $scope.modalLoadingStatus = "modal--loading";
 
             // Create the charge
-            paymentFactory.createCharge(199, "Pitch submission", _token.id).then(function (resp) {
+            paymentFactory.createCharge(pitchPrice, "Pitch submission", _token.id).then(function (resp) {
               console.log($scope.pitch);
               pitchFactory.submitPitch($scope.pitch).then(function (resp) {
                 console.log(resp);
@@ -1046,7 +1049,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
           $scope.handler.open({
             name: "MoviePitch.com",
             description: "Pitch Submission",
-            amount: 199
+            amount: pitchPrice
           });
         }).catch(function (err) {
           $scope.validationText = err.msg;
