@@ -2,12 +2,12 @@ moviePitchApp.factory('PressFactory', function($q){
 	const articles = [
 		{
 			title: "Meet Hollywood's Mr. Pitch",
-			subtitle: "Robert Kosberg has made a career out of pitching in-your-face ideas for movies. Have you heard his pitch for a horror film about a rampaging dog? Think 'Jaws on paws.'' Why not let him direct your next pitch?",
+			subtitle: "Robert Kosberg has made a career out of pitching in-your-face ideas for movies. Why not let him direct your next pitch?",
 			url: "http://www.fastcompany.com/38665/meet-hollywoods-mr-pitch"
 		},
 		{
 			title: "Talking with Bob Kosberg",
-			subtitle: "Talking with Bob Kosberg -- Here's why everyone's buying what Hollywood's fastest talker has to sell.",
+			subtitle: "Talking with Bob Kosberg -- Here's why everyone's buying what Hollywood's best talker has to sell.",
 			url: "http://www.ew.com/article/2006/07/28/talking-bob-kosberg"
 		},
 		{
