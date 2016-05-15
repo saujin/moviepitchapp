@@ -680,11 +680,11 @@ moviePitchApp.factory('pitchFactory', function ($q, $http, $rootScope) {
 moviePitchApp.factory('PressFactory', function ($q) {
 	var articles = [{
 		title: "Meet Hollywood's Mr. Pitch",
-		subtitle: "Robert Kosberg has made a career out of pitching in-your-face ideas for movies. Have you heard his pitch for a horror film about a rampaging dog? Think 'Jaws on paws.'' Why not let him direct your next pitch?",
+		subtitle: "Robert Kosberg has made a career out of pitching in-your-face ideas for movies. Why not let him direct your next pitch?",
 		url: "http://www.fastcompany.com/38665/meet-hollywoods-mr-pitch"
 	}, {
 		title: "Talking with Bob Kosberg",
-		subtitle: "Talking with Bob Kosberg -- Here's why everyone's buying what Hollywood's fastest talker has to sell.",
+		subtitle: "Talking with Bob Kosberg -- Here's why everyone's buying what Hollywood's best talker has to sell.",
 		url: "http://www.ew.com/article/2006/07/28/talking-bob-kosberg"
 	}, {
 		title: "‘Extra!’ base hit for pair",
@@ -836,6 +836,21 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
   };
 });
+"use strict";
+
+moviePitchApp.directive('appHeader', function ($state) {
+  return {
+    controller: function controller($scope) {
+      $scope.menuToggleStatus = "menu-closed";
+
+      $scope.toggleMenu = function () {
+        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
+      };
+    },
+    restrict: "A",
+    templateUrl: "dist/components/nav/nav.html"
+  };
+});
 'use strict';
 
 moviePitchApp.directive('labelWrapper', function () {
@@ -860,21 +875,6 @@ moviePitchApp.directive('labelWrapper', function () {
       });
     },
     restrict: "A"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('appHeader', function ($state) {
-  return {
-    controller: function controller($scope) {
-      $scope.menuToggleStatus = "menu-closed";
-
-      $scope.toggleMenu = function () {
-        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
-      };
-    },
-    restrict: "A",
-    templateUrl: "dist/components/nav/nav.html"
   };
 });
 'use strict';
