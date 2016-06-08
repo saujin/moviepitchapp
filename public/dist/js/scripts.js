@@ -723,6 +723,32 @@ moviePitchApp.factory('PressFactory', function ($q) {
 
 	return factory;
 });
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
@@ -834,32 +860,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
   };
 });
 "use strict";
@@ -999,7 +999,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         $scope.pitch.genre = $('#select-genre').val();
 
         // Pitch price in $0.01
-        var pitchPrice = 299;
+        var pitchPrice = 399;
 
         // The Handler has some basic Stripe config and then calls the payment
         // success function
@@ -1019,17 +1019,13 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
 
             // Create the charge
             paymentFactory.createCharge(pitchPrice, "Pitch submission", _token.id).then(function (resp) {
-              console.log($scope.pitch);
               pitchFactory.submitPitch($scope.pitch).then(function (resp) {
-                console.log(resp);
                 $scope.modalLoadingStatus = "";
                 $scope.validationText = "Success! Pitch submitted.";
                 $rootScope.$broadcast('close-modal');
-              }).catch(function (err) {
-                $scope.validationText = "Error: Pitch not submitted.";
-                console.log(err);
               });
             }).catch(function (err) {
+              $scope.validationText = "Error: Pitch not submitted.";
               console.log(err);
             });
           }
@@ -1037,8 +1033,6 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
 
         // Create a combined promise
         $q.all([pitchFactory.validatePitch($scope.pitch), emailFactory.validateEmail($scope.pitch.userEmail)]).then(function (resp) {
-          // console.log(resp[0]);
-          // console.log(resp[1]);
 
           // clear the validation text
           $scope.validationText = "";

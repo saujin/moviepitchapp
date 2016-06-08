@@ -52,7 +52,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
         $scope.pitch.genre = $('#select-genre').val();
 
         // Pitch price in $0.01
-        var pitchPrice = 299;
+        var pitchPrice = 399;
 
         // The Handler has some basic Stripe config and then calls the payment
         // success function
@@ -74,20 +74,15 @@ moviePitchApp.directive('pitchModal', function($timeout){
             paymentFactory
               .createCharge(pitchPrice, "Pitch submission", token.id)
               .then(function(resp){
-                console.log($scope.pitch);
                 pitchFactory.submitPitch($scope.pitch)
                   .then(function(resp){
-                    console.log(resp);
                     $scope.modalLoadingStatus = "";
                     $scope.validationText = "Success! Pitch submitted.";
                     $rootScope.$broadcast('close-modal');
                   })
-                  .catch(function(err){
-                    $scope.validationText = "Error: Pitch not submitted.";
-                    console.log(err);
-                  })
               })
               .catch(function(err){
+                $scope.validationText = "Error: Pitch not submitted.";
                 console.log(err);
               });
           }
@@ -99,8 +94,6 @@ moviePitchApp.directive('pitchModal', function($timeout){
           emailFactory.validateEmail($scope.pitch.userEmail)
         ])
         .then(function(resp){
-          // console.log(resp[0]);
-          // console.log(resp[1]);
 
           // clear the validation text
           $scope.validationText = "";
