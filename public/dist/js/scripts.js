@@ -227,6 +227,9 @@ var moviePitchApp = angular.module("moviePitchApp", controllerArray).config(["$s
   }).state('press', {
     url: "/press",
     templateUrl: "views/press.html"
+  }).state('privacy', {
+    url: "/privacy",
+    templateUrl: "views/privacy.html"
   }).state('contact-us', {
     url: "/contact-us",
     templateUrl: "views/contact-us.html"
@@ -836,21 +839,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
   };
 });
-"use strict";
-
-moviePitchApp.directive('appHeader', function ($state) {
-  return {
-    controller: function controller($scope) {
-      $scope.menuToggleStatus = "menu-closed";
-
-      $scope.toggleMenu = function () {
-        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
-      };
-    },
-    restrict: "A",
-    templateUrl: "dist/components/nav/nav.html"
-  };
-});
 'use strict';
 
 moviePitchApp.directive('labelWrapper', function () {
@@ -875,6 +863,21 @@ moviePitchApp.directive('labelWrapper', function () {
       });
     },
     restrict: "A"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('appHeader', function ($state) {
+  return {
+    controller: function controller($scope) {
+      $scope.menuToggleStatus = "menu-closed";
+
+      $scope.toggleMenu = function () {
+        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
+      };
+    },
+    restrict: "A",
+    templateUrl: "dist/components/nav/nav.html"
   };
 });
 'use strict';
@@ -999,7 +1002,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         $scope.pitch.genre = $('#select-genre').val();
 
         // Pitch price in $0.01
-        var pitchPrice = 399;
+        var pitchPrice = 199;
 
         // The Handler has some basic Stripe config and then calls the payment
         // success function

@@ -29,6 +29,10 @@ let moviePitchApp = angular.module("moviePitchApp", controllerArray)
           url: "/press",
           templateUrl: "views/press.html"
         })
+        .state('privacy', {
+          url: "/privacy",
+          templateUrl: "views/privacy.html"
+        })
         .state('contact-us', {
           url: "/contact-us",
           templateUrl: "views/contact-us.html"
