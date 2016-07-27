@@ -799,23 +799,23 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
         if ($scope.btnState === "btn--inactive") {
           // console.log('inactive');
         } else {
+          clearErrors();
+          emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
             clearErrors();
-            emailFactory.sendContactUsMessage($scope.data.name, $scope.data.email, $scope.data.msgSubject, $scope.data.message).then(function (resp) {
-              clearErrors();
-              clearFields();
-              $scope.submitSuccess = "show-alert";
-              $scope.successText = "Success! Your message has been submitted.";
-              // console.log(resp);
-              $timeout(function () {
-                $scope.submitSuccess = "";
-                $scope.successText = "";
-              }, 4000);
-            }, function (err) {
-              $scope.errorText = "An error has occurred. Your message was not sent.";
-              $scope.messageError = "show-alert";
-            });
-            // console.log($scope.data);
-          }
+            clearFields();
+            $scope.submitSuccess = "show-alert";
+            $scope.successText = "Success! Your message has been submitted.";
+            // console.log(resp);
+            $timeout(function () {
+              $scope.submitSuccess = "";
+              $scope.successText = "";
+            }, 4000);
+          }, function (err) {
+            $scope.errorText = "An error has occurred. Your message was not sent.";
+            $scope.messageError = "show-alert";
+          });
+          // console.log($scope.data);
+        }
       };
     },
     link: function link(scope, el, attrs) {
@@ -837,6 +837,21 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('appHeader', function ($state) {
+  return {
+    controller: function controller($scope) {
+      $scope.menuToggleStatus = "menu-closed";
+
+      $scope.toggleMenu = function () {
+        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
+      };
+    },
+    restrict: "A",
+    templateUrl: "dist/components/nav/nav.html"
   };
 });
 'use strict';
@@ -863,21 +878,6 @@ moviePitchApp.directive('labelWrapper', function () {
       });
     },
     restrict: "A"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('appHeader', function ($state) {
-  return {
-    controller: function controller($scope) {
-      $scope.menuToggleStatus = "menu-closed";
-
-      $scope.toggleMenu = function () {
-        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
-      };
-    },
-    restrict: "A",
-    templateUrl: "dist/components/nav/nav.html"
   };
 });
 'use strict';
@@ -1020,17 +1020,37 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
             $scope.pitch.termsAcceptedTime = new Date(_token.created * 1000);
             $scope.modalLoadingStatus = "modal--loading";
 
-            // Create the charge
-            paymentFactory.createCharge(pitchPrice, "Pitch submission", _token.id).then(function (resp) {
-              pitchFactory.submitPitch($scope.pitch).then(function (resp) {
-                $scope.modalLoadingStatus = "";
-                $scope.validationText = "Success! Pitch submitted.";
-                $rootScope.$broadcast('close-modal');
-              });
+            pitchFactory.submitPitch($scope.pitch).then(function (resp) {
+              // console.log(resp)
+              return paymentFactory.createCharge(pitchPrice, "Pitch submission", _token.id);
+            }).then(function (resp) {
+              $scope.modalLoadingStatus = "";
+              $scope.validationText = "Success! Pitch submitted.";
+              $rootScope.$broadcast('close-modal');
             }).catch(function (err) {
-              $scope.validationText = "Error: Pitch not submitted.";
-              console.log(err);
+              console.error(err);
+              $scope.modalLoadingStatus = "";
+              $scope.validationText = "Site Error: You have not been charged. Please try again later.";
             });
+
+            // Create the charge
+            // paymentFactory
+            //   .createCharge(pitchPrice, "Pitch submission", token.id)
+            //   .then(function(resp){
+            //     console.log(resp)
+            //     return pitchFactory.submitPitch($scope.pitch)
+            //   })
+            //   .then(function(resp){
+            //     console.log(resp)
+            //     $scope.modalLoadingStatus = "";
+            //     $scope.validationText = "Success! Pitch submitted.";
+            //     $rootScope.$broadcast('close-modal');
+            //   })
+            //   .catch(function(err){
+            //     $scope.modalLoadingStatus = "";
+            //     $scope.validationText = "Error: Pitch not submitted.";
+            //     console.error(err);
+            //   });
           }
         });
 
