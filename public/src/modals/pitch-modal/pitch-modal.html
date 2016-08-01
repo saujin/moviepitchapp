@@ -2,34 +2,39 @@
   <button class="btn close-modal-btn" ng-click="dismissModal()"></button>
 
   <div class="modal pitch-modal {{modalLoadingStatus}}">
-    <div
+<!--     <div
       style="position: absolute; bottom: 0; left: 0; right: 0; top: 0; background: rgba(255,255,255,.9); color: #ed4f4f; display: flex; align-items: center;  border-radius: 20px;">
       <span style="flex: 1 1 auto; text-align: center; padding: 0 20px;">Sorry - Moviepitch is currently down for maintenance. We should be back online in 24-48 hours. We apologize for the inconvenience.</span>
-    </div>
-    <h2 class="modal-title">Submit Your Pitch</h2 style="filter: blur(2px); -webkit-filter: blur(2px);">
-
-    <fieldset class="select-wrapper top-radiused" style="filter: blur(2px); -webkit-filter: blur(2px);">
+    </div> -->
+    <!-- <h2 class="modal-title">Submit Your Pitch</h2 style="filter: blur(2px); -webkit-filter: blur(2px);"> -->
+    <h2 class="modal-title">Submit Your Pitch</h2>
+    
+    <!-- <fieldset class="select-wrapper top-radiused" style="filter: blur(2px); -webkit-filter: blur(2px);"> -->
+    <fieldset class="select-wrapper top-radiused">
       <select id="select-genre" ng-model="pitch.genre">
         <option ng-repeat="genre in genres" value="{{genre}}">{{genre}}</option>
       </select>
     </fieldset>
 
-    <fieldset class="textarea-wrapper" style="filter: blur(2px); -webkit-filter: blur(2px);">
+    <!-- <fieldset class="textarea-wrapper" style="filter: blur(2px); -webkit-filter: blur(2px);"> -->
+    <fieldset class="textarea-wrapper">
       <textarea ng-model="pitch.pitchText" id="pitch-text" rows="8" placeholder="Your pitch idea"></textarea>
     </fieldset>
 
-    <fieldset class="naked-input combo-input" style="filter: blur(2px); -webkit-filter: blur(2px);">
+    <!-- <fieldset class="naked-input combo-input" style="filter: blur(2px); -webkit-filter: blur(2px);"> -->
+    <fieldset class="naked-input combo-input">
       <input type="email" ng-model="pitch.userEmail" placeholder="Email Address">
       <input type="text" ng-model="pitch.submitterPhone" placeholder="Phone Number">
     </fieldset>
 
-    <fieldset class="pitch-modal-terms" style="filter: blur(2px); -webkit-filter: blur(2px);">
+    <!-- <fieldset class="pitch-modal-terms" style="filter: blur(2px); -webkit-filter: blur(2px);"> -->
+    <fieldset class="pitch-modal-terms">
       <label>
         <input type="checkbox" ng-model="pitch.userHasAcceptedTerms">I have read and agree to the <a ui-sref="legal" class="inline-link" target="_blank" >terms</a> of this site
       </label>
        <span class="validation-notice">{{validationText}}</span>
     </fieldset>
 
-   <!--  <button type="submit" class="btn btn--primary" id="submit-pitch" ng-click="submitPitch($event)">Continue</button> -->
+    <button type="submit" class="btn btn--primary" id="submit-pitch" ng-click="submitPitch($event)">Continue</button>
   </div>
 </div>
