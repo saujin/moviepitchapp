@@ -1009,19 +1009,17 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         $scope.handler = StripeCheckout.configure({
           email: $scope.pitch.userEmail,
           key: $rootScope.stripe_key,
-          // key: 'pk_test_dXGHL1a18TOiXS6z0k7ehIHK',
           image: '/dist/img/checkout-logo.png',
           locale: 'auto',
           token: function token(_token) {
-            // Update the pitch object with the payment token
 
+            // Update the pitch object with the payment token
             $scope.pitch.paymentToken = _token;
             $scope.pitch.submitterEmail = _token.email;
             $scope.pitch.termsAcceptedTime = new Date(_token.created * 1000);
             $scope.modalLoadingStatus = "modal--loading";
 
             pitchFactory.submitPitch($scope.pitch).then(function (resp) {
-              // console.log(resp)
               return paymentFactory.createCharge(pitchPrice, "Pitch submission", _token.id);
             }).then(function (resp) {
               $scope.modalLoadingStatus = "";
@@ -1032,25 +1030,6 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
               $scope.modalLoadingStatus = "";
               $scope.validationText = "Site Error: You have not been charged. Please try again later.";
             });
-
-            // Create the charge
-            // paymentFactory
-            //   .createCharge(pitchPrice, "Pitch submission", token.id)
-            //   .then(function(resp){
-            //     console.log(resp)
-            //     return pitchFactory.submitPitch($scope.pitch)
-            //   })
-            //   .then(function(resp){
-            //     console.log(resp)
-            //     $scope.modalLoadingStatus = "";
-            //     $scope.validationText = "Success! Pitch submitted.";
-            //     $rootScope.$broadcast('close-modal');
-            //   })
-            //   .catch(function(err){
-            //     $scope.modalLoadingStatus = "";
-            //     $scope.validationText = "Error: Pitch not submitted.";
-            //     console.error(err);
-            //   });
           }
         });
 
@@ -1070,7 +1049,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
           });
         }).catch(function (err) {
           $scope.validationText = err.msg;
-          console.log(err);
+          console.error(err);
         });
       };
     },
