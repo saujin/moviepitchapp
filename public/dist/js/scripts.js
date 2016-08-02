@@ -726,6 +726,47 @@ moviePitchApp.factory('PressFactory', function ($q) {
 
 	return factory;
 });
+'use strict';
+
+moviePitchApp.directive('labelWrapper', function () {
+  return {
+    controller: function controller($scope) {
+      $scope.labelState = "";
+    },
+    link: function link(scope, el, attrs) {
+      var $inputs = el.find('input, select, textarea');
+      var $label = el.find('label');
+
+      $inputs.on('focus', function () {
+        $label.addClass('label-wrapper-label--out');
+      });
+
+      $inputs.on('blur', function () {
+        var value = $($inputs[0]).val();
+
+        if (value === "") {
+          $label.removeClass('label-wrapper-label--out');
+        }
+      });
+    },
+    restrict: "A"
+  };
+});
+"use strict";
+
+moviePitchApp.directive('appHeader', function ($state) {
+  return {
+    controller: function controller($scope) {
+      $scope.menuToggleStatus = "menu-closed";
+
+      $scope.toggleMenu = function () {
+        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
+      };
+    },
+    restrict: "A",
+    templateUrl: "dist/components/nav/nav.html"
+  };
+});
 "use strict";
 
 moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
@@ -837,47 +878,6 @@ moviePitchApp.directive('contactUsForm', function (emailFactory, $timeout) {
     },
     restrict: "A",
     templateUrl: "dist/components/contact-us-form/contact-us-form.html"
-  };
-});
-'use strict';
-
-moviePitchApp.directive('labelWrapper', function () {
-  return {
-    controller: function controller($scope) {
-      $scope.labelState = "";
-    },
-    link: function link(scope, el, attrs) {
-      var $inputs = el.find('input, select, textarea');
-      var $label = el.find('label');
-
-      $inputs.on('focus', function () {
-        $label.addClass('label-wrapper-label--out');
-      });
-
-      $inputs.on('blur', function () {
-        var value = $($inputs[0]).val();
-
-        if (value === "") {
-          $label.removeClass('label-wrapper-label--out');
-        }
-      });
-    },
-    restrict: "A"
-  };
-});
-"use strict";
-
-moviePitchApp.directive('appHeader', function ($state) {
-  return {
-    controller: function controller($scope) {
-      $scope.menuToggleStatus = "menu-closed";
-
-      $scope.toggleMenu = function () {
-        $scope.menuToggleStatus = $scope.menuToggleStatus === "menu-closed" ? "menu-open" : "menu-closed";
-      };
-    },
-    restrict: "A",
-    templateUrl: "dist/components/nav/nav.html"
   };
 });
 'use strict';
@@ -1002,7 +1002,7 @@ moviePitchApp.directive('pitchModal', function ($timeout) {
         $scope.pitch.genre = $('#select-genre').val();
 
         // Pitch price in $0.01
-        var pitchPrice = 199;
+        var pitchPrice = 299;
 
         // The Handler has some basic Stripe config and then calls the payment
         // success function

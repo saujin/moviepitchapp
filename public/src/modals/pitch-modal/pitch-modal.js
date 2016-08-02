@@ -52,7 +52,7 @@ moviePitchApp.directive('pitchModal', function($timeout){
         $scope.pitch.genre = $('#select-genre').val();
 
         // Pitch price in $0.01
-        var pitchPrice = 199;
+        var pitchPrice = 299;
 
         // The Handler has some basic Stripe config and then calls the payment
         // success function
